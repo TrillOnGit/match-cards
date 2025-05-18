@@ -10,7 +10,7 @@ interface IConcentration
 
 public class Concentration : IConcentration
 {
-    private readonly List<Card> _cards = [];
+    private readonly List<Card> _cards = new();
     // In concentration, you flip a card face up and then try another card.
     // This variable contains the first card, or null after you flip a pair.
     private Card? _lastFlipped;
