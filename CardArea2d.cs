@@ -6,8 +6,9 @@ public partial class CardArea2d : Area2D
     [Export] public Sprite2D CardFaceSprite { get; set; } = null!;
     [Export] public Sprite2D CardBackSprite { get; set; } = null!;
 
-    [Export] public CardBack CardBack { get; set; }
-    [Export] public int CardFace { get; set; } = 1;
+    [Export] public CardBack CardBack { get; set; } = CardBack.Red;
+    [Export] public int CardRank { get; set; } = 1;
+    public Suit CardSuit { get; set; } = Suit.Clubs;
     public bool FaceUp { get; set; } = false;
     public bool Revealed { get; set; } = false;
 
@@ -23,12 +24,14 @@ public partial class CardArea2d : Area2D
             card.Revealed += Reveal;
             card.Removed += QueueFree;
 
-            CardFace = card.Data.Rank;
+            CardRank = card.Data.Rank;
             CardBack = card.Data.CardBack;
+            CardSuit = card.Data.Suit;
             Position = new Vector2(card.X * 100f, card.Y * 100f);
         }
 
         CardBackSprite.Frame = GetBackFrame();
+        CardFaceSprite.Texture = GetSuitSprite();
         CardFaceSprite.Frame = GetFaceFrame();
         UpdateSpriteVisibility();
     }
@@ -64,12 +67,23 @@ public partial class CardArea2d : Area2D
             CardBack.Blue => 1,
             _ => 0,
         };
-        ;
     }
 
     public int GetFaceFrame()
     {
-        return CardFace - 1;
+        return CardRank - 1;
+    }
+
+    public Texture2D? GetSuitSprite()
+    {
+        return CardSuit switch
+        {
+            Suit.Clubs => GD.Load("res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Clubs-88x124.png") as Texture2D,
+            Suit.Spades => GD.Load("res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Spades-88x124.png") as Texture2D,
+            Suit.Diamonds => GD.Load("res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Diamonds-88x124.png") as Texture2D,
+            Suit.Hearts => GD.Load("res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Hearts-88x124.png") as Texture2D,
+            _ => throw new NotImplementedException(),
+        };
     }
 
     public void Flip(bool faceUp)
