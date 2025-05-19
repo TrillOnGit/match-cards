@@ -7,24 +7,24 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgq2h"]
 size = Vector2(20, 28)
 
-[node name="CardNode" type="Node2D"]
-
-[node name="CardArea2D" type="Area2D" parent="." node_paths=PackedStringArray("CardFaceSprite", "CardBackSprite")]
+[node name="CardArea2D" type="Area2D" node_paths=PackedStringArray("CardFaceSprite", "CardBackSprite")]
 script = ExtResource("1_68501")
 CardFaceSprite = NodePath("CardFaceSprite")
 CardBackSprite = NodePath("CardBackSprite")
 
-[node name="CardShape" type="CollisionShape2D" parent="CardArea2D"]
+[node name="CardShape" type="CollisionShape2D" parent="."]
 scale = Vector2(4.53, 4.53)
 shape = SubResource("RectangleShape2D_vgq2h")
 
-[node name="CardBackSprite" type="Sprite2D" parent="CardArea2D"]
+[node name="CardBackSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_gclfg")
 hframes = 2
 frame = 1
 
-[node name="CardFaceSprite" type="Sprite2D" parent="CardArea2D"]
+[node name="CardFaceSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.52549)
 texture = ExtResource("2_68501")
 hframes = 5
 vframes = 3
+
+[node name="CardNode" type="Node2D" parent="."]

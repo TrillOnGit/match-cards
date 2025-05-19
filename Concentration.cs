@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,10 +17,65 @@ public class Concentration : IConcentration
     private Card? _lastFlipped;
     private int _points = 0;
 
+    public event Action<Card>? CardAdded;
+    public event Action<Card>? CardRemoved;
+
+    public void Layout(IReadOnlyCollection<Face> faces)
+    {
+        ClearCards();
+
+        var rng = new Random();
+        var shuffledFaces = faces.ToArray();
+        rng.Shuffle(shuffledFaces);
+
+        var num = faces.Count;
+
+        // We'll try to lay the cards out in a square
+        int width = (int)Math.Ceiling(Math.Sqrt(num));
+
+        int curX = 0;
+        int curY = 0;
+        foreach (var face in shuffledFaces)
+        {
+            AddCard(new Card()
+            {
+                X = curX,
+                Y = curY,
+                Face = face
+            });
+            curX++;
+            if (curX >= width)
+            {
+                curY++;
+                curX = 0;
+            }
+        }
+    }
+
+    private void AddCard(Card card)
+    {
+        _cards.Add(card);
+        CardAdded?.Invoke(card);
+    }
+
+    private void ClearCards()
+    {
+        var cards = _cards.ToList();
+        _cards.Clear();
+        foreach (var card in cards)
+        {
+            CardRemoved?.Invoke(card);
+        }
+    }
+
     public void Flip(Card card)
     {
-        card.Revealed = true;
-        card.Flipped = true;
+        if (card.IsFaceUp)
+        {
+            return;
+        }
+        card.Flip(true);
+        card.Reveal();
         if (_lastFlipped == null)
         {
             _lastFlipped = card;
@@ -41,8 +97,8 @@ public class Concentration : IConcentration
         }
         else
         {
-            cardOne.Flipped = false;
-            cardTwo.Flipped = false;
+            cardOne.Flip(false);
+            cardTwo.Flip(false);
         }
         _lastFlipped = null;
     }
@@ -52,9 +108,29 @@ public record Card
 {
     public int X { get; set; }
     public int Y { get; set; }
-    public bool Flipped { get; set; } = false;
-    public bool Revealed { get; set; } = false;
+    public bool IsFaceUp { get; set; } = false;
+    public bool IsRevealed { get; set; } = false;
     public required Face Face { get; init; }
+
+    public void Flip(bool faceUp)
+    {
+        if (faceUp != IsFaceUp)
+        {
+            IsFaceUp = faceUp;
+            Flipped?.Invoke(IsFaceUp);
+        }
+    }
+
+    public void Reveal()
+    {
+        if (IsRevealed) return;
+        IsRevealed = true;
+        Revealed?.Invoke();
+    }
+
+    public event Action<bool>? Flipped;
+    public event Action? Revealed;
+    public event Action? Removed;
 }
 
 public enum Suit
