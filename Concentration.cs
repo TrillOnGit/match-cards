@@ -21,6 +21,12 @@ public class Concentration : IConcentration
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
 
+    // This event is fired when the first card of a potential pair is flipped up
+    public event Action<Card>? FirstCardFlipped;
+
+    // This event is fired when the second card of a potential pair is flipped up
+    public event Action<Card>? MatchAttempted;
+
     public void Layout(IReadOnlyCollection<CardData> faces)
     {
         ClearCards();
@@ -80,8 +86,11 @@ public class Concentration : IConcentration
         if (_lastFlipped == null)
         {
             _lastFlipped = card;
+            FirstCardFlipped?.Invoke(card);
             return;
         }
+
+        MatchAttempted?.Invoke(card);
         MatchPair(_lastFlipped, card);
     }
 

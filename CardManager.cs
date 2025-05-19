@@ -10,9 +10,14 @@ public partial class CardManager : Node
 
     public Concentration Concentration { get; set; } = new();
 
+    private List<CardArea2d> _cardNodes = new();
+
     public override void _Ready()
     {
         Concentration.CardAdded += OnCardAdded;
+        Concentration.CardRemoved += OnCardRemoved;
+        Concentration.FirstCardFlipped += OnFirstCardFlipped;
+        Concentration.MatchAttempted += OnMatchAttempted;
 
         Concentration.Layout(
             new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
@@ -26,6 +31,9 @@ public partial class CardManager : Node
     public override void _ExitTree()
     {
         Concentration.CardAdded -= OnCardAdded;
+        Concentration.CardRemoved -= OnCardRemoved;
+        Concentration.FirstCardFlipped -= OnFirstCardFlipped;
+        Concentration.MatchAttempted -= OnMatchAttempted;
     }
 
     public void OnCardAdded(Card card)
@@ -34,6 +42,31 @@ public partial class CardManager : Node
         cardNode.CardManager = this;
         cardNode.Card = card;
         AddChild(cardNode);
+        _cardNodes.Add(cardNode);
+    }
+
+    public void OnCardRemoved(Card card)
+    {
+        _cardNodes.RemoveAll(c => c.Card == card);
+    }
+
+    public void OnFirstCardFlipped(Card card)
+    {
+        foreach (var cardNode in _cardNodes)
+        {
+            cardNode.SetGlow(
+                cardNode.Card?.IsRevealed == true
+                && cardNode.Card?.Data.Rank == card.Data.Rank
+            );
+        }
+    }
+
+    public void OnMatchAttempted(Card card)
+    {
+        foreach (var cardNode in _cardNodes)
+        {
+            cardNode.SetGlow(false);
+        }
     }
 
     public static CardBack GetCardColor(Suit suit)

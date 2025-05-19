@@ -3,6 +3,7 @@ using System;
 
 public partial class CardArea2d : Area2D
 {
+    [Export] public Sprite2D CardGlow { get; set; } = null!;
     [Export] public Sprite2D CardFaceSprite { get; set; } = null!;
     [Export] public Sprite2D CardBackSprite { get; set; } = null!;
 
@@ -34,6 +35,8 @@ public partial class CardArea2d : Area2D
         CardFaceSprite.Texture = GetSuitSprite();
         CardFaceSprite.Frame = GetFaceFrame();
         UpdateSpriteVisibility();
+
+        CardGlow.Visible = false;
     }
 
     public override void _ExitTree()
@@ -95,6 +98,11 @@ public partial class CardArea2d : Area2D
     {
         Revealed = true;
         UpdateSpriteVisibility();
+    }
+
+    public void SetGlow(bool glow)
+    {
+        CardGlow.Visible = glow;
     }
 
     private void UpdateSpriteVisibility()
