@@ -16,6 +16,7 @@ public class Concentration : IConcentration
     // This variable contains the first card, or null after you flip a pair.
     private Card? _lastFlipped;
     private int comboCounter = 0;
+    private int guesses = 0;
 
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
@@ -93,12 +94,20 @@ public class Concentration : IConcentration
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
-            comboCounter++;
-            ScoreEventManager.SendScoreChange(cardOne.Data.Rank * (comboCounter + 10));
+            if (guesses < 6)
+            {
+                comboCounter++;
+                ScoreEventManager.SendScoreChange(cardOne.Data.Rank * comboCounter);
+            }
         }
         else
         {
             comboCounter = 0;
+            if (guesses < 6)
+            {
+                guesses++;
+                ScoreEventManager.SendGuesses(guesses);
+            }
             cardOne.Flip(false);
             cardTwo.Flip(false);
         }

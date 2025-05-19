@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ballspm2wr0r7"]
+[gd_scene load_steps=3 format=3 uid="uid://ballspm2wr0r7"]
 
 [ext_resource type="Script" uid="uid://dpp0lmnehp1g0" path="res://UI/Score.cs" id="1_ovps7"]
+[ext_resource type="Script" uid="uid://0o8fk48sunh8" path="res://UI/Guesses.cs" id="2_uwb5j"]
 
 [node name="ScoreCounterControl" type="Control"]
 top_level = true
@@ -20,3 +21,13 @@ offset_bottom = 29.0
 text = "Score Text"
 horizontal_alignment = 2
 script = ExtResource("1_ovps7")
+
+[node name="Guesses" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1031.0
+offset_top = 160.0
+offset_right = 1116.0
+offset_bottom = 183.0
+text = "Guess Text"
+horizontal_alignment = 2
+script = ExtResource("2_uwb5j")
