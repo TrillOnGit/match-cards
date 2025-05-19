@@ -14,7 +14,3 @@ script = ExtResource("2_2i0cs")
 CardScene = ExtResource("3_1rswq")
 
 [node name="ScoreCounterControl" parent="." instance=ExtResource("4_j7irf")]
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 12.0
-offset_bottom = 12.0
