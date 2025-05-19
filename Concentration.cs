@@ -15,7 +15,7 @@ public class Concentration : IConcentration
     // In concentration, you flip a card face up and then try another card.
     // This variable contains the first card, or null after you flip a pair.
     private Card? _lastFlipped;
-    private int _points = 0;
+    //private int _points = 0;
 
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
@@ -93,7 +93,8 @@ public class Concentration : IConcentration
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
-            _points += 1;
+            ScoreEventManager.SendScoreChange(1);
+            //_points += 1;
         }
         else
         {

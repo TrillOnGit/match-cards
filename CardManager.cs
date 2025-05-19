@@ -36,7 +36,7 @@ public partial class CardManager : Node
         AddChild(cardNode);
     }
 
-    public CardBack GetCardColor(Suit suit)
+    public static CardBack GetCardColor(Suit suit)
     {
         if (suit == Suit.Clubs || suit == Suit.Spades)
         {

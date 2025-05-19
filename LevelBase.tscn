@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dfkpfjynmqiwt"]
+[gd_scene load_steps=5 format=3 uid="uid://dfkpfjynmqiwt"]
 
 [ext_resource type="Script" uid="uid://bedopxpp71oeu" path="res://LevelBase.cs" id="1_n2g4x"]
 [ext_resource type="Script" uid="uid://cena7cbn7di1u" path="res://CardManager.cs" id="2_2i0cs"]
 [ext_resource type="PackedScene" uid="uid://c542u4x4lmrc1" path="res://CardNode.tscn" id="3_1rswq"]
+[ext_resource type="PackedScene" uid="uid://ballspm2wr0r7" path="res://UI/ScoreCounter.tscn" id="4_j7irf"]
 
 [node name="LevelBase" type="Node2D"]
 script = ExtResource("1_n2g4x")
@@ -11,3 +12,9 @@ script = ExtResource("1_n2g4x")
 position = Vector2(44, 52)
 script = ExtResource("2_2i0cs")
 CardScene = ExtResource("3_1rswq")
+
+[node name="ScoreCounterControl" parent="." instance=ExtResource("4_j7irf")]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 12.0
+offset_bottom = 12.0

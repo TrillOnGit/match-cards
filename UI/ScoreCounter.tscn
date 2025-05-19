@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://ballspm2wr0r7"]
+
+[ext_resource type="Script" uid="uid://dpp0lmnehp1g0" path="res://UI/Score.cs" id="1_ovps7"]
+
+[node name="ScoreCounterControl" type="Control"]
+top_level = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Score" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1066.0
+offset_top = 6.0
+offset_right = 1106.0
+offset_bottom = 29.0
+text = "Score Text"
+horizontal_alignment = 2
+script = ExtResource("1_ovps7")
