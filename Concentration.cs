@@ -20,7 +20,7 @@ public class Concentration : IConcentration
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
 
-    public void Layout(IReadOnlyCollection<Face> faces)
+    public void Layout(IReadOnlyCollection<CardData> faces)
     {
         ClearCards();
 
@@ -35,13 +35,13 @@ public class Concentration : IConcentration
 
         int curX = 0;
         int curY = 0;
-        foreach (var face in shuffledFaces)
+        foreach (var data in shuffledFaces)
         {
             AddCard(new Card()
             {
                 X = curX,
                 Y = curY,
-                Face = face
+                Data = data
             });
             curX++;
             if (curX >= width)
@@ -91,7 +91,7 @@ public class Concentration : IConcentration
 
     private void MatchPair(Card cardOne, Card cardTwo)
     {
-        if (cardOne.Face.Rank == cardTwo.Face.Rank)
+        if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
             _points += 1;
         }
@@ -110,7 +110,7 @@ public record Card
     public int Y { get; set; }
     public bool IsFaceUp { get; set; } = false;
     public bool IsRevealed { get; set; } = false;
-    public required Face Face { get; init; }
+    public required CardData Data { get; init; }
 
     public void Flip(bool faceUp)
     {
@@ -141,8 +141,9 @@ public enum Suit
     Diamonds
 }
 
-public record Face
+public record CardData
 {
     public Suit Suit { get; set; }
     public int Rank { get; set; }
+    public CardBack CardBack { get; set; }
 }

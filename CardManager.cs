@@ -17,7 +17,7 @@ public partial class CardManager : Node
         Concentration.Layout(
             new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
             .SelectMany(s => Enumerable.Range(1, 10).Select(i =>
-                new Face { Rank = i, Suit = s }
+                new CardData { Rank = i, Suit = s, CardBack = GetCardColor(s) }
             ))
             .ToList()
         );
@@ -34,5 +34,17 @@ public partial class CardManager : Node
         cardNode.CardManager = this;
         cardNode.Card = card;
         AddChild(cardNode);
+    }
+
+    public CardBack GetCardColor(Suit suit)
+    {
+        if (suit == Suit.Clubs || suit == Suit.Spades)
+        {
+            return CardBack.Blue;
+        }
+        else
+        {
+            return CardBack.Red;
+        }
     }
 }

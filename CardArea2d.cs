@@ -6,7 +6,7 @@ public partial class CardArea2d : Area2D
     [Export] public Sprite2D CardFaceSprite { get; set; } = null!;
     [Export] public Sprite2D CardBackSprite { get; set; } = null!;
 
-    [Export] public CardBackColor CardBack { get; set; } = CardBackColor.Blue;
+    [Export] public CardBack CardBack { get; set; }
     [Export] public int CardFace { get; set; } = 1;
     public bool FaceUp { get; set; } = false;
     public bool Revealed { get; set; } = false;
@@ -23,7 +23,8 @@ public partial class CardArea2d : Area2D
             card.Revealed += Reveal;
             card.Removed += QueueFree;
 
-            CardFace = card.Face.Rank;
+            CardFace = card.Data.Rank;
+            CardBack = card.Data.CardBack;
             Position = new Vector2(card.X * 100f, card.Y * 100f);
         }
 
@@ -59,8 +60,8 @@ public partial class CardArea2d : Area2D
         //When there's need for multiple cardbacks, this will be used to set the frame
         return CardBack switch
         {
-            CardBackColor.Red => 0,
-            CardBackColor.Blue => 1,
+            CardBack.Red => 0,
+            CardBack.Blue => 1,
             _ => 0,
         };
         ;
@@ -106,7 +107,7 @@ public partial class CardArea2d : Area2D
     }
 }
 
-public enum CardBackColor
+public enum CardBack
 {
     Red,
     Blue,
