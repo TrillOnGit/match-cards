@@ -4,6 +4,7 @@ public static class ScoreEventManager
 {
     public static event Action<int>? ScoreUpdated;
     public static event Action<int>? GuessesUpdated;
+    public static event Action<int>? ComboUpdated;
 
     public static void SendScoreChange(int scoreChangedBy)
     {
@@ -13,5 +14,10 @@ public static class ScoreEventManager
     public static void SendGuesses(int guessesChangedTo)
     {
         GuessesUpdated?.Invoke(guessesChangedTo);
+    }
+
+    public static void ComboChange(int comboChangedBy)
+    {
+        ComboUpdated?.Invoke(comboChangedBy);
     }
 }

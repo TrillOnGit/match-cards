@@ -3,19 +3,20 @@ using System;
 
 public partial class Guesses : Label
 {
-    public int GuessesCount { get; set; } = 6;
+    public int GuessesCount { get; set; } = 10;
+    public int MaxGuesses { get; set; } = 10;
     public override void _Ready()
     {
-        Text = "Guesses: 6 / 6";
+        Text = $"Guesses: {GuessesCount} / {MaxGuesses}";
         ScoreEventManager.GuessesUpdated += UpdateGuesses;
     }
     public void UpdateGuesses(int guesses)
     {
-        GuessesCount = 6 - guesses;
-        Text = $"Guesses: {GuessesCount} / 6";
+        GuessesCount = MaxGuesses - guesses;
+        Text = $"Guesses: {GuessesCount} / {MaxGuesses}";
         if (GuessesCount == 0)
         {
-            Text = $"Guesses: {GuessesCount} / 6 \nGame Over";
+            Text = $"Guesses: {GuessesCount} / {MaxGuesses} \nGame Over";
         }
     }
 }

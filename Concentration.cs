@@ -94,16 +94,18 @@ public class Concentration : IConcentration
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
-            if (guesses < 6)
+            if (guesses < 10)
             {
                 comboCounter++;
+                ScoreEventManager.ComboChange(comboCounter);
                 ScoreEventManager.SendScoreChange(cardOne.Data.Rank * comboCounter);
             }
         }
         else
         {
             comboCounter = 0;
-            if (guesses < 6)
+            ScoreEventManager.ComboChange(comboCounter);
+            if (guesses < 10)
             {
                 guesses++;
                 ScoreEventManager.SendGuesses(guesses);
