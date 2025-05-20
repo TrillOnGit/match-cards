@@ -27,18 +27,13 @@ public class Concentration : IConcentration
     // This event is fired when the second card of a potential pair is flipped up
     public event Action<Card>? MatchAttempted;
 
-    public void Layout(IReadOnlyCollection<CardData> faces)
+    public void Layout(IReadOnlyCollection<CardData> faces, int width)
     {
         ClearCards();
 
         var rng = new Random();
         var shuffledFaces = faces.ToArray();
         rng.Shuffle(shuffledFaces);
-
-        var num = faces.Count;
-
-        // We'll try to lay the cards out in a square
-        int width = (int)Math.Ceiling(Math.Sqrt(num));
 
         int curX = 0;
         int curY = 0;

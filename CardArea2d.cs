@@ -30,7 +30,7 @@ public partial class CardArea2d : Area2D
             CardBack = card.Data.CardBack;
             CardSuit = card.Data.Suit;
             BombSprite.Visible = card.Data.IsBomb;
-            Position = new Vector2(card.X * 100f, card.Y * 100f);
+            Position = new Vector2(card.X * 90f, card.Y * 128f);
         }
 
         CardBackSprite.Frame = GetBackFrame();

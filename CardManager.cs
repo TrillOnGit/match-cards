@@ -24,7 +24,8 @@ public partial class CardManager : Node
             .SelectMany(s => Enumerable.Range(1, 10).Select(i =>
                 new CardData { Rank = i, Suit = s, CardBack = GetCardColor(s), IsBomb = i == 1 }
             ))
-            .ToList()
+            .ToList(),
+            9
         );
     }
 
