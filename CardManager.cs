@@ -22,7 +22,7 @@ public partial class CardManager : Node
         Concentration.Layout(
             new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
             .SelectMany(s => Enumerable.Range(1, 10).Select(i =>
-                new CardData { Rank = i, Suit = s, CardBack = GetCardColor(s) }
+                new CardData { Rank = i, Suit = s, CardBack = GetCardColor(s), IsBomb = i == 1 }
             ))
             .ToList()
         );

@@ -99,12 +99,29 @@ public class Concentration : IConcentration
 
     public IEnumerable<Card> GetCards() => _cards;
 
+    private void OnMatch(Card card)
+    {
+        if (card.Data.IsBomb)
+        {
+            foreach (var otherCard in _cards)
+            {
+                var dist = Math.Abs(otherCard.X - card.X) + Math.Abs(otherCard.Y - card.Y);
+                if (dist == 1)
+                {
+                    otherCard.Reveal();
+                }
+            }
+        }
+    }
+
     private void MatchPair(Card cardOne, Card cardTwo)
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
             if (guesses < 10)
             {
+                OnMatch(cardOne);
+                OnMatch(cardTwo);
                 comboCounter++;
                 ScoreEventManager.ComboChange(comboCounter);
                 ScoreEventManager.SendScoreChange(cardOne.Data.Rank * comboCounter);
@@ -168,4 +185,5 @@ public record CardData
     public Suit Suit { get; set; }
     public int Rank { get; set; }
     public CardBack CardBack { get; set; }
+    public bool IsBomb { get; set; } = false;
 }

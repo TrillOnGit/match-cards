@@ -6,6 +6,7 @@ public partial class CardArea2d : Area2D
     [Export] public Sprite2D CardGlow { get; set; } = null!;
     [Export] public Sprite2D CardFaceSprite { get; set; } = null!;
     [Export] public Sprite2D CardBackSprite { get; set; } = null!;
+    [Export] public Sprite2D BombSprite { get; set; } = null!;
 
     [Export] public CardBack CardBack { get; set; } = CardBack.Red;
     [Export] public int CardRank { get; set; } = 1;
@@ -28,6 +29,7 @@ public partial class CardArea2d : Area2D
             CardRank = card.Data.Rank;
             CardBack = card.Data.CardBack;
             CardSuit = card.Data.Suit;
+            BombSprite.Visible = card.Data.IsBomb;
             Position = new Vector2(card.X * 100f, card.Y * 100f);
         }
 
