@@ -43,7 +43,7 @@ public class Concentration : IConcentration
             {
                 X = curX,
                 Y = curY,
-                Data = data
+                Data = data,
             });
             curX++;
             if (curX >= width)
@@ -58,6 +58,11 @@ public class Concentration : IConcentration
     {
         _cards.Add(card);
         CardAdded?.Invoke(card);
+
+        if (card.Data.Suit == Suit.Spades)
+        {
+            card.Reveal();
+        }
     }
 
     private void ClearCards()
@@ -142,8 +147,8 @@ public record Card
 {
     public int X { get; set; }
     public int Y { get; set; }
-    public bool IsFaceUp { get; set; } = false;
-    public bool IsRevealed { get; set; } = false;
+    public bool IsFaceUp { get; private set; } = false;
+    public bool IsRevealed { get; private set; } = false;
     public required CardData Data { get; init; }
 
     public void Flip(bool faceUp)
