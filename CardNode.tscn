@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c542u4x4lmrc1"]
 
-[ext_resource type="Script" uid="uid://k7lnvnw2uu4b" path="res://CardArea2d.cs" id="1_68501"]
+[ext_resource type="Script" uid="uid://cwrsqvg3om2cm" path="res://CardNode.cs" id="1_68501"]
 [ext_resource type="Texture2D" uid="uid://dleag8rm8jix2" path="res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Card_Back-88x124.png" id="1_gclfg"]
 [ext_resource type="Texture2D" uid="uid://3ual2b7mcauf" path="res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Clubs-88x124.png" id="2_68501"]
 [ext_resource type="Texture2D" uid="uid://bhvn1glopktkl" path="res://assets/bomb.png" id="4_vgq2h"]
@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgq2h"]
 size = Vector2(20, 28)
 
-[node name="CardArea2D" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite")]
+[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite")]
 script = ExtResource("1_68501")
 CardGlow = NodePath("Glow")
 CardFaceSprite = NodePath("CardFaceSprite")
@@ -39,5 +39,3 @@ vframes = 3
 
 [node name="BombSprite" type="Sprite2D" parent="CardFaceSprite"]
 texture = ExtResource("4_vgq2h")
-
-[node name="CardNode" type="Node2D" parent="."]

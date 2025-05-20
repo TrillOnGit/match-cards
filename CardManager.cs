@@ -10,7 +10,7 @@ public partial class CardManager : Node
 
     public Concentration Concentration { get; set; } = new();
 
-    private List<CardArea2d> _cardNodes = new();
+    private List<CardNode> _cardNodes = new();
 
     public override void _Ready()
     {
@@ -39,7 +39,7 @@ public partial class CardManager : Node
 
     public void OnCardAdded(Card card)
     {
-        var cardNode = CardScene.Instantiate<CardArea2d>();
+        var cardNode = CardScene.Instantiate<CardNode>();
         cardNode.CardManager = this;
         cardNode.Card = card;
         AddChild(cardNode);
