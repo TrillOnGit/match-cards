@@ -34,7 +34,8 @@ public class Concentration : IConcentration
         var rng = new Random();
         var shuffledFaces = faces.ToArray();
         rng.Shuffle(shuffledFaces);
-
+        var randomPositions = Enumerable.Range(0, faces.Count).ToArray();
+        rng.Shuffle(randomPositions);
         int curX = 0;
         int curY = 0;
         foreach (var data in shuffledFaces)
@@ -52,17 +53,18 @@ public class Concentration : IConcentration
                 curX = 0;
             }
         }
+        var revealNumber = 10;
+
+        for (int i = 0; (i < revealNumber) && (i < _cards.Count); i++)
+        {
+            _cards[randomPositions[i]].Reveal();
+        }
     }
 
     private void AddCard(Card card)
     {
         _cards.Add(card);
         CardAdded?.Invoke(card);
-
-        if (card.Data.Suit == Suit.Spades)
-        {
-            card.Reveal();
-        }
     }
 
     private void ClearCards()
