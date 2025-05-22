@@ -15,7 +15,8 @@ public partial class CardNode : Area2D
     public bool Revealed { get; set; } = false;
 
     public Card? Card { get; set; } = null;
-    public CardManager? CardManager { get; set; } = null;
+
+    public event Action? Clicked = null;
 
     public override void _Ready()
     {
@@ -58,7 +59,7 @@ public partial class CardNode : Area2D
         {
             if (ev.ButtonIndex == MouseButton.Left && ev.Pressed && Card != null)
             {
-                CardManager?.Concentration.Flip(Card);
+                Clicked?.Invoke();
             }
         }
     }

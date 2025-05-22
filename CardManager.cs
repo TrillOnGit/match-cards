@@ -40,8 +40,9 @@ public partial class CardManager : Node
     public void OnCardAdded(Card card)
     {
         var cardNode = CardScene.Instantiate<CardNode>();
-        cardNode.CardManager = this;
         cardNode.Card = card;
+        // cardNode will not outlive CardManager, so it's safe to subscribe without unsubscribing
+        cardNode.Clicked += () => OnCardClicked(card);
         AddChild(cardNode);
         _cardNodes.Add(cardNode);
     }
@@ -68,6 +69,11 @@ public partial class CardManager : Node
         {
             cardNode.SetGlow(false);
         }
+    }
+
+    public void OnCardClicked(Card card)
+    {
+        Concentration.Flip(card);
     }
 
     public static CardBack GetCardColor(Suit suit)
