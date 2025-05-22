@@ -128,6 +128,7 @@ public class Concentration : IConcentration
                 comboCounter++;
                 ScoreEventManager.ComboChange(comboCounter);
                 ScoreEventManager.SendScoreChange(cardOne.Data.Rank * comboCounter);
+                ScoreEventManager.PairChange(1);
             }
         }
         else

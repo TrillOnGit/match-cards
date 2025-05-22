@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ballspm2wr0r7"]
+[gd_scene load_steps=5 format=3 uid="uid://ballspm2wr0r7"]
 
 [ext_resource type="Script" uid="uid://dpp0lmnehp1g0" path="res://UI/Score.cs" id="1_ovps7"]
 [ext_resource type="Script" uid="uid://0o8fk48sunh8" path="res://UI/Guesses.cs" id="2_uwb5j"]
 [ext_resource type="Script" uid="uid://dtspqi5q00jvm" path="res://UI/Combo.cs" id="3_dd01t"]
+[ext_resource type="Script" uid="uid://bitr13dvqrjar" path="res://UI/Pairs.cs" id="4_oqd8x"]
 
 [node name="ScoreCounterControl" type="Control"]
 top_level = true
@@ -41,3 +42,12 @@ offset_right = 1143.0
 offset_bottom = 104.0
 text = "Combo Text"
 script = ExtResource("3_dd01t")
+
+[node name="Pairs" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1067.0
+offset_top = 232.0
+offset_right = 1139.0
+offset_bottom = 255.0
+text = "Pairs: 0/8"
+script = ExtResource("4_oqd8x")
