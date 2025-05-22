@@ -80,6 +80,11 @@ public class Concentration : IConcentration
 
     public void Flip(Card card)
     {
+        if (guesses >= 10)
+        {
+            card.Reveal();
+            return;
+        }
         if (card.IsFaceUp)
         {
             return;
@@ -121,25 +126,19 @@ public class Concentration : IConcentration
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
-            if (guesses < 10)
-            {
-                OnMatch(cardOne);
-                OnMatch(cardTwo);
-                comboCounter++;
-                ScoreEventManager.ComboChange(comboCounter);
-                ScoreEventManager.SendScoreChange(cardOne.Data.Rank * comboCounter);
-                ScoreEventManager.PairChange(1);
-            }
+            OnMatch(cardOne);
+            OnMatch(cardTwo);
+            comboCounter++;
+            ScoreEventManager.ComboChange(comboCounter);
+            ScoreEventManager.SendScoreChange(cardOne.Data.Rank * comboCounter);
+            ScoreEventManager.PairChange(1);
         }
         else
         {
             comboCounter = 0;
             ScoreEventManager.ComboChange(comboCounter);
-            if (guesses < 10)
-            {
-                guesses++;
-                ScoreEventManager.SendGuesses(guesses);
-            }
+            guesses++;
+            ScoreEventManager.SendGuesses(guesses);
             cardOne.Flip(false);
             cardTwo.Flip(false);
         }
