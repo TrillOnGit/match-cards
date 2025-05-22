@@ -12,6 +12,11 @@ public partial class Pairs : Label
         ScoreEventManager.PairCountUpdated += UpdatePairs;
     }
 
+    public override void _ExitTree()
+    {
+        ScoreEventManager.PairCountUpdated -= UpdatePairs;
+    }
+
     public void UpdatePairs(int pairs)
     {
         PairsCount += pairs;

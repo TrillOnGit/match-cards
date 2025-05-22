@@ -9,6 +9,11 @@ public partial class Score : Label
         Text = "Score: 0";
         ScoreEventManager.ScoreUpdated += UpdateScore;
     }
+    public override void _ExitTree()
+    {
+        ScoreEventManager.ScoreUpdated -= UpdateScore;
+    }
+
     public void UpdateScore(int score)
     {
         Points += score;

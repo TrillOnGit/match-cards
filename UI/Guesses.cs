@@ -10,6 +10,10 @@ public partial class Guesses : Label
         Text = $"Guesses: {GuessesCount} / {MaxGuesses}";
         ScoreEventManager.GuessesUpdated += UpdateGuesses;
     }
+    public override void _ExitTree()
+    {
+        ScoreEventManager.GuessesUpdated -= UpdateGuesses;
+    }
     public void UpdateGuesses(int guesses)
     {
         GuessesCount = MaxGuesses - guesses;

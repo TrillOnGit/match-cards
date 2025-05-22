@@ -9,6 +9,10 @@ public partial class Combo : Label
         Text = "Combo: 0";
         ScoreEventManager.ComboUpdated += UpdateCombo;
     }
+    public override void _ExitTree()
+    {
+        ScoreEventManager.ComboUpdated -= UpdateCombo;
+    }
     public void UpdateCombo(int combo)
     {
         ComboCount = combo;
