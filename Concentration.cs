@@ -38,12 +38,17 @@ public class Concentration : IConcentration
         int curY = 0;
         foreach (var data in shuffledFaces)
         {
-            AddCard(new Card()
+            Card card = new Card()
             {
                 X = curX,
                 Y = curY,
                 Data = data,
-            });
+            };
+            if (data.Rank == 10 && data.Suit == Suit.Hearts)
+            {
+                card.Burn();
+            }
+            AddCard(card);
             curX++;
             if (curX >= width)
             {
@@ -85,7 +90,7 @@ public class Concentration : IConcentration
             card.Reveal();
             return;
         }
-        if (card.IsFaceUp)
+        if (card.IsFaceUp || card.IsBurning)
         {
             return;
         }
@@ -100,6 +105,19 @@ public class Concentration : IConcentration
 
         MatchAttempted?.Invoke(card);
         MatchPair(_lastFlipped, card);
+
+        var burnList = _cards.Where(c => c.IsBurning).ToList();
+        foreach (var c in burnList)
+        {
+            foreach (var otherCard in _cards)
+            {
+                var dist = Math.Abs(otherCard.X - c.X) + Math.Abs(otherCard.Y - c.Y);
+                if (dist == 1)
+                {
+                    BurnCard(otherCard);
+                }
+            }
+        }
     }
 
     public Card? GetCardAtPos(int X, int Y) =>
@@ -144,7 +162,21 @@ public class Concentration : IConcentration
         }
         _lastFlipped = null;
     }
+
+    private void BurnCard(Card card)
+    {
+        card.Burn();
+        foreach (var otherCard in _cards)
+        {
+            var dist = Math.Abs(otherCard.X - card.X) + Math.Abs(otherCard.Y - card.Y);
+            if (dist == 1)
+            {
+                otherCard.Reveal();
+            }
+        }
+    }
 }
+
 
 public record Card
 {
@@ -152,6 +184,7 @@ public record Card
     public int Y { get; set; }
     public bool IsFaceUp { get; private set; } = false;
     public bool IsRevealed { get; private set; } = false;
+    public bool IsBurning { get; private set; } = false;
     public required CardData Data { get; init; }
 
     public void Flip(bool faceUp)
@@ -170,9 +203,16 @@ public record Card
         Revealed?.Invoke();
     }
 
+    public void Burn()
+    {
+        IsBurning = true;
+        Burned?.Invoke();
+    }
+
     public event Action<bool>? Flipped;
     public event Action? Revealed;
     public event Action? Removed;
+    public event Action? Burned;
 }
 
 public enum Suit

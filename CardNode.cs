@@ -7,7 +7,7 @@ public partial class CardNode : Area2D
     [Export] public Sprite2D CardFaceSprite { get; set; } = null!;
     [Export] public Sprite2D CardBackSprite { get; set; } = null!;
     [Export] public Sprite2D BombSprite { get; set; } = null!;
-
+    [Export] public Sprite2D BurningSprite { get; set; } = null!;
     [Export] public CardBack CardBack { get; set; } = CardBack.Red;
     [Export] public int CardRank { get; set; } = 1;
     public Suit CardSuit { get; set; } = Suit.Clubs;
@@ -25,12 +25,14 @@ public partial class CardNode : Area2D
         {
             card.Flipped += Flip;
             card.Revealed += Reveal;
+            card.Burned += Burn;
             card.Removed += QueueFree;
 
             CardRank = card.Data.Rank;
             CardBack = card.Data.CardBack;
             CardSuit = card.Data.Suit;
             BombSprite.Visible = card.Data.IsBomb;
+            BurningSprite.Visible = card.IsBurning;
             Position = new Vector2(card.X * 90f, card.Y * 128f);
         }
 
@@ -101,6 +103,11 @@ public partial class CardNode : Area2D
     {
         Revealed = true;
         UpdateSpriteVisibility();
+    }
+
+    public void Burn()
+    {
+        BurningSprite.Visible = true;
     }
 
     public void SetGlow(bool glow)
