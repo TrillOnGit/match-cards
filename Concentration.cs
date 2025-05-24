@@ -44,10 +44,6 @@ public class Concentration : IConcentration
                 Y = curY,
                 Data = data,
             };
-            if (data.Rank == 10 && data.Suit == Suit.Hearts)
-            {
-                card.Burn();
-            }
             AddCard(card);
             curX++;
             if (curX >= width)
@@ -103,9 +99,6 @@ public class Concentration : IConcentration
             return;
         }
 
-        MatchAttempted?.Invoke(card);
-        MatchPair(_lastFlipped, card);
-
         var burnList = _cards.Where(c => c.IsBurning).ToList();
         foreach (var c in burnList)
         {
@@ -118,6 +111,8 @@ public class Concentration : IConcentration
                 }
             }
         }
+        MatchAttempted?.Invoke(card);
+        MatchPair(_lastFlipped, card);
     }
 
     public Card? GetCardAtPos(int X, int Y) =>
@@ -137,6 +132,10 @@ public class Concentration : IConcentration
                     otherCard.Reveal();
                 }
             }
+        }
+        if (card.Data.IsLighter)
+        {
+            BurnCard(card);
         }
     }
 
@@ -229,4 +228,5 @@ public record CardData
     public int Rank { get; set; }
     public CardBack CardBack { get; set; }
     public bool IsBomb { get; set; } = false;
+    public bool IsLighter { get; set; } = false;
 }
