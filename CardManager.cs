@@ -12,6 +12,13 @@ public partial class CardManager : Node
 
     private List<CardNode> _cardNodes = new();
 
+    // If we flipped a card, but haven't matched yet, this variable stores that (so we highlight it)
+    private Card? _lastFlipped = null;
+    // If we're hovering a card, this variable stores that (for highlighting)
+    private int? _hoveredRank => _hoveredCard?.Card?.IsRevealed == true ? _hoveredCard?.Card?.Data.Rank : null;
+
+    private CardNode? _hoveredCard = null;
+
     public override void _Ready()
     {
         Concentration.CardAdded += OnCardAdded;
@@ -51,6 +58,8 @@ public partial class CardManager : Node
         cardNode.Card = card;
         // cardNode will not outlive CardManager, so it's safe to subscribe without unsubscribing
         cardNode.Clicked += () => OnCardClicked(card);
+        cardNode.MouseEntered += () => OnCardMouseEntered(cardNode);
+        cardNode.MouseExited += () => OnCardMouseExited(cardNode);
         AddChild(cardNode);
         _cardNodes.Add(cardNode);
     }
@@ -62,20 +71,47 @@ public partial class CardManager : Node
 
     public void OnFirstCardFlipped(Card card)
     {
-        foreach (var cardNode in _cardNodes)
-        {
-            cardNode.SetGlow(
-                cardNode.Card?.IsRevealed == true
-                && cardNode.Card?.Data.Rank == card.Data.Rank
-            );
-        }
+        _lastFlipped = card;
+        UpdateGlow();
     }
 
     public void OnMatchAttempted(Card card)
     {
+        _lastFlipped = null;
+        UpdateGlow();
+    }
+
+    private void OnCardMouseEntered(CardNode cardNode)
+    {
+        _hoveredCard = cardNode;
+        UpdateGlow();
+    }
+
+    private void OnCardMouseExited(CardNode cardNode)
+    {
+        if (_hoveredCard == cardNode)
+        {
+            _hoveredCard = null;
+        }
+        UpdateGlow();
+    }
+
+    private void UpdateGlow()
+    {
         foreach (var cardNode in _cardNodes)
         {
-            cardNode.SetGlow(false);
+            if (cardNode.Card == _lastFlipped)
+            {
+                cardNode.SetGlow(CardGlowColor.Primary);
+            }
+            else if (cardNode.Card?.IsRevealed == true && cardNode.Card?.Data.Rank != null && cardNode.Card?.Data.Rank == _hoveredRank)
+            {
+                cardNode.SetGlow(CardGlowColor.Secondary);
+            }
+            else
+            {
+                cardNode.SetGlow(CardGlowColor.None);
+            }
         }
     }
 

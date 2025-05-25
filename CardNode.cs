@@ -114,9 +114,24 @@ public partial class CardNode : Area2D
         BurningSprite.Visible = true;
     }
 
-    public void SetGlow(bool glow)
+    public void SetGlow(CardGlowColor glow)
     {
-        CardGlow.Visible = glow;
+        switch (glow)
+        {
+            case CardGlowColor.None:
+                CardGlow.Visible = false;
+                break;
+            case CardGlowColor.Primary:
+                CardGlow.Visible = true;
+                CardGlow.Modulate = Color.FromHsv(3f / 6f, 1f, 1f); // cyan
+                break;
+            case CardGlowColor.Secondary:
+                CardGlow.Visible = true;
+                CardGlow.Modulate = Color.FromHsv(1f / 6f, 1f, 1f); // yellow
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(glow), $"Not a valid {nameof(CardGlowColor)}");
+        }
     }
 
     private void UpdateSpriteVisibility()
@@ -147,4 +162,11 @@ public enum CardBack
 {
     Red,
     Blue,
+}
+
+public enum CardGlowColor
+{
+    None,
+    Primary,
+    Secondary
 }
