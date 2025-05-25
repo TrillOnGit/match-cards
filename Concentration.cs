@@ -122,6 +122,7 @@ public class Concentration : IConcentration
 
     private void OnMatch(Card card)
     {
+        card.Match();
         if (card.Data.IsBomb)
         {
             foreach (var otherCard in _cards)
@@ -208,10 +209,16 @@ public record Card
         Burned?.Invoke();
     }
 
+    public void Match()
+    {
+        Matched?.Invoke();
+    }
+
     public event Action<bool>? Flipped;
     public event Action? Revealed;
     public event Action? Removed;
     public event Action? Burned;
+    public event Action? Matched;
 }
 
 public enum Suit
