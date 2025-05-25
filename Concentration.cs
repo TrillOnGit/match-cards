@@ -146,8 +146,16 @@ public class Concentration : IConcentration
             OnMatch(cardOne);
             OnMatch(cardTwo);
             comboCounter++;
+            var scoreMod = comboCounter;
+            foreach (var starCard in _cards)
+            {
+                if (starCard.Data.IsStar && starCard.IsFaceUp)
+                {
+                    scoreMod *= 2; // Double score for stars
+                }
+            }
             ScoreEventManager.ComboChange(comboCounter);
-            ScoreEventManager.SendScoreChange(cardOne.Data.Rank * comboCounter);
+            ScoreEventManager.SendScoreChange(cardOne.Data.Rank * scoreMod);
             ScoreEventManager.PairChange(1);
         }
         else
