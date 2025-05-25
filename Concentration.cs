@@ -104,9 +104,9 @@ public class Concentration : IConcentration
         {
             foreach (var otherCard in _cards)
             {
-                var dist = Math.Abs(otherCard.X - c.X) + Math.Abs(otherCard.Y - c.Y);
-                if (CardsAreAdjacent(c, otherCard))
+                if (CardsAreAdjacent(c, otherCard) && otherCard.Data.Rank < c.Data.Rank)
                 {
+                    // If a burning card is adjacent to a lower rank card, burn the lower rank card
                     BurnCard(otherCard);
                 }
             }
