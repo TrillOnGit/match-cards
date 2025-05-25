@@ -11,6 +11,7 @@ public partial class CardNode : Area2D
     [Export] public Sprite2D LighterSprite { get; set; } = null!;
     [Export] public Sprite2D StarSprite { get; set; } = null!;
     [Export] public CardBack CardBack { get; set; } = CardBack.Red;
+    [Export] public CpuParticles2D Sparkle { get; set; } = null!;
     [Export] public int CardRank { get; set; } = 1;
     public Suit CardSuit { get; set; } = Suit.Clubs;
     public bool FaceUp { get; set; } = false;
@@ -29,6 +30,7 @@ public partial class CardNode : Area2D
             card.Revealed += Reveal;
             card.Burned += Burn;
             card.Removed += QueueFree;
+            card.Matched += OnMatched;
 
             CardRank = card.Data.Rank;
             CardBack = card.Data.CardBack;
@@ -55,6 +57,7 @@ public partial class CardNode : Area2D
             Card.Flipped -= Flip;
             Card.Revealed -= Reveal;
             Card.Removed -= QueueFree;
+            Card.Matched -= OnMatched;
         }
     }
 
@@ -116,6 +119,11 @@ public partial class CardNode : Area2D
     public void SetGlow(bool glow)
     {
         CardGlow.Visible = glow;
+    }
+
+    private void OnMatched()
+    {
+        Sparkle.Emitting = true;
     }
 
     private void UpdateSpriteVisibility()
