@@ -105,7 +105,7 @@ public class Concentration : IConcentration
             foreach (var otherCard in _cards)
             {
                 var dist = Math.Abs(otherCard.X - c.X) + Math.Abs(otherCard.Y - c.Y);
-                if (dist == 1)
+                if (CardsAreAdjacent(c, otherCard))
                 {
                     BurnCard(otherCard);
                 }
@@ -126,8 +126,7 @@ public class Concentration : IConcentration
         {
             foreach (var otherCard in _cards)
             {
-                var dist = Math.Abs(otherCard.X - card.X) + Math.Abs(otherCard.Y - card.Y);
-                if (dist == 1)
+                if (CardsAreAdjacent(card, otherCard))
                 {
                     otherCard.Reveal();
                 }
@@ -167,12 +166,16 @@ public class Concentration : IConcentration
         card.Burn();
         foreach (var otherCard in _cards)
         {
-            var dist = Math.Abs(otherCard.X - card.X) + Math.Abs(otherCard.Y - card.Y);
-            if (dist == 1)
+            if (CardsAreAdjacent(card, otherCard))
             {
                 otherCard.Reveal();
             }
         }
+    }
+
+    private bool CardsAreAdjacent(Card cardOne, Card cardTwo)
+    {
+        return Math.Abs(cardOne.X - cardTwo.X) + Math.Abs(cardOne.Y - cardTwo.Y) == 1;
     }
 }
 
@@ -229,4 +232,5 @@ public record CardData
     public CardBack CardBack { get; set; }
     public bool IsBomb { get; set; } = false;
     public bool IsLighter { get; set; } = false;
+    public bool IsStar { get; set; } = false;
 }

@@ -9,6 +9,7 @@ public partial class CardNode : Area2D
     [Export] public Sprite2D BombSprite { get; set; } = null!;
     [Export] public Sprite2D BurningSprite { get; set; } = null!;
     [Export] public Sprite2D LighterSprite { get; set; } = null!;
+    [Export] public Sprite2D StarSprite { get; set; } = null!;
     [Export] public CardBack CardBack { get; set; } = CardBack.Red;
     [Export] public int CardRank { get; set; } = 1;
     public Suit CardSuit { get; set; } = Suit.Clubs;
