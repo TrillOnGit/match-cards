@@ -16,7 +16,7 @@ size = Vector2(20, 28)
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite")]
+[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite", "Sparkle")]
 script = ExtResource("1_68501")
 CardGlow = NodePath("Glow")
 CardFaceSprite = NodePath("CardFaceSprite")
@@ -25,6 +25,7 @@ BombSprite = NodePath("CardFaceSprite/BombSprite")
 BurningSprite = NodePath("BurningSprite")
 LighterSprite = NodePath("CardFaceSprite/LighterSprite")
 StarSprite = NodePath("CardFaceSprite/StarSprite")
+Sparkle = NodePath("CPUParticles2D")
 
 [node name="Glow" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 0, 1)
