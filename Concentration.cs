@@ -17,6 +17,7 @@ public class Concentration : IConcentration
     private Card? _lastFlipped;
     private int comboCounter = 0;
     private int guesses = 0;
+    private readonly int maxGuesses = 10;
 
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
@@ -30,6 +31,8 @@ public class Concentration : IConcentration
     public void Layout(IReadOnlyCollection<CardData> faces, int width)
     {
         ClearCards();
+
+        ScoreEventManager.SetMaxGuesses(maxGuesses);
 
         var rng = new Random();
         var shuffledFaces = faces.ToArray();
@@ -81,7 +84,7 @@ public class Concentration : IConcentration
 
     public void Flip(Card card)
     {
-        if (guesses >= 10)
+        if (guesses >= maxGuesses)
         {
             card.Reveal();
             return;

@@ -3,16 +3,21 @@ using System;
 
 public partial class Guesses : Label
 {
-    public int GuessesCount { get; set; } = 10;
-    public int MaxGuesses { get; set; } = 10;
+    public int GuessesCount { get; set; }
+    public int MaxGuesses { get; set; }
     public override void _Ready()
     {
+        MaxGuesses = ScoreEventManager.GetMaxGuesses();
+        GuessesCount = MaxGuesses;
+
         Text = $"Guesses: {GuessesCount} / {MaxGuesses}";
         ScoreEventManager.GuessesUpdated += UpdateGuesses;
+        ScoreEventManager.GuessesSet += SetMaxGuesses;
     }
     public override void _ExitTree()
     {
         ScoreEventManager.GuessesUpdated -= UpdateGuesses;
+        ScoreEventManager.GuessesSet -= SetMaxGuesses;
     }
     public void UpdateGuesses(int guesses)
     {
@@ -22,5 +27,12 @@ public partial class Guesses : Label
         {
             Text = $"Guesses: {GuessesCount} / {MaxGuesses} \nGame Over";
         }
+    }
+    public void SetMaxGuesses(int maxGuesses)
+    {
+        GD.Print($"Setting max guesses to {maxGuesses}");
+        MaxGuesses = maxGuesses;
+        GuessesCount = MaxGuesses;
+        Text = $"Guesses: {GuessesCount} / {MaxGuesses}";
     }
 }
