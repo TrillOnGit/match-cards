@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c542u4x4lmrc1"]
+[gd_scene load_steps=11 format=3 uid="uid://c542u4x4lmrc1"]
 
 [ext_resource type="Script" uid="uid://cwrsqvg3om2cm" path="res://CardNode.cs" id="1_68501"]
 [ext_resource type="Texture2D" uid="uid://dleag8rm8jix2" path="res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Card_Back-88x124.png" id="1_gclfg"]
@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://bhvn1glopktkl" path="res://assets/bomb.png" id="4_vgq2h"]
 [ext_resource type="Texture2D" uid="uid://e6ppl4te5phh" path="res://assets/burning.png" id="5_7ya6a"]
 [ext_resource type="Texture2D" uid="uid://bu8jycqfok5jn" path="res://assets/lighter.png" id="5_vmth0"]
-[ext_resource type="Texture2D" uid="uid://c6k2jkwwhvyje" path="res://assets/sparkle.png" id="7_koafc"]
 [ext_resource type="Texture2D" uid="uid://citmw748ncymp" path="res://assets/star.png" id="6_koafc"]
+[ext_resource type="Texture2D" uid="uid://c6k2jkwwhvyje" path="res://assets/sparkle.png" id="7_koafc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgq2h"]
 size = Vector2(20, 28)
@@ -16,7 +16,7 @@ size = Vector2(20, 28)
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "Sparkle")]
+[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite")]
 script = ExtResource("1_68501")
 CardGlow = NodePath("Glow")
 CardFaceSprite = NodePath("CardFaceSprite")
@@ -24,7 +24,7 @@ CardBackSprite = NodePath("CardBackSprite")
 BombSprite = NodePath("CardFaceSprite/BombSprite")
 BurningSprite = NodePath("BurningSprite")
 LighterSprite = NodePath("CardFaceSprite/LighterSprite")
-Sparkle = NodePath("CPUParticles2D")
+StarSprite = NodePath("CardFaceSprite/StarSprite")
 
 [node name="Glow" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 0, 1)
