@@ -81,6 +81,7 @@ public partial class CardNode : Area2D
         {
             CardBack.Red => 0,
             CardBack.Blue => 1,
+            CardBack.Pink => 2,
             _ => 0,
         };
     }
@@ -171,6 +172,7 @@ public enum CardBack
 {
     Red,
     Blue,
+    Pink,
 }
 
 public enum CardGlowColor

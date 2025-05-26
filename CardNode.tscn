@@ -40,7 +40,7 @@ shape = SubResource("RectangleShape2D_vgq2h")
 
 [node name="CardBackSprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_gclfg")
-hframes = 2
+hframes = 3
 frame = 1
 
 [node name="CardFaceSprite" type="Sprite2D" parent="."]

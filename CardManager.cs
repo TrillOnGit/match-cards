@@ -33,7 +33,7 @@ public partial class CardManager : Node
                 {
                     Rank = i,
                     Suit = s,
-                    CardBack = GetCardColor(s),
+                    CardBack = GetCardColor(s, i),
                     IsBomb = i == 2 && (s == Suit.Spades || s == Suit.Clubs),
                     IsLighter = i == 10 && s == Suit.Hearts,
                     IsStar = i == 1 && s == Suit.Diamonds
@@ -120,8 +120,12 @@ public partial class CardManager : Node
         Concentration.Flip(card);
     }
 
-    public static CardBack GetCardColor(Suit suit)
+    public static CardBack GetCardColor(Suit suit, int rank)
     {
+        if (rank == 2 && suit == Suit.Hearts)
+        {
+            return CardBack.Pink;
+        }
         if (suit == Suit.Clubs || suit == Suit.Spades)
         {
             return CardBack.Blue;
