@@ -26,17 +26,24 @@ public partial class CardManager : Node
         Concentration.FirstCardFlipped += OnFirstCardFlipped;
         Concentration.MatchAttempted += OnMatchAttempted;
 
+        var rng = new Random();
+
         Concentration.Layout(
             new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
-            .SelectMany(s => Enumerable.Range(1, 10).Select(i =>
-                new CardData
+            .SelectMany(s =>
+
+                Enumerable.Range(1, 10).Select(i =>
                 {
-                    Rank = i,
-                    Suit = s,
-                    CardBack = GetCardColor(s, i),
-                    IsBomb = i == 2 && (s == Suit.Spades || s == Suit.Clubs),
-                    IsLighter = i == 10 && s == Suit.Hearts,
-                    IsStar = i == 1 && s == Suit.Diamonds
+                    var rank = rng.Next(1, 11);
+                    return new CardData
+                    {
+                        Rank = rank,
+                        Suit = s,
+                        CardBack = GetCardColor(s, i),
+                        IsBomb = rank == 2 && (s == Suit.Spades || s == Suit.Clubs),
+                        IsLighter = rank == 10 && s == Suit.Hearts,
+                        IsStar = rank == 1 && s == Suit.Diamonds
+                    };
                 }
             ))
             .ToList(),
