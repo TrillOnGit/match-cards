@@ -18,6 +18,7 @@ public partial class CardManager : Node
     private int? _hoveredRank => _hoveredCard?.Card?.IsRevealed == true ? _hoveredCard?.Card?.Data.Rank : null;
 
     private CardNode? _hoveredCard = null;
+    private List<CardData>? deck;
 
     public override void _Ready()
     {
@@ -25,11 +26,10 @@ public partial class CardManager : Node
         Concentration.CardRemoved += OnCardRemoved;
         Concentration.FirstCardFlipped += OnFirstCardFlipped;
         Concentration.MatchAttempted += OnMatchAttempted;
+        MenuEventManager.ShuffleButtonPressed += ShuffleDeck;
 
         var rng = new Random();
-
-        Concentration.Layout(
-            new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
+        deck = new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
             .SelectMany(s =>
 
                 Enumerable.Range(1, 10).Select(i =>
@@ -46,9 +46,8 @@ public partial class CardManager : Node
                     };
                 }
             ))
-            .ToList(),
-            9
-        );
+            .ToList();
+        Concentration.Layout(deck, 9);
     }
 
     public override void _ExitTree()
@@ -125,6 +124,17 @@ public partial class CardManager : Node
     public void OnCardClicked(Card card)
     {
         Concentration.Flip(card);
+    }
+
+    public void ShuffleDeck()
+    {
+        if (deck == null)
+        {
+            GD.PrintErr("Deck is not initialized.");
+            return;
+        }
+
+        Concentration.Layout(deck, 9);
     }
 
     public static CardBack GetCardColor(Suit suit, int rank)

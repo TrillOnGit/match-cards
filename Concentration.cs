@@ -79,6 +79,7 @@ public class Concentration : IConcentration
         foreach (var card in cards)
         {
             CardRemoved?.Invoke(card);
+            card.Remove();
         }
     }
 
@@ -226,6 +227,11 @@ public record Card
     public void Match()
     {
         Matched?.Invoke();
+    }
+
+    public void Remove()
+    {
+        Removed?.Invoke();
     }
 
     public event Action<bool>? Flipped;
