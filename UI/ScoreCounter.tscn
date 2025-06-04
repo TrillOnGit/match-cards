@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ballspm2wr0r7"]
 
 [ext_resource type="Script" uid="uid://dpp0lmnehp1g0" path="res://UI/Score.cs" id="1_ovps7"]
-[ext_resource type="Script" uid="uid://0o8fk48sunh8" path="res://UI/Guesses.cs" id="2_uwb5j"]
+[ext_resource type="Script" path="/home/trillion/GodotProjects/match-cards/UI/EnergyLabel.cs" id="2_rqnv2"]
 [ext_resource type="Script" uid="uid://dtspqi5q00jvm" path="res://UI/Combo.cs" id="3_dd01t"]
 [ext_resource type="Script" uid="uid://bitr13dvqrjar" path="res://UI/Pairs.cs" id="4_oqd8x"]
 [ext_resource type="Script" uid="uid://jukyttpkelnb" path="res://UI/ShuffleButton.cs" id="5_rqnv2"]
@@ -33,7 +33,7 @@ offset_right = 1137.0
 offset_bottom = 184.0
 text = "Guesses: 0 / 10"
 horizontal_alignment = 2
-script = ExtResource("2_uwb5j")
+script = ExtResource("2_rqnv2")
 
 [node name="Combo" type="Label" parent="."]
 layout_mode = 0
