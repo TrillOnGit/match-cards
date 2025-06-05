@@ -4,7 +4,7 @@ public class StarEffect : Effect, IScoreModifier
 {
     public int ModifyScore(Card cardOne, Card cardTwo, int score)
     {
-        if (Concentration.CardsAreAdjacent(Card, cardOne) || Concentration.CardsAreAdjacent(Card, cardTwo))
+        if (Card.IsFaceUp && (Concentration.CardsAreAdjacent(Card, cardOne) || Concentration.CardsAreAdjacent(Card, cardTwo)))
         {
             return score * 2;
         }
