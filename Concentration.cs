@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using MatchCards.Effects;
 
 interface IConcentration
 {
@@ -28,6 +30,8 @@ public class Concentration : IConcentration
     // This event is fired when the second card of a potential pair is flipped up
     public event Action<Card>? MatchAttempted;
 
+    private List<IScoreModifier> _scoreModifiers = new();
+
     public void Layout(IReadOnlyCollection<CardData> faces, int width)
     {
         ClearCards();
@@ -41,11 +45,10 @@ public class Concentration : IConcentration
         int curY = 0;
         foreach (var data in shuffledFaces)
         {
-            Card card = new Card()
+            var card = new Card(this, data)
             {
                 X = curX,
-                Y = curY,
-                Data = data,
+                Y = curY
             };
             AddCard(card);
             curX++;
@@ -127,20 +130,6 @@ public class Concentration : IConcentration
     private void OnMatch(Card card)
     {
         card.Match();
-        if (card.Data.IsBomb)
-        {
-            foreach (var otherCard in _cards)
-            {
-                if (CardsAreAdjacent(card, otherCard))
-                {
-                    otherCard.Reveal();
-                }
-            }
-        }
-        if (card.Data.IsLighter)
-        {
-            BurnCard(card);
-        }
     }
 
     private void MatchPair(Card cardOne, Card cardTwo)
@@ -151,13 +140,7 @@ public class Concentration : IConcentration
             OnMatch(cardTwo);
             comboCounter++;
             var scoreMod = comboCounter;
-            foreach (var starCard in _cards)
-            {
-                if (starCard.Data.IsStar && starCard.IsFaceUp)
-                {
-                    scoreMod *= 2; // Double score for stars
-                }
-            }
+            scoreMod = ModifyScore(cardOne, cardTwo, scoreMod);
             ScoreEventManager.ComboChange(comboCounter);
             ScoreEventManager.SendScoreChange(cardOne.Data.Rank * scoreMod);
             ScoreEventManager.PairChange(1);
@@ -174,7 +157,7 @@ public class Concentration : IConcentration
         _lastFlipped = null;
     }
 
-    private void BurnCard(Card card)
+    public void BurnCard(Card card)
     {
         card.Burn();
         foreach (var otherCard in _cards)
@@ -186,9 +169,33 @@ public class Concentration : IConcentration
         }
     }
 
-    private bool CardsAreAdjacent(Card cardOne, Card cardTwo)
+    public static bool CardsAreAdjacent(Card cardOne, Card cardTwo)
     {
         return Math.Abs(cardOne.X - cardTwo.X) + Math.Abs(cardOne.Y - cardTwo.Y) == 1;
+    }
+
+    public IEnumerable<Card> GetAdjacentCards(Card card) => _cards.Where(c => CardsAreAdjacent(c, card));
+
+    public void AddScoreModifier(IScoreModifier scoreModifier)
+    {
+        if (!_scoreModifiers.Contains(scoreModifier))
+        {
+            _scoreModifiers.Add(scoreModifier);
+        }
+    }
+
+    public void RemoveScoreModifier(IScoreModifier scoreModifier)
+    {
+        _scoreModifiers.RemoveAll(m => m == scoreModifier);
+    }
+
+    private int ModifyScore(Card cardOne, Card cardTwo, int score)
+    {
+        foreach (var scoreModifier in _scoreModifiers)
+        {
+            score = scoreModifier.ModifyScore(cardOne, cardTwo, score);
+        }
+        return score;
     }
 }
 
@@ -202,6 +209,24 @@ public record Card
     public bool IsBurning { get; private set; } = false;
     public required CardData Data { get; init; }
 
+    private List<Effect> _effects = new();
+
+    [SetsRequiredMembers]
+    public Card(Concentration concentration, CardData data)
+    {
+        Data = data;
+        InitializeEffectsFromData(concentration);
+    }
+
+    private void InitializeEffectsFromData(Concentration concentration)
+    {
+        foreach (var effectData in Data.EffectData)
+        {
+            var effect = effectData.Construct(concentration, this);
+            effect.OnAdded();
+            _effects.Add(effect);
+        }
+    }
     public void Flip(bool faceUp)
     {
         if (faceUp != IsFaceUp)
@@ -254,7 +279,15 @@ public record CardData
     public Suit Suit { get; set; }
     public int Rank { get; set; }
     public CardBack CardBack { get; set; }
-    public bool IsBomb { get; set; } = false;
-    public bool IsLighter { get; set; } = false;
-    public bool IsStar { get; set; } = false;
+
+    public IReadOnlyCollection<ICardSticker> Stickers { get; init; } = Array.Empty<ICardSticker>();
+
+    public IReadOnlyCollection<IEffectData> EffectData => Stickers;
+
+    public bool HasSticker<TSticker>() where TSticker : ICardSticker => Stickers.Any(s => s is TSticker);
+}
+
+public interface IScoreModifier
+{
+    public int ModifyScore(Card cardOne, Card cardTwo, int score);
 }

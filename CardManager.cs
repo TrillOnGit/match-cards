@@ -1,4 +1,5 @@
 using Godot;
+using MatchCards.Effects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,14 +36,25 @@ public partial class CardManager : Node
                 Enumerable.Range(1, 10).Select(i =>
                 {
                     var rank = rng.Next(1, 11);
+                    var stickers = new List<ICardSticker>();
+                    if (rank == 2 && (s == Suit.Spades || s == Suit.Clubs))
+                    {
+                        stickers.Add(new BombSticker());
+                    }
+                    if (rank == 10 && s == Suit.Hearts)
+                    {
+                        stickers.Add(new LighterSticker());
+                    }
+                    if (rank == 1 && s == Suit.Diamonds)
+                    {
+                        stickers.Add(new StarSticker());
+                    }
                     return new CardData
                     {
                         Rank = rank,
                         Suit = s,
                         CardBack = GetCardColor(s, i),
-                        IsBomb = rank == 2 && (s == Suit.Spades || s == Suit.Clubs),
-                        IsLighter = rank == 10 && s == Suit.Hearts,
-                        IsStar = rank == 1 && s == Suit.Diamonds
+                        Stickers = stickers
                     };
                 }
             ))

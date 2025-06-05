@@ -1,4 +1,5 @@
 using Godot;
+using MatchCards.Effects;
 using System;
 
 public partial class CardNode : Area2D
@@ -35,10 +36,10 @@ public partial class CardNode : Area2D
             CardRank = card.Data.Rank;
             CardBack = card.Data.CardBack;
             CardSuit = card.Data.Suit;
-            BombSprite.Visible = card.Data.IsBomb;
+            BombSprite.Visible = card.Data.HasSticker<BombSticker>();
             BurningSprite.Visible = card.IsBurning;
-            LighterSprite.Visible = card.Data.IsLighter;
-            StarSprite.Visible = card.Data.IsStar;
+            LighterSprite.Visible = card.Data.HasSticker<LighterSticker>();
+            StarSprite.Visible = card.Data.HasSticker<StarSticker>();
             Position = new Vector2(card.X * 90f, card.Y * 128f);
         }
 
