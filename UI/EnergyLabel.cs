@@ -7,7 +7,7 @@ public partial class EnergyLabel : Label
     public int MaxEnergy { get; set; }
     public override void _Ready()
     {
-        MaxEnergy = ScoreEventManager.GetMaxGuesses();
+        MaxEnergy = ScoreEventManager.GetMaxEnergy();
         Energy = MaxEnergy;
 
         Text = $"Energy: {Energy}";
@@ -21,7 +21,7 @@ public partial class EnergyLabel : Label
     }
     public void UpdateEnergy(int energy)
     {
-        Energy = MaxEnergy - energy;
+        Energy = energy;
         Text = $"Energy: {Energy}";
         if (Energy == 0)
         {

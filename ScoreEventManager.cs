@@ -2,7 +2,7 @@ using System;
 
 public static class ScoreEventManager
 {
-    private static int storedMaxGuesses;
+    private static int storedMaxEnergy;
 
     public static event Action<int>? ScoreUpdated;
     public static event Action<int>? EnergyUpdated;
@@ -15,18 +15,18 @@ public static class ScoreEventManager
         ScoreUpdated?.Invoke(scoreChangedBy);
     }
 
-    public static void SetMaxEnergy(int maxGuesses)
+    public static void SetMaxEnergy(int maxEnergy)
     {
-        storedMaxGuesses = maxGuesses;
-        EnergySet?.Invoke(maxGuesses);
+        storedMaxEnergy = maxEnergy;
+        EnergySet?.Invoke(maxEnergy);
     }
-    public static int GetMaxGuesses()
+    public static int GetMaxEnergy()
     {
-        return storedMaxGuesses;
+        return storedMaxEnergy;
     }
-    public static void SendEnergy(int guessesChangedTo)
+    public static void SendEnergy(int energyChangedTo)
     {
-        EnergyUpdated?.Invoke(guessesChangedTo);
+        EnergyUpdated?.Invoke(energyChangedTo);
     }
 
     public static void ComboChange(int comboChangedBy)
