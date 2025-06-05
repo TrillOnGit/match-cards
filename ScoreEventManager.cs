@@ -15,7 +15,7 @@ public static class ScoreEventManager
         ScoreUpdated?.Invoke(scoreChangedBy);
     }
 
-    public static void SetMaxGuesses(int maxGuesses)
+    public static void SetMaxEnergy(int maxGuesses)
     {
         storedMaxGuesses = maxGuesses;
         EnergySet?.Invoke(maxGuesses);
@@ -24,7 +24,7 @@ public static class ScoreEventManager
     {
         return storedMaxGuesses;
     }
-    public static void SendGuesses(int guessesChangedTo)
+    public static void SendEnergy(int guessesChangedTo)
     {
         EnergyUpdated?.Invoke(guessesChangedTo);
     }

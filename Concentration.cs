@@ -16,8 +16,8 @@ public class Concentration : IConcentration
     // This variable contains the first card, or null after you flip a pair.
     private Card? _lastFlipped;
     private int comboCounter = 0;
-    private int guesses = 0;
-    private readonly int maxGuesses = 10;
+    private int energy = 0;
+    private readonly int maxEnergy = 10;
 
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
@@ -32,7 +32,7 @@ public class Concentration : IConcentration
     {
         ClearCards();
 
-        ScoreEventManager.SetMaxGuesses(maxGuesses);
+        ScoreEventManager.SetMaxEnergy(maxEnergy);
 
         var rng = new Random();
         var shuffledFaces = faces.ToArray();
@@ -85,7 +85,7 @@ public class Concentration : IConcentration
 
     public void Flip(Card card)
     {
-        if (guesses >= maxGuesses)
+        if (energy >= maxEnergy)
         {
             card.Reveal();
             return;
@@ -166,8 +166,8 @@ public class Concentration : IConcentration
         {
             comboCounter = 0;
             ScoreEventManager.ComboChange(comboCounter);
-            guesses++;
-            ScoreEventManager.SendGuesses(guesses);
+            energy++;
+            ScoreEventManager.SendEnergy(energy);
             cardOne.Flip(false);
             cardTwo.Flip(false);
         }
