@@ -256,6 +256,10 @@ public record Card
 
     public void Remove()
     {
+        foreach (var effect in _effects)
+        {
+            effect.OnRemoved();
+        }
         Removed?.Invoke();
     }
 
