@@ -11,6 +11,7 @@ public partial class CardNode : Area2D
     [Export] public Sprite2D BurningSprite { get; set; } = null!;
     [Export] public Sprite2D LighterSprite { get; set; } = null!;
     [Export] public Sprite2D StarSprite { get; set; } = null!;
+    [Export] public Sprite2D HunterSprite { get; set; } = null!;
     [Export] public CpuParticles2D Sparkle { get; set; } = null!;
     [Export] public CardBack CardBack { get; set; } = CardBack.Red;
     [Export] public int CardRank { get; set; } = 1;
@@ -40,6 +41,7 @@ public partial class CardNode : Area2D
             BurningSprite.Visible = card.IsBurning;
             LighterSprite.Visible = card.Data.HasSticker<LighterSticker>();
             StarSprite.Visible = card.Data.HasSticker<StarSticker>();
+            HunterSprite.Visible = card.Data.HasSticker<HunterSticker>();
             Position = new Vector2(card.X * 90f, card.Y * 128f);
         }
 

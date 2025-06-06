@@ -49,6 +49,14 @@ public partial class CardManager : Node
                     {
                         stickers.Add(new StarSticker());
                     }
+                    if (s == Suit.Hearts)
+                    {
+                        stickers.Add(new CreatureSticker());
+                    }
+                    if (rank == 8)
+                    {
+                        stickers.Add(new HunterSticker());
+                    }
                     return new CardData
                     {
                         Rank = rank,
