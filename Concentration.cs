@@ -30,6 +30,9 @@ public class Concentration : IConcentration
     // This event is fired when the second card of a potential pair is flipped up
     public event Action<Card>? MatchAttempted;
 
+    // This event is fired when a pair of cards is matched
+    public event Action<Card, Card>? CardsMatched;
+
     private List<IScoreModifier> _scoreModifiers = new();
 
     public void Layout(IReadOnlyCollection<CardData> faces, int width)
@@ -146,6 +149,7 @@ public class Concentration : IConcentration
             ScoreEventManager.ComboChange(comboCounter);
             ScoreEventManager.SendScoreChange(cardOne.Data.Rank * scoreMod);
             ScoreEventManager.PairChange(1);
+            CardsMatched?.Invoke(cardOne, cardTwo);
         }
         else
         {
@@ -177,6 +181,13 @@ public class Concentration : IConcentration
     }
 
     public IEnumerable<Card> GetAdjacentCards(Card card) => _cards.Where(c => CardsAreAdjacent(c, card));
+
+    public void RemoveCard(Card card)
+    {
+        _cards.Remove(card);
+        CardRemoved?.Invoke(card);
+        card.Remove();
+    }
 
     public void AddScoreModifier(IScoreModifier scoreModifier)
     {
@@ -288,7 +299,7 @@ public record CardData
 
     public IReadOnlyCollection<ICardSticker> Stickers { get; init; } = Array.Empty<ICardSticker>();
 
-    public IReadOnlyCollection<IEffectData> EffectData => Stickers;
+    public IEnumerable<IEffectData> EffectData => Stickers.OfType<IEffectData>();
 
     public bool HasSticker<TSticker>() where TSticker : ICardSticker => Stickers.Any(s => s is TSticker);
 }
