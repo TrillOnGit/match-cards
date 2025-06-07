@@ -171,13 +171,6 @@ public partial class CardNode : Area2D
     }
 }
 
-public enum CardBack
-{
-    Red,
-    Blue,
-    Pink,
-}
-
 public enum CardGlowColor
 {
     None,

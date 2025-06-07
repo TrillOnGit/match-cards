@@ -291,11 +291,18 @@ public enum Suit
     Diamonds
 }
 
+public enum CardBack
+{
+    Red,
+    Blue,
+    Pink,
+}
+
 public record CardData
 {
-    public Suit Suit { get; set; }
-    public int Rank { get; set; }
-    public CardBack CardBack { get; set; }
+    public required Suit Suit { get; set; }
+    public required int Rank { get; set; }
+    public required CardBack CardBack { get; set; }
 
     public IReadOnlyCollection<ICardSticker> Stickers { get; init; } = Array.Empty<ICardSticker>();
 
