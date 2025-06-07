@@ -13,6 +13,7 @@ interface IConcentration
 
 public class Concentration : IConcentration
 {
+    private readonly IReadOnlyCollection<CardData> _faces;
     private readonly List<Card> _cards = new();
     // In concentration, you flip a card face up and then try another card.
     // This variable contains the first card, or null after you flip a pair.
@@ -33,9 +34,19 @@ public class Concentration : IConcentration
     // This event is fired when a pair of cards is matched
     public event Action<Card, Card>? CardsMatched;
 
+    // This event is fired when you run out of guesses or flip every flippable card
+    public event Action? GameEnded;
+
     private List<IScoreModifier> _scoreModifiers = new();
 
-    public void Layout(IReadOnlyCollection<CardData> faces, int width)
+    public Concentration() : this(Array.Empty<CardData>()) { }
+
+    public Concentration(IReadOnlyCollection<CardData> cardData)
+    {
+        _faces = cardData;
+    }
+
+    public void Layout(int width)
     {
         ClearCards();
         energy = 10;
@@ -44,7 +55,7 @@ public class Concentration : IConcentration
         ScoreEventManager.SendEnergy(energy);
 
         var rng = new Random();
-        var shuffledFaces = faces.ToArray();
+        var shuffledFaces = _faces.ToArray();
         rng.Shuffle(shuffledFaces);
         int curX = 0;
         int curY = 0;
@@ -66,12 +77,27 @@ public class Concentration : IConcentration
 
         // Reveal a number of cards at random
         var revealNumber = 10;
-        var randomPositions = Enumerable.Range(0, faces.Count).ToArray();
+        var randomPositions = Enumerable.Range(0, _faces.Count).ToArray();
         rng.Shuffle(randomPositions);
         for (int i = 0; (i < revealNumber) && (i < _cards.Count); i++)
         {
             _cards[randomPositions[i]].Reveal();
         }
+    }
+
+    private bool IsGameOver() => energy == 0 || !_cards.Any(c => c.IsFlippable);
+
+    private void CheckGameOver()
+    {
+        if (IsGameOver())
+        {
+            GameEnded?.Invoke();
+        }
+    }
+
+    public void EndGame()
+    {
+        GameEnded?.Invoke();
     }
 
     private void AddCard(Card card)
@@ -98,7 +124,7 @@ public class Concentration : IConcentration
             card.Reveal();
             return;
         }
-        if (card.IsFaceUp || card.IsBurning)
+        if (!card.IsFlippable)
         {
             return;
         }
@@ -125,6 +151,7 @@ public class Concentration : IConcentration
         }
         MatchAttempted?.Invoke(card);
         MatchPair(_lastFlipped, card);
+        CheckGameOver();
     }
 
     public Card? GetCardAtPos(int X, int Y) =>
@@ -220,6 +247,9 @@ public record Card
     public bool IsFaceUp { get; private set; } = false;
     public bool IsRevealed { get; private set; } = false;
     public bool IsBurning { get; private set; } = false;
+
+    public bool IsFlippable => !IsFaceUp && !IsBurning;
+
     public required CardData Data { get; init; }
 
     private List<Effect> _effects = new();

@@ -19,7 +19,6 @@ public partial class CardManager : Node
     private int? _hoveredRank => _hoveredCard?.Card?.IsRevealed == true ? _hoveredCard?.Card?.Data.Rank : null;
 
     private CardNode? _hoveredCard = null;
-    private List<CardData>? deck;
 
     public override void _Ready()
     {
@@ -29,45 +28,7 @@ public partial class CardManager : Node
         Concentration.MatchAttempted += OnMatchAttempted;
         MenuEventManager.ShuffleButtonPressed += ShuffleDeck;
 
-        var rng = new Random();
-        deck = new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
-            .SelectMany(s =>
-
-                Enumerable.Range(1, 10).Select(i =>
-                {
-                    var rank = rng.Next(1, 11);
-                    var stickers = new List<ICardSticker>();
-                    if (rank == 2 && (s == Suit.Spades || s == Suit.Clubs))
-                    {
-                        stickers.Add(new BombSticker());
-                    }
-                    if (rank == 10 && s == Suit.Hearts)
-                    {
-                        stickers.Add(new LighterSticker());
-                    }
-                    if (rank == 1 && s == Suit.Diamonds)
-                    {
-                        stickers.Add(new StarSticker());
-                    }
-                    if (s == Suit.Hearts)
-                    {
-                        stickers.Add(new CreatureSticker());
-                    }
-                    if (rank == 8)
-                    {
-                        stickers.Add(new HunterSticker());
-                    }
-                    return new CardData
-                    {
-                        Rank = rank,
-                        Suit = s,
-                        CardBack = GetCardColor(s, i),
-                        Stickers = stickers
-                    };
-                }
-            ))
-            .ToList();
-        Concentration.Layout(deck, 9);
+        Concentration.Layout(9);
     }
 
     public override void _ExitTree()
@@ -76,6 +37,7 @@ public partial class CardManager : Node
         Concentration.CardRemoved -= OnCardRemoved;
         Concentration.FirstCardFlipped -= OnFirstCardFlipped;
         Concentration.MatchAttempted -= OnMatchAttempted;
+        MenuEventManager.ShuffleButtonPressed -= ShuffleDeck;
     }
 
     public void OnCardAdded(Card card)
@@ -148,13 +110,7 @@ public partial class CardManager : Node
 
     public void ShuffleDeck()
     {
-        if (deck == null)
-        {
-            GD.PrintErr("Deck is not initialized.");
-            return;
-        }
-
-        Concentration.Layout(deck, 9);
+        Concentration.EndGame();
     }
 
     public static CardBack GetCardColor(Suit suit, int rank)

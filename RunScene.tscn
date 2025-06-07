@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://co61n6y63vitg"]
+
+[ext_resource type="Script" uid="uid://dwbhgsitb37jg" path="res://RunManager.cs" id="1_snbie"]
+[ext_resource type="PackedScene" uid="uid://dfkpfjynmqiwt" path="res://LevelBase.tscn" id="2_wlrch"]
+[ext_resource type="PackedScene" uid="uid://dfx1ydp8vyye1" path="res://ChoiceScene.tscn" id="3_wlrch"]
+
+[node name="RunScene" type="Node2D"]
+script = ExtResource("1_snbie")
+LevelScene = ExtResource("2_wlrch")
+ChoiceScene = ExtResource("3_wlrch")

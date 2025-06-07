@@ -1,36 +1,105 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MatchCards.Effects;
 
 public class Run
 {
-    private List<CardData> _deck;
+    public event Action<Concentration>? DayStarted = null;
+    public event Action? DayFinished = null;
+    public event Action<CardChoice>? ChoicePresented = null;
 
-    public Concentration GenerateConcentration()
+    private List<CardData> _deck = GetDefaultDeck();
+
+    public void StartDay()
     {
-        var concentration = new Concentration();
-        concentration.Layout(_deck, 9);
+        var concentration = GenerateConcentration();
+        concentration.GameEnded += OnConcentrationEnded;
+        DayStarted?.Invoke(concentration);
+    }
+
+    private void OnConcentrationEnded()
+    {
+        PresentChoice();
+    }
+
+    private void PresentChoice()
+    {
+        var choice = GenerateChoice();
+        choice.ChoiceSelected += OnChoiceSelected;
+        ChoicePresented?.Invoke(choice);
+    }
+
+    private void OnChoiceSelected(CardData card)
+    {
+        AddCard(card);
+        DayFinished?.Invoke();
+    }
+
+    private Concentration GenerateConcentration()
+    {
+        var concentration = new Concentration(_deck);
+        concentration.Layout(9);
         return concentration;
     }
 
-    public CardChoice GenerateChoice() => new CardChoice(this);
+    private CardChoice GenerateChoice() => new CardChoice();
 
     public void AddCard(CardData card)
     {
         _deck.Add(card);
     }
+
+    private static List<CardData> GetDefaultDeck() => new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
+            .SelectMany(s =>
+
+                Enumerable.Range(1, 10).Select(i =>
+                {
+                    var rank = i;
+                    var stickers = new List<ICardSticker>();
+                    if (rank == 2 && (s == Suit.Spades || s == Suit.Clubs))
+                    {
+                        stickers.Add(new BombSticker());
+                    }
+                    if (rank == 10 && s == Suit.Hearts)
+                    {
+                        stickers.Add(new LighterSticker());
+                    }
+                    if (rank == 1 && s == Suit.Diamonds)
+                    {
+                        stickers.Add(new StarSticker());
+                    }
+                    if (s == Suit.Hearts)
+                    {
+                        stickers.Add(new CreatureSticker());
+                    }
+                    if (rank == 8)
+                    {
+                        stickers.Add(new HunterSticker());
+                    }
+                    return new CardData
+                    {
+                        Rank = rank,
+                        Suit = s,
+                        // TODO: move method to this class
+                        CardBack = CardManager.GetCardColor(s, i),
+                        Stickers = stickers
+                    };
+                }
+            ))
+            .ToList();
+
 }
 
 public class CardChoice
 {
-    private Run _run;
-
     private List<CardData> _choices;
     public IEnumerable<CardData> Choices => _choices;
 
-    public CardChoice(Run run)
+    public event Action<CardData>? ChoiceSelected = null;
+
+    public CardChoice()
     {
-        _run = run;
         _choices = GenerateChoices();
     }
 
@@ -40,7 +109,7 @@ public class CardChoice
         {
             throw new ArgumentOutOfRangeException(nameof(card));
         }
-        _run.AddCard(card);
+        ChoiceSelected?.Invoke(card);
     }
 
     private static List<CardData> GenerateChoices()
@@ -79,7 +148,7 @@ public class CardChoice
         {
             Rank = rank,
             Suit = suit,
-            CardBack = cardBack,
+            CardBack = CardBack.Pink,
             Stickers = stickers
         };
     }
