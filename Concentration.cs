@@ -61,10 +61,11 @@ public class Concentration : IConcentration
         int curY = 0;
         foreach (var data in shuffledFaces)
         {
-            var card = new Card(this, data)
+            var card = new Card()
             {
                 X = curX,
-                Y = curY
+                Y = curY,
+                Data = data
             };
             AddCard(card);
             curX++;
@@ -103,6 +104,7 @@ public class Concentration : IConcentration
     private void AddCard(Card card)
     {
         _cards.Add(card);
+        card.InitializeEffects(this);
         CardAdded?.Invoke(card);
     }
 
@@ -254,14 +256,14 @@ public record Card
 
     private List<Effect> _effects = new();
 
-    [SetsRequiredMembers]
-    public Card(Concentration concentration, CardData data)
-    {
-        Data = data;
-        InitializeEffectsFromData(concentration);
-    }
-
-    private void InitializeEffectsFromData(Concentration concentration)
+    /// <summary>
+    /// Initializes game-logic effects of this Card to operate within an
+    /// ongoing <see cref="Concentration"/> game.
+    /// 
+    /// This includes triggers, passive effects, score modifiers, etc.
+    /// </summary>
+    /// <param name="concentration"></param>
+    public void InitializeEffects(Concentration concentration)
     {
         foreach (var effectData in Data.EffectData)
         {
