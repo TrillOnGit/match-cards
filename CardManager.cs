@@ -9,6 +9,9 @@ public partial class CardManager : Node
     [Export]
     public required PackedScene CardScene { get; set; }
 
+    [Export]
+    public required Node2D CardContainer { get; set; }
+
     public Concentration Concentration { get; set; } = new();
 
     private List<CardNode> _cardNodes = new();
@@ -48,7 +51,7 @@ public partial class CardManager : Node
         cardNode.Clicked += () => OnCardClicked(card);
         cardNode.MouseEntered += () => OnCardMouseEntered(cardNode);
         cardNode.MouseExited += () => OnCardMouseExited(cardNode);
-        AddChild(cardNode);
+        CardContainer.AddChild(cardNode);
         _cardNodes.Add(cardNode);
     }
 

@@ -4,8 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://c542u4x4lmrc1" path="res://CardNode.tscn" id="3_1rswq"]
 [ext_resource type="PackedScene" uid="uid://ballspm2wr0r7" path="res://UI/ScoreCounter.tscn" id="4_j7irf"]
 
-[node name="Node" type="Node2D"]
+[node name="Node" type="Node2D" node_paths=PackedStringArray("CardContainer")]
 script = ExtResource("2_2i0cs")
 CardScene = ExtResource("3_1rswq")
+CardContainer = NodePath("CardContainer")
 
 [node name="ScoreCounterControl" parent="." instance=ExtResource("4_j7irf")]
+
+[node name="CardContainer" type="Node2D" parent="."]
+position = Vector2(52, 64)
