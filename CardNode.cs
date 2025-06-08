@@ -19,7 +19,11 @@ public partial class CardNode : Area2D
     public bool FaceUp { get; set; } = false;
     public bool Revealed { get; set; } = false;
 
+
+    private CardData? _cardData = null;
+    public CardData? CardData { get => Card?.Data ?? _cardData; set { _cardData = value; Card = null; } }
     public Card? Card { get; set; } = null;
+
 
     public event Action? Clicked = null;
 
@@ -34,15 +38,18 @@ public partial class CardNode : Area2D
             card.Removed += QueueFree;
             card.Matched += OnMatched;
 
-            CardRank = card.Data.Rank;
-            CardBack = card.Data.CardBack;
-            CardSuit = card.Data.Suit;
-            BombSprite.Visible = card.Data.HasSticker<BombSticker>();
             BurningSprite.Visible = card.IsBurning;
-            LighterSprite.Visible = card.Data.HasSticker<LighterSticker>();
-            StarSprite.Visible = card.Data.HasSticker<StarSticker>();
-            HunterSprite.Visible = card.Data.HasSticker<HunterSticker>();
             Position = new Vector2(card.X * 90f, card.Y * 128f);
+        }
+        if (CardData is { } data)
+        {
+            CardRank = data.Rank;
+            CardBack = data.CardBack;
+            CardSuit = data.Suit;
+            BombSprite.Visible = data.HasSticker<BombSticker>();
+            LighterSprite.Visible = data.HasSticker<LighterSticker>();
+            StarSprite.Visible = data.HasSticker<StarSticker>();
+            HunterSprite.Visible = data.HasSticker<HunterSticker>();
         }
 
         CardBackSprite.Frame = GetBackFrame();
@@ -70,7 +77,7 @@ public partial class CardNode : Area2D
     {
         if (@event is InputEventMouseButton { } ev)
         {
-            if (ev.ButtonIndex == MouseButton.Left && ev.Pressed && Card != null)
+            if (ev.ButtonIndex == MouseButton.Left && ev.Pressed)
             {
                 Clicked?.Invoke();
             }
