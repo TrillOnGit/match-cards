@@ -50,10 +50,10 @@ public class Run
         _deck.Add(card);
     }
 
-    private static List<CardData> GetDefaultDeck() => new List<Suit>() { Suit.Clubs, Suit.Spades, Suit.Diamonds, Suit.Hearts }
+    private static List<CardData> GetDefaultDeck() => new List<Suit>() { Suit.Clubs, Suit.Diamonds }
             .SelectMany(s =>
 
-                Enumerable.Range(1, 10).Select(i =>
+                Enumerable.Range(1, 6).Select(i =>
                 {
                     var rank = i;
                     var stickers = new List<ICardSticker>();
@@ -132,15 +132,15 @@ public class CardChoice
 
         var stickers = new List<ICardSticker>();
         var stickerSelection = rng.Next(0, 10);
-        if (stickerSelection == 0)
+        if (stickerSelection <= 7 && suit == Suit.Spades)
         {
             stickers.Add(new BombSticker());
         }
-        else if (stickerSelection == 1)
+        else if (stickerSelection <= 5 && suit == Suit.Hearts)
         {
             stickers.Add(new LighterSticker());
         }
-        else if (stickerSelection == 2)
+        else if (stickerSelection <= 1 || (stickerSelection <= 4 && rank <= 3))
         {
             stickers.Add(new StarSticker());
         }
