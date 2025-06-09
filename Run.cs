@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using MatchCards.Effects;
 
 public class Run
@@ -11,16 +12,30 @@ public class Run
 
     private List<CardData> _deck = GetDefaultDeck();
 
+    private int revealedCardsChange = 0;
+    //Add the event listening for when revealed cards number changes
+
     public void StartDay()
     {
         var concentration = GenerateConcentration();
         concentration.GameEnded += OnConcentrationEnded;
+        concentration.RevealedCardsChanged += OnRevealedCardsChanged;
         DayStarted?.Invoke(concentration);
     }
 
     private void OnConcentrationEnded()
     {
         PresentChoice();
+    }
+
+    private void OnRevealedCardsChanged(int change)
+    {
+        revealedCardsChange += change;
+        if (revealedCardsChange < 0)
+        {
+            revealedCardsChange = 0;
+        }
+        GD.Print("Revealed Cards Changed");
     }
 
     private void PresentChoice()
@@ -39,6 +54,7 @@ public class Run
     private Concentration GenerateConcentration()
     {
         var concentration = new Concentration(_deck);
+        concentration.revealedCards += revealedCardsChange;
         concentration.Layout(9);
         return concentration;
     }
@@ -76,6 +92,10 @@ public class Run
                     if (rank == 8)
                     {
                         stickers.Add(new HunterSticker());
+                    }
+                    if (rank == 1)
+                    {
+                        stickers.Add(new KnowledgeSticker());
                     }
                     return new CardData
                     {
@@ -143,6 +163,10 @@ public class CardChoice
         else if (stickerSelection <= 1 || (stickerSelection <= 4 && rank <= 3))
         {
             stickers.Add(new StarSticker());
+        }
+        if (rank == 1)
+        {
+            stickers.Add(new KnowledgeSticker());
         }
         return new CardData()
         {

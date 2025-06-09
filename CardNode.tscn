@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c542u4x4lmrc1"]
+[gd_scene load_steps=13 format=3 uid="uid://c542u4x4lmrc1"]
 
 [ext_resource type="Script" uid="uid://cwrsqvg3om2cm" path="res://CardNode.cs" id="1_68501"]
 [ext_resource type="Texture2D" uid="uid://dleag8rm8jix2" path="res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Card_Back-88x124.png" id="1_gclfg"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://citmw748ncymp" path="res://assets/star.png" id="6_koafc"]
 [ext_resource type="Texture2D" uid="uid://laqd7kihugp" path="res://assets/hunter.png" id="7_eg7tm"]
 [ext_resource type="Texture2D" uid="uid://c6k2jkwwhvyje" path="res://assets/sparkle.png" id="7_koafc"]
+[ext_resource type="Texture2D" uid="uid://ct7dbh33pp358" path="res://assets/book.png" id="10_slq20"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgq2h"]
 size = Vector2(20, 28)
@@ -17,7 +18,7 @@ size = Vector2(20, 28)
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite", "HunterSprite", "Sparkle")]
+[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite", "HunterSprite", "KnowledgeSprite", "Sparkle")]
 script = ExtResource("1_68501")
 CardGlow = NodePath("Glow")
 CardFaceSprite = NodePath("CardFaceSprite")
@@ -27,6 +28,7 @@ BurningSprite = NodePath("BurningSprite")
 LighterSprite = NodePath("CardFaceSprite/LighterSprite")
 StarSprite = NodePath("CardFaceSprite/StarSprite")
 HunterSprite = NodePath("CardFaceSprite/HunterSprite")
+KnowledgeSprite = NodePath("CardFaceSprite/KnowledgeSprite")
 Sparkle = NodePath("CPUParticles2D")
 
 [node name="Glow" type="Sprite2D" parent="."]
@@ -62,6 +64,9 @@ texture = ExtResource("6_koafc")
 
 [node name="HunterSprite" type="Sprite2D" parent="CardFaceSprite"]
 texture = ExtResource("7_eg7tm")
+
+[node name="KnowledgeSprite" type="Sprite2D" parent="CardFaceSprite"]
+texture = ExtResource("10_slq20")
 
 [node name="BurningSprite" type="Sprite2D" parent="."]
 visible = false

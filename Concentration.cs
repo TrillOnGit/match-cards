@@ -21,6 +21,7 @@ public class Concentration : IConcentration
     private int comboCounter = 0;
     private int energy = 10;
     private readonly int maxEnergy = 10;
+    public int revealedCards = 3;
 
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
@@ -36,6 +37,9 @@ public class Concentration : IConcentration
 
     // This event is fired when you run out of guesses or flip every flippable card
     public event Action? GameEnded;
+
+    // This event is fired when the number of revealed cards at roundstart changes
+    public event Action<int>? RevealedCardsChanged;
 
     private List<IScoreModifier> _scoreModifiers = new();
 
@@ -77,10 +81,9 @@ public class Concentration : IConcentration
         }
 
         // Reveal a number of cards at random
-        var revealNumber = 3;
         var randomPositions = Enumerable.Range(0, _faces.Count).ToArray();
         rng.Shuffle(randomPositions);
-        for (int i = 0; (i < revealNumber) && (i < _cards.Count); i++)
+        for (int i = 0; (i < revealedCards) && (i < _cards.Count); i++)
         {
             _cards[randomPositions[i]].Reveal();
         }
@@ -238,6 +241,15 @@ public class Concentration : IConcentration
             score = scoreModifier.ModifyScore(cardOne, cardTwo, score);
         }
         return score;
+    }
+
+    public void ModifyRevealCardsBy(int change)
+    {
+        if (change == 0)
+        {
+            return;
+        }
+        RevealedCardsChanged?.Invoke(change);
     }
 }
 
