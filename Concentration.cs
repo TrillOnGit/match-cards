@@ -77,7 +77,7 @@ public class Concentration : IConcentration
         }
 
         // Reveal a number of cards at random
-        var revealNumber = 10;
+        var revealNumber = 3;
         var randomPositions = Enumerable.Range(0, _faces.Count).ToArray();
         rng.Shuffle(randomPositions);
         for (int i = 0; (i < revealNumber) && (i < _cards.Count); i++)
