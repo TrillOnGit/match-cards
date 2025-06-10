@@ -81,7 +81,7 @@ public class Run
                     {
                         stickers.Add(new LighterSticker());
                     }
-                    if (rank == 1 && s == Suit.Diamonds)
+                    if (rank == 2 && s == Suit.Diamonds)
                     {
                         stickers.Add(new StarSticker());
                     }
@@ -93,7 +93,7 @@ public class Run
                     {
                         stickers.Add(new HunterSticker());
                     }
-                    if (rank == 1)
+                    if (rank == 1 && s != Suit.Clubs)
                     {
                         stickers.Add(new KnowledgeSticker());
                     }
@@ -164,7 +164,7 @@ public class CardChoice
         {
             stickers.Add(new StarSticker());
         }
-        if (rank == 1)
+        if (rank == 1 && suit != Suit.Clubs)
         {
             stickers.Add(new KnowledgeSticker());
         }
