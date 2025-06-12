@@ -9,12 +9,13 @@ public class Run
     public event Action<Concentration>? DayStarted = null;
     public event Action? DayFinished = null;
     public event Action<CardChoice>? ChoicePresented = null;
+    public event Action<CardShop>? ShopPresented = null;
 
     private List<CardData> _deck = GetDefaultDeck();
 
     private int revealedCardsChange = 0;
 
-    public int score = 0;
+    public int Score { get; set; } = 0;
 
     public void StartDay()
     {
@@ -27,7 +28,7 @@ public class Run
 
     private void OnConcentrationEnded()
     {
-        PresentChoice();
+        PresentShop();
     }
 
     private void OnRevealedCardsChanged(int change)
@@ -47,6 +48,25 @@ public class Run
         ChoicePresented?.Invoke(choice);
     }
 
+    private void PresentShop()
+    {
+        var shop = GenerateShop();
+        shop.ItemBought += OnItemBought;
+        shop.ShoppingFinished += OnShoppingFinished;
+        ShopPresented?.Invoke(shop);
+    }
+
+    private void OnItemBought(CardShopItem item)
+    {
+        ChangeScore(-item.Price);
+        _deck.Add(item.Card);
+    }
+
+    private void OnShoppingFinished()
+    {
+        DayFinished?.Invoke();
+    }
+
     private void OnChoiceSelected(CardData card)
     {
         AddCard(card);
@@ -63,11 +83,13 @@ public class Run
 
     private void ChangeScore(int score)
     {
-        this.score += score;
-        ScoreEventManager.SendScoreChange(this.score);
+        this.Score += score;
+        ScoreEventManager.SendScoreChange(this.Score);
     }
 
     private CardChoice GenerateChoice() => new CardChoice();
+
+    private CardShop GenerateShop() => new CardShop(this);
 
     public void AddCard(CardData card)
     {

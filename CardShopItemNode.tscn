@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://cme7j5hy6lh6y"]
+
+[ext_resource type="PackedScene" uid="uid://c542u4x4lmrc1" path="res://CardNode.tscn" id="1_8b1mg"]
+[ext_resource type="Script" uid="uid://dvll1n0waew83" path="res://CardShopItemNode.cs" id="1_a1elr"]
+
+[sub_resource type="Theme" id="Theme_a1elr"]
+
+[node name="CardShopItemNode" type="Node2D" node_paths=PackedStringArray("CardNode", "PriceLabel")]
+script = ExtResource("1_a1elr")
+CardNode = NodePath("CardNode")
+PriceLabel = NodePath("PriceLabel")
+
+[node name="CardNode" parent="." instance=ExtResource("1_8b1mg")]
+
+[node name="PriceLabel" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 46.0
+offset_right = 56.0
+offset_bottom = 74.0
+theme = SubResource("Theme_a1elr")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 20
+text = "8000"

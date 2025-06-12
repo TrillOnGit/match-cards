@@ -9,6 +9,9 @@ public partial class RunManager : Node
     [Export]
     public required PackedScene ChoiceScene { get; set; }
 
+    [Export]
+    public required PackedScene ShopScene { get; set; }
+
     private Run _run = new();
 
     private CardManager? _cardManager = null;
@@ -18,6 +21,7 @@ public partial class RunManager : Node
         _run.DayStarted += OnDayStarted;
         _run.DayFinished += OnDayFinished;
         _run.ChoicePresented += OnChoicePresented;
+        _run.ShopPresented += OnShopPresented;
 
         _run.StartDay();
     }
@@ -27,6 +31,7 @@ public partial class RunManager : Node
         _run.DayStarted -= OnDayStarted;
         _run.DayFinished -= OnDayFinished;
         _run.ChoicePresented -= OnChoicePresented;
+        _run.ShopPresented -= OnShopPresented;
     }
 
     private void OnDayStarted(Concentration concentration)
@@ -49,5 +54,12 @@ public partial class RunManager : Node
         var choiceManager = ChoiceScene.Instantiate<ChoiceManager>();
         choiceManager.Choice = cardChoice;
         AddChild(choiceManager);
+    }
+
+    private void OnShopPresented(CardShop shop)
+    {
+        var shopManager = ShopScene.Instantiate<CardShopManager>();
+        shopManager.CardShop = shop;
+        AddChild(shopManager);
     }
 }
