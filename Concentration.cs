@@ -41,6 +41,9 @@ public class Concentration : IConcentration
     // This event is fired when the number of revealed cards at roundstart changes
     public event Action<int>? RevealedCardsChanged;
 
+    // This event is fired when the score changes. The int parameter is the amount the score changed.
+    public event Action<int>? ScoreGained;
+
     private List<IScoreModifier> _scoreModifiers = new();
 
     public Concentration() : this(Array.Empty<CardData>()) { }
@@ -179,7 +182,7 @@ public class Concentration : IConcentration
             var scoreMod = comboCounter;
             scoreMod = ModifyScore(cardOne, cardTwo, scoreMod);
             ScoreEventManager.ComboChange(comboCounter);
-            ScoreEventManager.SendScoreChange(cardOne.Data.Rank * scoreMod);
+            AddScore(cardOne.Data.Rank * scoreMod);
             ScoreEventManager.PairChange(1);
             CardsMatched?.Invoke(cardOne, cardTwo);
         }
@@ -193,6 +196,11 @@ public class Concentration : IConcentration
             cardTwo.Flip(false);
         }
         _lastFlipped = null;
+    }
+
+    private void AddScore(int increase)
+    {
+        ScoreGained?.Invoke(increase);
     }
 
     public void BurnCard(Card card)

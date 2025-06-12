@@ -16,7 +16,7 @@ public partial class Score : Label
 
     public void UpdateScore(int score)
     {
-        Points += score;
+        Points = score;
         Text = $"Score: {Points}";
     }
 }

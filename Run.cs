@@ -13,13 +13,15 @@ public class Run
     private List<CardData> _deck = GetDefaultDeck();
 
     private int revealedCardsChange = 0;
-    //Add the event listening for when revealed cards number changes
+
+    public int score = 0;
 
     public void StartDay()
     {
         var concentration = GenerateConcentration();
         concentration.GameEnded += OnConcentrationEnded;
         concentration.RevealedCardsChanged += OnRevealedCardsChanged;
+        concentration.ScoreGained += ChangeScore;
         DayStarted?.Invoke(concentration);
     }
 
@@ -57,6 +59,12 @@ public class Run
         concentration.revealedCards += revealedCardsChange;
         concentration.Layout(9);
         return concentration;
+    }
+
+    private void ChangeScore(int score)
+    {
+        this.score += score;
+        ScoreEventManager.SendScoreChange(this.score);
     }
 
     private CardChoice GenerateChoice() => new CardChoice();
