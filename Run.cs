@@ -96,6 +96,77 @@ public class Run
         _deck.Add(card);
     }
 
+    private List<CardData> GetLocationCardsFor(Location location)
+    {
+        var cardList = new List<CardData>();
+
+        return cardList = locationCardMap[location]
+            .Select(c => new CardData
+            {
+                Suit = c.s,
+                Rank = c.rank,
+                CardBack = CardManager.GetCardColor(c.s, c.rank),
+                Stickers = new List<ICardSticker>()
+            }).ToList();
+
+    }
+
+    //Make a hashmap of enum locations as keys and a collection of [Suit, rank] as values
+    private static readonly Dictionary<Location, List<(Suit s, int rank)>> locationCardMap = new()
+    {
+        {
+            Location.Beastgap, new List<(Suit suit, int rank)>
+            {
+                //People
+                (Suit.Clubs, 1),
+                (Suit.Clubs, 3),
+                (Suit.Clubs, 3),
+                (Suit.Clubs, 5),
+                (Suit.Clubs, 7),
+                (Suit.Clubs, 8),
+                (Suit.Clubs, 8),
+                (Suit.Clubs, 9),
+                (Suit.Clubs, 9),
+                (Suit.Clubs, 11),
+                (Suit.Clubs, 13),
+                (Suit.Clubs, 13),
+
+                //Authority
+                (Suit.Spades, 1),
+                (Suit.Spades, 7),
+                (Suit.Spades, 11),
+
+                //Emotions
+                (Suit.Hearts, 9),
+            }
+        },
+        {
+            Location.West_Dunton, new List<(Suit suit, int rank)>
+            {
+                (Suit.Spades, 2),
+                (Suit.Hearts, 10),
+                (Suit.Diamonds, 8),
+            }
+        },
+        {
+            Location.Mount_Veil, new List<(Suit suit, int rank)>
+            {
+                (Suit.Spades, 2),
+                (Suit.Hearts, 10),
+                (Suit.Diamonds, 8),
+            }
+        },
+    };
+
+    //enum of locations
+    private enum Location
+    {
+        Beastgap,
+        West_Dunton,
+        Mount_Veil,
+    }
+
+
     private static List<CardData> GetDefaultDeck() => new List<Suit>() { Suit.Clubs, Suit.Diamonds }
             .SelectMany(s =>
 
