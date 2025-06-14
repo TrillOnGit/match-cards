@@ -11,7 +11,7 @@ public class Run
     public event Action<CardChoice>? ChoicePresented = null;
     public event Action<CardShop>? ShopPresented = null;
 
-    private List<CardData> _deck = GetDefaultDeck();
+    private List<CardData> _deck = GetCompletedDeck(Location.Beastgap, PlayerCharacter.Ill);
 
     private int revealedCardsChange = 0;
 
@@ -96,7 +96,20 @@ public class Run
         _deck.Add(card);
     }
 
-    private List<CardData> GetLocationCardsFor(Location location)
+    private static List<CardData> GetCompletedDeck(Location location, PlayerCharacter character)
+    {
+        var deck = new List<CardData>();
+
+        // Add location cards
+        deck.AddRange(GetLocationCardsFor(location));
+
+        // Add player character cards
+        deck.AddRange(GetPlayerCharacterCardsFor(character));
+
+        return deck;
+    }
+
+    private static List<CardData> GetLocationCardsFor(Location location)
     {
         var cardList = new List<CardData>();
 
@@ -140,6 +153,7 @@ public class Run
                 (Suit.Hearts, 9),
             }
         },
+        //Default Values
         {
             Location.West_Dunton, new List<(Suit suit, int rank)>
             {
@@ -158,12 +172,78 @@ public class Run
         },
     };
 
+    private static List<CardData> GetPlayerCharacterCardsFor(PlayerCharacter character)
+    {
+        var cardList = new List<CardData>();
+
+        return cardList = playerCardMap[character]
+            .Select(c => new CardData
+            {
+                Suit = c.s,
+                Rank = c.rank,
+                CardBack = CardManager.GetCardColor(c.s, c.rank),
+                Stickers = new List<ICardSticker>()
+            }).ToList();
+
+    }
+
+    //Make a hashmap of enum locations as keys and a collection of [Suit, rank] as values
+    private static readonly Dictionary<PlayerCharacter, List<(Suit s, int rank)>> playerCardMap = new()
+    {
+        {
+            PlayerCharacter.Ill, new List<(Suit suit, int rank)>
+            {
+                //Emotions
+                (Suit.Hearts, 7),
+
+                //Items
+                (Suit.Diamonds, 2),
+                (Suit.Diamonds, 3),
+            }
+        },
+        //Default Values
+        {
+            PlayerCharacter.Elder, new List<(Suit suit, int rank)>
+            {
+                (Suit.Spades, 2),
+                (Suit.Hearts, 10),
+                (Suit.Diamonds, 8),
+            }
+        },
+        {
+            PlayerCharacter.Hunted, new List<(Suit suit, int rank)>
+            {
+                (Suit.Spades, 2),
+                (Suit.Hearts, 10),
+                (Suit.Diamonds, 8),
+            }
+        },
+        {
+            PlayerCharacter.Alone, new List<(Suit suit, int rank)>
+            {
+                (Suit.Spades, 2),
+                (Suit.Hearts, 10),
+                (Suit.Diamonds, 8),
+            }
+        }
+    };
+
+
     //enum of locations
     private enum Location
     {
         Beastgap,
         West_Dunton,
         Mount_Veil,
+    }
+
+    //enum of Player Characters
+    private enum PlayerCharacter
+    {
+        Ill,
+        Elder,
+        Hunted,
+        Alone,
     }
 
 
