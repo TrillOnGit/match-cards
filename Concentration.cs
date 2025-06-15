@@ -22,6 +22,7 @@ public class Concentration : IConcentration
     private int energy = 10;
     private readonly int maxEnergy = 10;
     public int revealedCards = 3;
+    public int scoreOnGeneration = 0;
 
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
@@ -60,6 +61,7 @@ public class Concentration : IConcentration
 
         ScoreEventManager.SetMaxEnergy(maxEnergy);
         ScoreEventManager.SendEnergy(energy);
+        ScoreEventManager.SendScoreChange(scoreOnGeneration);
 
         var rng = new Random();
         var shuffledFaces = _faces.ToArray();

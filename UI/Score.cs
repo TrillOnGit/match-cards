@@ -6,7 +6,7 @@ public partial class Score : Label
     public int Points { get; set; } = 0;
     public override void _Ready()
     {
-        Text = "Score: 0";
+        Text = $"Score: {Points}";
         ScoreEventManager.ScoreUpdated += UpdateScore;
     }
     public override void _ExitTree()
