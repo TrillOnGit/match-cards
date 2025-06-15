@@ -119,7 +119,9 @@ public class Run
                 Suit = c.s,
                 Rank = c.rank,
                 CardBack = CardManager.GetCardColor(c.s, c.rank),
-                Stickers = new List<ICardSticker>()
+                Stickers = stickerMap.ContainsKey((c.s, c.rank))
+                ? new List<ICardSticker> { stickerMap[(c.s, c.rank)] }
+                : new List<ICardSticker>()
             }).ToList();
 
     }
@@ -182,7 +184,9 @@ public class Run
                 Suit = c.s,
                 Rank = c.rank,
                 CardBack = CardManager.GetCardColor(c.s, c.rank),
-                Stickers = new List<ICardSticker>()
+                Stickers = stickerMap.ContainsKey((c.s, c.rank))
+                ? new List<ICardSticker> { stickerMap[(c.s, c.rank)] }
+                : new List<ICardSticker>()
             }).ToList();
 
     }
@@ -245,6 +249,16 @@ public class Run
         Hunted,
         Alone,
     }
+
+    private static readonly Dictionary<(Suit suit1, int rank), ICardSticker> stickerMap = new()
+    {
+        {(Suit.Spades, 2), new BombSticker()},
+        {(Suit.Hearts, 10), new LighterSticker()},
+        {(Suit.Diamonds, 2), new StarSticker()},
+        {(Suit.Hearts, 8), new CreatureSticker()},
+        {(Suit.Clubs, 8), new HunterSticker()},
+        {(Suit.Spades, 1), new KnowledgeSticker()},
+    };
 
 
     private static List<CardData> GetDefaultDeck() => new List<Suit>() { Suit.Clubs, Suit.Diamonds }
