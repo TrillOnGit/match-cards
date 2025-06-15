@@ -30,8 +30,9 @@ public partial class CardManager : Node
         Concentration.FirstCardFlipped += OnFirstCardFlipped;
         Concentration.MatchAttempted += OnMatchAttempted;
         MenuEventManager.ShuffleButtonPressed += ShuffleDeck;
+        GD.Print($"_cardNodes count: {_cardNodes.Count}");
 
-        Concentration.Layout(9);
+        Concentration.Layout();
     }
 
     public override void _ExitTree()

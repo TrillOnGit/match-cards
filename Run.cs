@@ -77,7 +77,7 @@ public class Run
     {
         var concentration = new Concentration(_deck);
         concentration.revealedCards += revealedCardsChange;
-        concentration.Layout(9);
+        concentration.Layout();
         concentration.scoreOnGeneration = Score;
         return concentration;
     }

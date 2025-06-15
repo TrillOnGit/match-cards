@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Godot;
 using MatchCards.Effects;
 
 interface IConcentration
@@ -53,8 +54,7 @@ public class Concentration : IConcentration
     {
         _faces = cardData;
     }
-
-    public void Layout(int width)
+    public void Layout()
     {
         ClearCards();
         energy = 10;
@@ -62,6 +62,8 @@ public class Concentration : IConcentration
         ScoreEventManager.SetMaxEnergy(maxEnergy);
         ScoreEventManager.SendEnergy(energy);
         ScoreEventManager.SendScoreChange(scoreOnGeneration);
+
+        var width = GetLayoutWidth(_faces.Count);
 
         var rng = new Random();
         var shuffledFaces = _faces.ToArray();
@@ -93,6 +95,19 @@ public class Concentration : IConcentration
             _cards[randomPositions[i]].Reveal();
         }
     }
+
+    private static int GetLayoutWidth(int cardCount) => cardCount switch
+    {
+        <= 9 => 3,
+        <= 16 => 4,
+        <= 25 => 5,
+        <= 30 => 6,
+        <= 35 => 7,
+        <= 40 => 8,
+        _ => 9
+    };
+
+
 
     private bool IsGameOver() => energy == 0 || !_cards.Any(c => c.IsFlippable);
 
