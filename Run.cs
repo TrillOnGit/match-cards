@@ -96,6 +96,49 @@ public class Run
         _deck.Add(card);
     }
 
+    private static List<CardData> GetDefaultDeck() => new List<Suit>() { Suit.Clubs, Suit.Diamonds }
+            .SelectMany(s =>
+
+                Enumerable.Range(1, 6).Select(i =>
+                {
+                    var rank = i;
+                    var stickers = new List<ICardSticker>();
+                    if (rank == 2 && (s == Suit.Spades || s == Suit.Clubs))
+                    {
+                        stickers.Add(new BombSticker());
+                    }
+                    if (rank == 10 && s == Suit.Hearts)
+                    {
+                        stickers.Add(new LighterSticker());
+                    }
+                    if (rank == 2 && s == Suit.Diamonds)
+                    {
+                        stickers.Add(new StarSticker());
+                    }
+                    if (s == Suit.Hearts)
+                    {
+                        stickers.Add(new CreatureSticker());
+                    }
+                    if (rank == 8)
+                    {
+                        stickers.Add(new HunterSticker());
+                    }
+                    if (rank == 1 && s != Suit.Clubs)
+                    {
+                        stickers.Add(new KnowledgeSticker());
+                    }
+                    return new CardData
+                    {
+                        Rank = rank,
+                        Suit = s,
+                        // TODO: move method to this class
+                        CardBack = CardManager.GetCardColor(s, i),
+                        Stickers = stickers
+                    };
+                }
+            ))
+            .ToList();
+
     private static List<CardData> GetCompletedDeck(Location location, PlayerCharacter character)
     {
         var deck = new List<CardData>();
@@ -108,7 +151,22 @@ public class Run
 
         return deck;
     }
+    private static List<CardData> GetPlayerCharacterCardsFor(PlayerCharacter character)
+    {
+        var cardList = new List<CardData>();
 
+        return cardList = playerCardMap[character]
+            .Select(c => new CardData
+            {
+                Suit = c.s,
+                Rank = c.rank,
+                CardBack = CardManager.GetCardColor(c.s, c.rank),
+                Stickers = stickerMap.ContainsKey((c.s, c.rank))
+                ? new List<ICardSticker> { stickerMap[(c.s, c.rank)] }
+                : new List<ICardSticker>()
+            }).ToList();
+
+    }
     private static List<CardData> GetLocationCardsFor(Location location)
     {
         var cardList = new List<CardData>();
@@ -126,7 +184,6 @@ public class Run
 
     }
 
-    //Make a hashmap of enum locations as keys and a collection of [Suit, rank] as values
     private static readonly Dictionary<Location, List<(Suit s, int rank)>> locationCardMap = new()
     {
         {
@@ -174,24 +231,6 @@ public class Run
         },
     };
 
-    private static List<CardData> GetPlayerCharacterCardsFor(PlayerCharacter character)
-    {
-        var cardList = new List<CardData>();
-
-        return cardList = playerCardMap[character]
-            .Select(c => new CardData
-            {
-                Suit = c.s,
-                Rank = c.rank,
-                CardBack = CardManager.GetCardColor(c.s, c.rank),
-                Stickers = stickerMap.ContainsKey((c.s, c.rank))
-                ? new List<ICardSticker> { stickerMap[(c.s, c.rank)] }
-                : new List<ICardSticker>()
-            }).ToList();
-
-    }
-
-    //Make a hashmap of enum locations as keys and a collection of [Suit, rank] as values
     private static readonly Dictionary<PlayerCharacter, List<(Suit s, int rank)>> playerCardMap = new()
     {
         {
@@ -259,51 +298,6 @@ public class Run
         {(Suit.Clubs, 8), new HunterSticker()},
         {(Suit.Spades, 1), new KnowledgeSticker()},
     };
-
-
-    private static List<CardData> GetDefaultDeck() => new List<Suit>() { Suit.Clubs, Suit.Diamonds }
-            .SelectMany(s =>
-
-                Enumerable.Range(1, 6).Select(i =>
-                {
-                    var rank = i;
-                    var stickers = new List<ICardSticker>();
-                    if (rank == 2 && (s == Suit.Spades || s == Suit.Clubs))
-                    {
-                        stickers.Add(new BombSticker());
-                    }
-                    if (rank == 10 && s == Suit.Hearts)
-                    {
-                        stickers.Add(new LighterSticker());
-                    }
-                    if (rank == 2 && s == Suit.Diamonds)
-                    {
-                        stickers.Add(new StarSticker());
-                    }
-                    if (s == Suit.Hearts)
-                    {
-                        stickers.Add(new CreatureSticker());
-                    }
-                    if (rank == 8)
-                    {
-                        stickers.Add(new HunterSticker());
-                    }
-                    if (rank == 1 && s != Suit.Clubs)
-                    {
-                        stickers.Add(new KnowledgeSticker());
-                    }
-                    return new CardData
-                    {
-                        Rank = rank,
-                        Suit = s,
-                        // TODO: move method to this class
-                        CardBack = CardManager.GetCardColor(s, i),
-                        Stickers = stickers
-                    };
-                }
-            ))
-            .ToList();
-
 }
 
 public class CardChoice
