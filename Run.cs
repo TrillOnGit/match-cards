@@ -333,7 +333,7 @@ public class CardChoice
         return choices;
     }
 
-    private static CardData GenerateRandomCard(Random rng)
+    public static CardData GenerateRandomCard(Random rng)
     {
         var rank = rng.NextRank();
         var suit = rng.NextSuit();

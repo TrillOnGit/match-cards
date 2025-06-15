@@ -14,7 +14,7 @@ public partial class CardShopManager : Node2D
     public required Button FinishButton { get; set; }
 
     [Export]
-    public float Spacing { get; set; } = 200f;
+    public float Spacing { get; set; } = 100f;
 
     public required CardShop CardShop { get; set; }
 

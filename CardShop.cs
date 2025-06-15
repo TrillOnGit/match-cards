@@ -47,9 +47,12 @@ public class CardShop
     {
         var items = new List<CardShopItem>()
         {
-            new(new CardData() { Suit = Suit.Spades, Rank = 1, CardBack = CardBack.Blue }, 10),
-            new(new CardData() { Suit = Suit.Hearts, Rank = 8, CardBack = CardBack.Blue }, 20),
-
+            new(new CardData() { Suit = Suit.Spades, Rank = 1, CardBack = CardBack.Blue }, 160),
+            new(new CardData() { Suit = Suit.Hearts, Rank = 2, CardBack = CardBack.Blue }, 180),
+            new(new CardData() { Suit = Suit.Spades, Rank = 3, CardBack = CardBack.Blue }, 190),
+            new(new CardData() { Suit = Suit.Hearts, Rank = 4, CardBack = CardBack.Blue }, 200),
+            new(new CardData() { Suit = Suit.Spades, Rank = 8, CardBack = CardBack.Blue }, 210),
+            new(new CardData() { Suit = Suit.Hearts, Rank = 11, CardBack = CardBack.Blue }, 230),
         };
         return items;
     }
