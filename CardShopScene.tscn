@@ -10,7 +10,7 @@ CardShopItemContainer = NodePath("CardContainer")
 FinishButton = NodePath("FinishButton")
 
 [node name="CardContainer" type="Node2D" parent="."]
-position = Vector2(240, 537)
+position = Vector2(239, 579)
 
 [node name="FinishButton" type="Button" parent="."]
 offset_left = 975.0

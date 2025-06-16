@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MatchCards.Effects;
 
 public class CardShop
 {
@@ -45,14 +46,19 @@ public class CardShop
 
     private static List<CardShopItem> GenerateCardShopItems()
     {
+        Random rnd = new();
         var items = new List<CardShopItem>()
         {
-            new(new CardData() { Suit = Suit.Spades, Rank = 1, CardBack = CardBack.Blue }, 0),
-            new(new CardData() { Suit = Suit.Hearts, Rank = 2, CardBack = CardBack.Blue }, 180),
-            new(new CardData() { Suit = Suit.Spades, Rank = 3, CardBack = CardBack.Blue }, 190),
-            new(new CardData() { Suit = Suit.Hearts, Rank = 4, CardBack = CardBack.Blue }, 200),
-            new(new CardData() { Suit = Suit.Spades, Rank = 8, CardBack = CardBack.Blue }, 210),
-            new(new CardData() { Suit = Suit.Hearts, Rank = 11, CardBack = CardBack.Blue }, 230),
+            new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(1, 14), CardBack = CardBack.Blue }, 0),
+            new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(1, 14), CardBack = CardBack.Red,
+            Stickers = new List<ICardSticker> {new LighterSticker()} }, 180),
+            new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(2, 11), CardBack = CardBack.Blue,
+            Stickers = new List<ICardSticker> {new BombSticker()} }, 190),
+            new(new CardData() { Suit = Suit.Diamonds, Rank = rnd.Next(2, 9), CardBack = CardBack.Red,
+            Stickers = new List<ICardSticker> {new StarSticker()} }, 200),
+            new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(1, 14), CardBack = CardBack.Blue,
+            Stickers = new List<ICardSticker> {new KnowledgeSticker()} }, 210),
+            new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(11, 14), CardBack = CardBack.Pink }, 230),
         };
         return items;
     }
