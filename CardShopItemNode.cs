@@ -13,6 +13,7 @@ public partial class CardShopItemNode : Node2D
 
     public event Action? Clicked = null;
 
+
     public override void _EnterTree()
     {
         CardNode.CardData = Item.Card;
@@ -24,6 +25,7 @@ public partial class CardShopItemNode : Node2D
         PriceLabel.Text = $"{Item.Price}";
 
         CardNode.Clicked += OnCardClicked;
+        Item.PriceChanged += OnPriceChanged;
     }
 
     public override void _ExitTree()
@@ -34,5 +36,10 @@ public partial class CardShopItemNode : Node2D
     private void OnCardClicked()
     {
         Clicked?.Invoke();
+    }
+
+    private void OnPriceChanged(int newPrice)
+    {
+        PriceLabel.Text = $"{newPrice}";
     }
 }

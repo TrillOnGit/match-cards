@@ -32,6 +32,7 @@ public class CardShop
             return; // push an event for this?
         }
         ItemBought?.Invoke(item);
+        item.IncreasePrice(5);
     }
 
     public void FinishShopping()
@@ -51,17 +52,33 @@ public class CardShop
         {
             new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(1, 14), CardBack = CardBack.Blue }, 0),
             new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(1, 14), CardBack = CardBack.Red,
-            Stickers = new List<ICardSticker> {new LighterSticker()} }, 180),
+            Stickers = new List<ICardSticker> {new LighterSticker()} }, 18),
             new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(2, 11), CardBack = CardBack.Blue,
-            Stickers = new List<ICardSticker> {new BombSticker()} }, 190),
+            Stickers = new List<ICardSticker> {new BombSticker()} }, 19),
             new(new CardData() { Suit = Suit.Diamonds, Rank = rnd.Next(2, 9), CardBack = CardBack.Red,
-            Stickers = new List<ICardSticker> {new StarSticker()} }, 200),
+            Stickers = new List<ICardSticker> {new StarSticker()} }, 20),
             new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(1, 14), CardBack = CardBack.Blue,
-            Stickers = new List<ICardSticker> {new KnowledgeSticker()} }, 210),
-            new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(11, 14), CardBack = CardBack.Pink }, 230),
+            Stickers = new List<ICardSticker> {new KnowledgeSticker()} }, 21),
+            new(new CardData() { Suit = Suit.Clubs, Rank = rnd.Next(11, 14), CardBack = CardBack.Pink }, 13),
         };
         return items;
     }
 }
 
-public record CardShopItem(CardData Card, int Price);
+public class CardShopItem
+{
+    public CardData Card { get; }
+    public int Price { get; private set; }
+    public event Action<int>? PriceChanged;
+    public CardShopItem(CardData card, int price)
+    {
+        Card = card;
+        Price = price;
+    }
+
+    public void IncreasePrice(int amount)
+    {
+        Price += amount;
+        PriceChanged?.Invoke(Price);
+    }
+}
