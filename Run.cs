@@ -11,7 +11,7 @@ public class Run
     public event Action<CardChoice>? ChoicePresented = null;
     public event Action<CardShop>? ShopPresented = null;
 
-    private List<CardData> _deck = GetCompletedDeck(Location.Beastgap, PlayerCharacter.Ill);
+    private List<CardData> _deck = GetCompletedDeck(new BeastGapLocation(), new IllCharacter());
 
     private int revealedCardsChange = 0;
 
@@ -140,165 +140,18 @@ public class Run
             ))
             .ToList();
 
-    private static List<CardData> GetCompletedDeck(Location location, PlayerCharacter character)
+    private static List<CardData> GetCompletedDeck(ILocation location, IPlayerCharacter character)
     {
         var deck = new List<CardData>();
 
         // Add location cards
-        deck.AddRange(GetLocationCardsFor(location));
+        deck.AddRange(location.GetCards());
 
         // Add player character cards
-        deck.AddRange(GetPlayerCharacterCardsFor(character));
+        deck.AddRange(character.GetCards());
 
         return deck;
     }
-    private static List<CardData> GetPlayerCharacterCardsFor(PlayerCharacter character)
-    {
-        var cardList = new List<CardData>();
-
-        return cardList = playerCardMap[character]
-            .Select(c => new CardData
-            {
-                Suit = c.s,
-                Rank = c.rank,
-                CardBack = CardManager.GetCardColor(c.s, c.rank),
-                Stickers = stickerMap.ContainsKey((c.s, c.rank))
-                ? new List<ICardSticker> { stickerMap[(c.s, c.rank)] }
-                : new List<ICardSticker>()
-            }).ToList();
-
-    }
-    private static List<CardData> GetLocationCardsFor(Location location)
-    {
-        var cardList = new List<CardData>();
-
-        return cardList = locationCardMap[location]
-            .Select(c => new CardData
-            {
-                Suit = c.s,
-                Rank = c.rank,
-                CardBack = CardManager.GetCardColor(c.s, c.rank),
-                Stickers = stickerMap.ContainsKey((c.s, c.rank))
-                ? new List<ICardSticker> { stickerMap[(c.s, c.rank)] }
-                : new List<ICardSticker>()
-            }).ToList();
-
-    }
-
-    private static readonly Dictionary<Location, List<(Suit s, int rank)>> locationCardMap = new()
-    {
-        {
-            Location.Beastgap, new List<(Suit suit, int rank)>
-            {
-                //People
-                (Suit.Clubs, 1),
-                (Suit.Clubs, 3),
-                (Suit.Clubs, 3),
-                (Suit.Clubs, 5),
-                (Suit.Clubs, 7),
-                (Suit.Clubs, 8),
-                (Suit.Clubs, 8),
-                (Suit.Clubs, 9),
-                (Suit.Clubs, 9),
-                (Suit.Clubs, 11),
-                (Suit.Clubs, 13),
-                (Suit.Clubs, 13),
-
-                //Authority
-                (Suit.Spades, 1),
-                (Suit.Spades, 7),
-                (Suit.Spades, 11),
-
-                //Emotions
-                (Suit.Hearts, 9),
-            }
-        },
-        //Default Values
-        {
-            Location.West_Dunton, new List<(Suit suit, int rank)>
-            {
-                (Suit.Spades, 2),
-                (Suit.Hearts, 10),
-                (Suit.Diamonds, 8),
-            }
-        },
-        {
-            Location.Mount_Veil, new List<(Suit suit, int rank)>
-            {
-                (Suit.Spades, 2),
-                (Suit.Hearts, 10),
-                (Suit.Diamonds, 8),
-            }
-        },
-    };
-
-    private static readonly Dictionary<PlayerCharacter, List<(Suit s, int rank)>> playerCardMap = new()
-    {
-        {
-            PlayerCharacter.Ill, new List<(Suit suit, int rank)>
-            {
-                //Emotions
-                (Suit.Hearts, 7),
-
-                //Items
-                (Suit.Diamonds, 2),
-                (Suit.Diamonds, 3),
-            }
-        },
-        //Default Values
-        {
-            PlayerCharacter.Elder, new List<(Suit suit, int rank)>
-            {
-                (Suit.Spades, 2),
-                (Suit.Hearts, 10),
-                (Suit.Diamonds, 8),
-            }
-        },
-        {
-            PlayerCharacter.Hunted, new List<(Suit suit, int rank)>
-            {
-                (Suit.Spades, 2),
-                (Suit.Hearts, 10),
-                (Suit.Diamonds, 8),
-            }
-        },
-        {
-            PlayerCharacter.Alone, new List<(Suit suit, int rank)>
-            {
-                (Suit.Spades, 2),
-                (Suit.Hearts, 10),
-                (Suit.Diamonds, 8),
-            }
-        }
-    };
-
-
-    //enum of locations
-    private enum Location
-    {
-        Beastgap,
-        West_Dunton,
-        Mount_Veil,
-    }
-
-    //enum of Player Characters
-    private enum PlayerCharacter
-    {
-        Ill,
-        Elder,
-        Hunted,
-        Alone,
-    }
-
-    private static readonly Dictionary<(Suit suit1, int rank), ICardSticker> stickerMap = new()
-    {
-        {(Suit.Spades, 2), new BombSticker()},
-        {(Suit.Hearts, 10), new LighterSticker()},
-        {(Suit.Diamonds, 2), new StarSticker()},
-        {(Suit.Hearts, 8), new CreatureSticker()},
-        {(Suit.Clubs, 8), new HunterSticker()},
-        {(Suit.Spades, 1), new KnowledgeSticker()},
-    };
 }
 
 public class CardChoice
