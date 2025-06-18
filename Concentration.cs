@@ -20,8 +20,8 @@ public class Concentration : IConcentration
     // This variable contains the first card, or null after you flip a pair.
     private Card? _lastFlipped;
     private int comboCounter = 0;
-    private int energy = 5;
-    private readonly int maxEnergy = 5;
+    private int energy = 12;
+    private readonly int maxEnergy = 12;
     public int revealedCards = 3;
     public int scoreOnGeneration = 0;
 
@@ -200,6 +200,8 @@ public class Concentration : IConcentration
             var scoreMod = 1;
             scoreMod = ModifyScore(cardOne, cardTwo, scoreMod);
             ScoreEventManager.ComboChange(comboCounter);
+            energy -= 1;
+            ScoreEventManager.SendEnergy(energy);
             AddScore(cardOne.Data.Rank * scoreMod);
             ScoreEventManager.PairChange(1);
             CardsMatched?.Invoke(cardOne, cardTwo);
@@ -208,7 +210,7 @@ public class Concentration : IConcentration
         {
             comboCounter = 0;
             ScoreEventManager.ComboChange(comboCounter);
-            energy--;
+            energy -= 2;
             ScoreEventManager.SendEnergy(energy);
             cardOne.Flip(false);
             cardTwo.Flip(false);
