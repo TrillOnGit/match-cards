@@ -22,15 +22,16 @@ public partial class CardShopItemNode : Node2D
 
     public override void _Ready()
     {
-        PriceLabel.Text = $"{Item.Price}";
+        PriceLabel.Text = $"{Item.GetPrice()}";
 
         CardNode.Clicked += OnCardClicked;
-        Item.PriceChanged += OnPriceChanged;
+        Item.PriceSet += OnPriceChanged;
     }
 
     public override void _ExitTree()
     {
         CardNode.Clicked -= OnCardClicked;
+        Item.PriceSet -= OnPriceChanged;
     }
 
     private void OnCardClicked()

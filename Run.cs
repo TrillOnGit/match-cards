@@ -12,6 +12,7 @@ public class Run
     public event Action<CardShop>? ShopPresented = null;
 
     private List<CardData> _deck = GetCompletedDeck(new BeastGapLocation(), new IllCharacter());
+    public Dictionary<int, int> purchasedCards = new();
 
     private int revealedCardsChange = 0;
 
@@ -60,6 +61,14 @@ public class Run
     {
         ChangeScore(-item.Price);
         _deck.Add(item.Card);
+        if (purchasedCards.TryGetValue(item.Card.Rank, out int count))
+        {
+            purchasedCards[item.Card.Rank] = count + 1;
+        }
+        else
+        {
+            purchasedCards[item.Card.Rank] = 1;
+        }
     }
 
     private void OnShoppingFinished()

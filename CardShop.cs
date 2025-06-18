@@ -32,7 +32,21 @@ public class CardShop
             return; // push an event for this?
         }
         ItemBought?.Invoke(item);
-        item.IncreasePrice(5);
+        item.CardPurchased();
+
+        AdjustSameRankPrices(item.Card.Rank);
+    }
+
+    private void AdjustSameRankPrices(int rank)
+    {
+        foreach (var item in _items)
+        {
+            if (item.Card.Rank == rank)
+            {
+                item.TimesPurchased = GetPurchasedAmount(rank);
+                item.SetCost(rank);
+            }
+        }
     }
 
     public void FinishShopping()
@@ -45,12 +59,12 @@ public class CardShop
         return item.Price <= Funds;
     }
 
-    private static List<CardShopItem> GenerateCardShopItems()
+    private List<CardShopItem> GenerateCardShopItems()
     {
         Random rnd = new();
         var items = new List<CardShopItem>()
         {
-            new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(1, 14), CardBack = CardBack.Blue }, 0),
+            new(new CardData() { Suit = Suit.Spades, Rank = 1, CardBack = CardBack.Blue }, 0),
             new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(1, 14), CardBack = CardBack.Red,
             Stickers = new List<ICardSticker> {new LighterSticker()} }, 18),
             new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(2, 11), CardBack = CardBack.Blue,
@@ -61,7 +75,21 @@ public class CardShop
             Stickers = new List<ICardSticker> {new KnowledgeSticker()} }, 21),
             new(new CardData() { Suit = Suit.Clubs, Rank = rnd.Next(11, 14), CardBack = CardBack.Pink }, 13),
         };
+        foreach (var item in items)
+        {
+            item.Card.Rank = rnd.Next(1, 14);
+            item.TimesPurchased = GetPurchasedAmount(item.Card.Rank);
+        }
         return items;
+    }
+
+    private int GetPurchasedAmount(int rank)
+    {
+        if (_run.purchasedCards.TryGetValue(rank, out int amount))
+        {
+            return amount;
+        }
+        return 0;
     }
 }
 
@@ -69,16 +97,35 @@ public class CardShopItem
 {
     public CardData Card { get; }
     public int Price { get; private set; }
-    public event Action<int>? PriceChanged;
+    public int TimesPurchased { get; set; } = 0;
+    private readonly int BasePrice;
+    public event Action<int>? PriceChangedForRank;
+    public event Action<int>? PriceSet;
     public CardShopItem(CardData card, int price)
     {
         Card = card;
         Price = price;
+        PriceChangedForRank += SetCost;
+        BasePrice = price;
+    }
+    public void SetCost(int rank)
+    {
+        if (rank != Card.Rank)
+        {
+            return;
+        }
+        Price = GetPrice();
+        PriceSet?.Invoke(Price);
     }
 
-    public void IncreasePrice(int amount)
+    public void CardPurchased()
     {
-        Price += amount;
-        PriceChanged?.Invoke(Price);
+        TimesPurchased++;
+        PriceChangedForRank?.Invoke(Card.Rank);
+    }
+
+    public int GetPrice()
+    {
+        return BasePrice + (TimesPurchased * 5);
     }
 }
