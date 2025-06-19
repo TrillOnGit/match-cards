@@ -13,10 +13,22 @@ public class Run
 
     private List<CardData> _deck = GetCompletedDeck(new BeastGapLocation(), new IllCharacter());
     public Dictionary<int, int> purchasedCards = new();
-
+    private int maxRounds = 2;
     private int revealedCardsChange = 0;
 
     public int Score { get; set; } = 0;
+    public int Round { get; private set; } = 1;
+
+    private void NextRound()
+    {
+        Round++;
+        if (Round > maxRounds)
+        {
+            ScoreEventManager.SendRunOver(Score);
+            return;
+        }
+        ScoreEventManager.SendRoundChange(Round);
+    }
 
     public void StartDay()
     {
@@ -74,6 +86,7 @@ public class Run
     private void OnShoppingFinished()
     {
         DayFinished?.Invoke();
+        NextRound();
     }
 
     private void OnChoiceSelected(CardData card)

@@ -9,6 +9,8 @@ public static class ScoreEventManager
     public static event Action<int>? ComboUpdated;
     public static event Action<int>? PairCountUpdated;
     public static event Action<int>? EnergySet;
+    public static event Action<int>? RoundUpdated;
+    public static event Action<int>? RunEnded;
 
     public static void SendScoreChange(int scoreChangedBy)
     {
@@ -32,5 +34,15 @@ public static class ScoreEventManager
     public static void ComboChange(int comboChangedBy)
     {
         ComboUpdated?.Invoke(comboChangedBy);
+    }
+
+    public static void SendRoundChange(int roundChangedTo)
+    {
+        RoundUpdated?.Invoke(roundChangedTo);
+    }
+
+    public static void SendRunOver(int Score)
+    {
+        RunEnded?.Invoke(Score);
     }
 }
