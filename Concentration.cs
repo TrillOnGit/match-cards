@@ -109,7 +109,7 @@ public class Concentration : IConcentration
 
 
 
-    private bool IsGameOver() => energy == 0 || !_cards.Any(c => c.IsFlippable);
+    private bool IsGameOver() => energy <= 0 || !_cards.Any(c => c.IsFlippable);
 
     private void CheckGameOver()
     {
@@ -212,7 +212,7 @@ public class Concentration : IConcentration
         {
             comboCounter = 0;
             ScoreEventManager.ComboChange(comboCounter);
-            energy -= 2;
+            energy = Math.Max(energy - 2, 0);
             ScoreEventManager.SendEnergy(energy);
             cardOne.Flip(false);
             cardTwo.Flip(false);
