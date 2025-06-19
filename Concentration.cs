@@ -205,7 +205,6 @@ public class Concentration : IConcentration
             energy -= 1;
             ScoreEventManager.SendEnergy(energy);
             AddScore((cardOne.Data.Rank + scoreAdd) * scoreMult);
-            ScoreEventManager.PairChange(1);
             CardsMatched?.Invoke(cardOne, cardTwo);
         }
         else

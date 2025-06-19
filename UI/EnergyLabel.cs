@@ -25,7 +25,7 @@ public partial class EnergyLabel : Label
         Text = $"Energy: {Energy}";
         if (Energy == 0)
         {
-            Text = $"Energy: {Energy} \nGame Over";
+            Text = $"Energy: {Energy} \nRound Over";
         }
     }
     public void SetMaxEnergy(int maxEnergy)

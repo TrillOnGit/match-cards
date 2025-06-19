@@ -33,9 +33,4 @@ public static class ScoreEventManager
     {
         ComboUpdated?.Invoke(comboChangedBy);
     }
-
-    public static void PairChange(int pairsChangedBy)
-    {
-        PairCountUpdated?.Invoke(pairsChangedBy);
-    }
 }
