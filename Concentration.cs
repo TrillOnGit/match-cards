@@ -193,16 +193,18 @@ public class Concentration : IConcentration
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
+            var scoreMult = 1;
+            var scoreAdd = comboCounter;
+
             OnMatch(cardOne);
             OnMatch(cardTwo);
-            //Disabling combo counter to test a combo-less system
-            //comboCounter++;
-            var scoreMod = 1;
-            scoreMod = ModifyScore(cardOne, cardTwo, scoreMod);
+
+            comboCounter++;
+            scoreMult = ModifyScore(cardOne, cardTwo, scoreMult);
             ScoreEventManager.ComboChange(comboCounter);
             energy -= 1;
             ScoreEventManager.SendEnergy(energy);
-            AddScore(cardOne.Data.Rank * scoreMod);
+            AddScore((cardOne.Data.Rank + scoreAdd) * scoreMult);
             ScoreEventManager.PairChange(1);
             CardsMatched?.Invoke(cardOne, cardTwo);
         }
