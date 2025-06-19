@@ -36,6 +36,7 @@ public class Run
         concentration.GameEnded += OnConcentrationEnded;
         concentration.RevealedCardsChanged += OnRevealedCardsChanged;
         concentration.ScoreGained += ChangeScore;
+        concentration.CardPermanentlyRemoved += RemoveDeckCard;
         DayStarted?.Invoke(concentration);
     }
 
@@ -81,6 +82,12 @@ public class Run
         {
             purchasedCards[item.Card.Rank] = 1;
         }
+    }
+
+    private void RemoveDeckCard(Card card)
+    {
+        var cardData = card.Data;
+        _deck.Remove(cardData);
     }
 
     private void OnShoppingFinished()

@@ -18,7 +18,7 @@ public class HunterEffect : Effect
     {
         if (cardOne == Card && cardTwo.Data.HasSticker<CreatureSticker>())
         {
-            Concentration.RemoveCard(cardTwo);
+            Concentration.RemoveCardPermanent(cardTwo);
         }
     }
 }

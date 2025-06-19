@@ -27,6 +27,7 @@ public class Concentration : IConcentration
 
     public event Action<Card>? CardAdded;
     public event Action<Card>? CardRemoved;
+    public event Action<Card>? CardPermanentlyRemoved;
 
     // This event is fired when the first card of a potential pair is flipped up
     public event Action<Card>? FirstCardFlipped;
@@ -243,10 +244,10 @@ public class Concentration : IConcentration
 
     public IEnumerable<Card> GetAdjacentCards(Card card) => _cards.Where(c => CardsAreAdjacent(c, card));
 
-    public void RemoveCard(Card card)
+    public void RemoveCardPermanent(Card card)
     {
         _cards.Remove(card);
-        CardRemoved?.Invoke(card);
+        CardPermanentlyRemoved?.Invoke(card);
         card.Remove();
     }
 

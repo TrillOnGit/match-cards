@@ -9,7 +9,7 @@ public class IllCharacter : IPlayerCharacter
 {
     public IEnumerable<CardData> GetCards() => new List<CardData>()
     {
-        CardHelpers.MakeCardData(Suit.Hearts, 7),
+        CardHelpers.MakeCardData(Suit.Hearts, 8),
         CardHelpers.MakeCardData(Suit.Diamonds, 2),
         CardHelpers.MakeCardData(Suit.Diamonds, 3)
     };

@@ -27,6 +27,7 @@ public partial class CardManager : Node
     {
         Concentration.CardAdded += OnCardAdded;
         Concentration.CardRemoved += OnCardRemoved;
+        Concentration.CardPermanentlyRemoved += OnCardRemoved;
         Concentration.FirstCardFlipped += OnFirstCardFlipped;
         Concentration.MatchAttempted += OnMatchAttempted;
         MenuEventManager.ShuffleButtonPressed += ShuffleDeck;
@@ -39,6 +40,7 @@ public partial class CardManager : Node
     {
         Concentration.CardAdded -= OnCardAdded;
         Concentration.CardRemoved -= OnCardRemoved;
+        Concentration.CardPermanentlyRemoved -= OnCardRemoved;
         Concentration.FirstCardFlipped -= OnFirstCardFlipped;
         Concentration.MatchAttempted -= OnMatchAttempted;
         MenuEventManager.ShuffleButtonPressed -= ShuffleDeck;
