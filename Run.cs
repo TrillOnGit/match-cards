@@ -13,8 +13,8 @@ public class Run
 
     private List<CardData> _deck = GetCompletedDeck(new BeastGapLocation(), new IllCharacter());
     public Dictionary<int, int> purchasedCards = new();
-    private int maxRounds = 2;
-    private int revealedCardsChange = 0;
+    private int _maxRounds = 24;
+    private int _revealedCardsChange = 0;
 
     public int Score { get; set; } = 0;
     public int Round { get; private set; } = 1;
@@ -22,7 +22,7 @@ public class Run
     private void NextRound()
     {
         Round++;
-        if (Round > maxRounds)
+        if (Round > _maxRounds)
         {
             ScoreEventManager.SendRunOver(Score);
             return;
@@ -47,10 +47,10 @@ public class Run
 
     private void OnRevealedCardsChanged(int change)
     {
-        revealedCardsChange += change;
-        if (revealedCardsChange < 0)
+        _revealedCardsChange += change;
+        if (_revealedCardsChange < 0)
         {
-            revealedCardsChange = 0;
+            _revealedCardsChange = 0;
         }
         GD.Print("Revealed Cards Changed");
     }
@@ -105,7 +105,7 @@ public class Run
     private Concentration GenerateConcentration()
     {
         var concentration = new Concentration(_deck);
-        concentration.revealedCards += revealedCardsChange;
+        concentration.revealedCards += _revealedCardsChange;
         concentration.Layout();
         concentration.scoreOnGeneration = Score;
         return concentration;

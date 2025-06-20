@@ -65,7 +65,7 @@ public class CardShop
         var items = new List<CardShopItem>()
         {
             new(new CardData() { Suit = Suit.Spades, Rank = 1,  CardBack = CardBack.Blue,
-            Stickers = new List<ICardSticker> {new LeftRevealSticker()} }, 0),
+            Stickers = new List<ICardSticker> {new RightRevealSticker()} }, 0),
             new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(1, 14), CardBack = CardBack.Red,
             Stickers = new List<ICardSticker> {new LighterSticker()} }, 18),
             new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(2, 11), CardBack = CardBack.Blue,

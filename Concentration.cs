@@ -251,6 +251,13 @@ public class Concentration : IConcentration
 
     public IEnumerable<Card> GetDirectLeftCards(Card card) => _cards.Where(c => CardIsDirectLeftwards(c, card));
 
+    public static bool CardIsDirectRightwards(Card checkCard, Card triggerCard)
+    {
+        return (checkCard.Y == triggerCard.Y) && (checkCard.X > triggerCard.X);
+    }
+
+    public IEnumerable<Card> GetDirectRightCards(Card card) => _cards.Where(c => CardIsDirectRightwards(c, card));
+
     public void RemoveCardPermanent(Card card)
     {
         _cards.Remove(card);
