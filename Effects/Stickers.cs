@@ -29,3 +29,8 @@ public class KnowledgeSticker : ICardSticker, IEffectData
 {
     public Effect Construct(Concentration concentration, Card card) => new KnowledgeEffect { Concentration = concentration, Card = card };
 }
+
+public class LeftRevealSticker : ICardSticker, IEffectData
+{
+    public Effect Construct(Concentration concentration, Card card) => new LeftRevealEffect { Concentration = concentration, Card = card };
+}

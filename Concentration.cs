@@ -244,6 +244,13 @@ public class Concentration : IConcentration
 
     public IEnumerable<Card> GetAdjacentCards(Card card) => _cards.Where(c => CardsAreAdjacent(c, card));
 
+    public static bool CardIsDirectLeftwards(Card checkCard, Card triggerCard)
+    {
+        return (checkCard.Y == triggerCard.Y) && (checkCard.X < triggerCard.X);
+    }
+
+    public IEnumerable<Card> GetDirectLeftCards(Card card) => _cards.Where(c => CardIsDirectLeftwards(c, card));
+
     public void RemoveCardPermanent(Card card)
     {
         _cards.Remove(card);

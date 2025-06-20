@@ -64,7 +64,8 @@ public class CardShop
         Random rnd = new();
         var items = new List<CardShopItem>()
         {
-            new(new CardData() { Suit = Suit.Spades, Rank = 1, CardBack = CardBack.Blue }, 0),
+            new(new CardData() { Suit = Suit.Spades, Rank = 1,  CardBack = CardBack.Blue,
+            Stickers = new List<ICardSticker> {new LeftRevealSticker()} }, 0),
             new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(1, 14), CardBack = CardBack.Red,
             Stickers = new List<ICardSticker> {new LighterSticker()} }, 18),
             new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(2, 11), CardBack = CardBack.Blue,
@@ -72,7 +73,7 @@ public class CardShop
             new(new CardData() { Suit = Suit.Diamonds, Rank = rnd.Next(2, 9), CardBack = CardBack.Red,
             Stickers = new List<ICardSticker> {new StarSticker()} }, 20),
             new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(1, 14), CardBack = CardBack.Blue,
-            Stickers = new List<ICardSticker> {new KnowledgeSticker()} }, 21),
+            Stickers = new List<ICardSticker> {new KnowledgeSticker(), new LeftRevealSticker()} }, 21),
             new(new CardData() { Suit = Suit.Clubs, Rank = rnd.Next(11, 14), CardBack = CardBack.Pink }, 13),
         };
         foreach (var item in items)
