@@ -64,39 +64,66 @@ public class CardShop
         Random rnd = new();
         var items = new List<CardShopItem>()
         {
-            new(new CardData() { Suit = Suit.Spades, Rank = 1,  CardBack = CardBack.Blue,
-            Stickers = new List<ICardSticker> {new RightRevealSticker()} }, 0),
-            new(new CardData() { Suit = Suit.Hearts, Rank = rnd.Next(1, 14), CardBack = CardBack.Red,
-            Stickers = new List<ICardSticker> {new LighterSticker()} }, 18),
-            new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(2, 11), CardBack = CardBack.Blue,
-            Stickers = new List<ICardSticker> {new BombSticker()} }, 19),
-            new(new CardData() { Suit = Suit.Diamonds, Rank = rnd.Next(2, 9), CardBack = CardBack.Red,
-            Stickers = new List<ICardSticker> {new StarSticker()} }, 20),
-            new(new CardData() { Suit = Suit.Spades, Rank = rnd.Next(1, 14), CardBack = CardBack.Blue,
-            Stickers = new List<ICardSticker> {new KnowledgeSticker(), new LeftRevealSticker()} }, 21),
-            new(new CardData() { Suit = Suit.Clubs, Rank = rnd.Next(11, 14), CardBack = CardBack.Pink }, 13),
+            GenerateCardShopItem(null, rnd.Next(1, 7), null, null),
+            GenerateCardShopItem(Suit.Hearts, null, null, new List<ICardSticker> { new LighterSticker() }),
+            GenerateCardShopItem(Suit.Spades, rnd.Next(2, 11), null, new List<ICardSticker> { new BombSticker() }),
+            GenerateCardShopItem(Suit.Diamonds, rnd.Next(2, 9), null, new List<ICardSticker> { new StarSticker() }),
+            GenerateCardShopItem(Suit.Spades, null, null, new List<ICardSticker>
+            { new KnowledgeSticker(), new RightRevealSticker() }),
+            GenerateCardShopItem(null, null, CardBack.Pink, null),
         };
         foreach (var item in items)
         {
-            item.Card.Rank = rnd.Next(1, 14);
             item.TimesPurchased = GetPurchasedAmount(item.Card.Rank);
         }
         return items;
     }
 
     //Set Null for full random range, or none in the case of stickers
-    private CardShopItem GenerateCardShopItem(Suit? suit, int? rank, CardBack? cardBack, List<ICardSticker>? stickers)
+    private static CardShopItem GenerateCardShopItem(Suit? suit, int? rank, CardBack? cardBack, List<ICardSticker>? stickers)
     {
         Random rnd = new();
         Suit s = suit ?? rnd.NextSuit();
         int r = rank ?? rnd.NextRank();
-        //If cardback is null, choose red or blue based on suit
-        CardBack b = (s == Suit.Hearts || s == Suit.Diamonds) ? CardBack.Red : CardBack.Blue;
+        CardBack b = cardBack ?? ((s == Suit.Hearts || s == Suit.Diamonds) ? CardBack.Red : CardBack.Blue);
         List<ICardSticker> st = stickers ?? new List<ICardSticker> { };
 
-        //int price = GenerateBasePrice();
+        int price = GenerateInitialPrice(s, r, b, st);
 
-        return new CardShopItem(new CardData() { Suit = s, Rank = r, CardBack = b, Stickers = st }, 0);
+        return new CardShopItem(new CardData() { Suit = s, Rank = r, CardBack = b, Stickers = st }, price);
+    }
+
+    private static int GenerateInitialPrice(Suit suit, int rank, CardBack cardBack, List<ICardSticker> stickers)
+    {
+        int initPrice = 15;
+
+        initPrice += rank / 2;
+
+        initPrice += suit == Suit.Diamonds ? 1 : 0;
+
+        initPrice += cardBack == CardBack.Pink ? 3 : 0;
+
+        foreach (var sticker in stickers)
+        {
+            initPrice += GetStickerPrice(sticker);
+        }
+
+        return initPrice;
+    }
+
+    private static int GetStickerPrice(ICardSticker sticker)
+    {
+        return sticker switch
+        {
+            RightRevealSticker => 3,
+            LeftRevealSticker => 3,
+            BombSticker => 3,
+            LighterSticker => 4,
+            StarSticker => 6,
+            KnowledgeSticker => 4,
+            HunterSticker => 1,
+            _ => 0,
+        };
     }
 
     private int GetPurchasedAmount(int rank)
