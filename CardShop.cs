@@ -84,6 +84,21 @@ public class CardShop
         return items;
     }
 
+    //Set Null for full random range, or none in the case of stickers
+    private CardShopItem GenerateCardShopItem(Suit? suit, int? rank, CardBack? cardBack, List<ICardSticker>? stickers)
+    {
+        Random rnd = new();
+        Suit s = suit ?? rnd.NextSuit();
+        int r = rank ?? rnd.NextRank();
+        //If cardback is null, choose red or blue based on suit
+        CardBack b = (s == Suit.Hearts || s == Suit.Diamonds) ? CardBack.Red : CardBack.Blue;
+        List<ICardSticker> st = stickers ?? new List<ICardSticker> { };
+
+        //int price = GenerateBasePrice();
+
+        return new CardShopItem(new CardData() { Suit = s, Rank = r, CardBack = b, Stickers = st }, 0);
+    }
+
     private int GetPurchasedAmount(int rank)
     {
         if (_run.purchasedCards.TryGetValue(rank, out int amount))
