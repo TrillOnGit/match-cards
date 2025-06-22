@@ -125,7 +125,7 @@ public class Concentration : IConcentration
         GameEnded?.Invoke();
     }
 
-    private void AddCard(Card card)
+    public void AddCard(Card card)
     {
         _cards.Add(card);
         card.InitializeEffects(this);

@@ -1,16 +1,16 @@
+using System.Collections.Generic;
+
 namespace MatchCards.Effects;
 
 public class HunterEffect : Effect
 {
     public override void OnAdded()
     {
-        //Card.Matched += OnCardMatched;
         Concentration.CardsMatched += OnCardsMatched;
     }
 
     public override void OnRemoved()
     {
-        //Add a corpse to the deck.
         Concentration.CardsMatched -= OnCardsMatched;
     }
 
@@ -18,7 +18,30 @@ public class HunterEffect : Effect
     {
         if (cardOne == Card && cardTwo.Data.HasSticker<CreatureSticker>())
         {
+            CreateCorpse(cardTwo);
             Concentration.RemoveCardPermanent(cardTwo);
         }
+    }
+
+    private void CreateCorpse(Card card)
+    {
+        var corpse = new CardData()
+        {
+            Suit = card.Data.Suit,
+            Rank = 1,
+            CardBack = card.Data.CardBack,
+            Stickers = new List<ICardSticker>() {
+                new CorpseSticker()
+            }
+        };
+        Card corpseCard = new Card
+        {
+            X = card.X,
+            Y = card.Y,
+            Data = corpse,
+        };
+
+        Concentration.AddCard(corpseCard);
+        corpseCard.Reveal();
     }
 }

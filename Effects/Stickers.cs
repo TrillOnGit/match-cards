@@ -25,6 +25,10 @@ public class HunterSticker : ICardSticker, IEffectData
 public class CreatureSticker : ICardSticker
 { }
 
+public class CorpseSticker : ICardSticker
+{ }
+
+
 public class KnowledgeSticker : ICardSticker, IEffectData
 {
     public Effect Construct(Concentration concentration, Card card) => new KnowledgeEffect { Concentration = concentration, Card = card };

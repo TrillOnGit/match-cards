@@ -15,6 +15,7 @@ public partial class CardNode : Area2D
     [Export] public Sprite2D KnowledgeSprite { get; set; } = null!;
     [Export] public Sprite2D LeftRevealSprite { get; set; } = null!;
     [Export] public Sprite2D RightRevealSprite { get; set; } = null!;
+    [Export] public Sprite2D CorpseSprite { get; set; } = null!;
     [Export] public CpuParticles2D Sparkle { get; set; } = null!;
     [Export] public CardBack CardBack { get; set; } = CardBack.Red;
     [Export] public int CardRank { get; set; } = 1;
@@ -56,6 +57,7 @@ public partial class CardNode : Area2D
             KnowledgeSprite.Visible = data.HasSticker<KnowledgeSticker>();
             LeftRevealSprite.Visible = data.HasSticker<LeftRevealSticker>();
             RightRevealSprite.Visible = data.HasSticker<RightRevealSticker>();
+            CorpseSprite.Visible = data.HasSticker<CorpseSticker>();
         }
 
         CardBackSprite.Frame = GetBackFrame();
