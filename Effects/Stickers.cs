@@ -43,3 +43,8 @@ public class RightRevealSticker : ICardSticker, IEffectData
 {
     public Effect Construct(Concentration concentration, Card card) => new RightRevealEffect { Concentration = concentration, Card = card };
 }
+
+public class RitualSticker : ICardSticker, IEffectData
+{
+    public Effect Construct(Concentration concentration, Card card) => new RitualEffect { Concentration = concentration, Card = card };
+}

@@ -220,7 +220,7 @@ public class Concentration : IConcentration
         _lastFlipped = null;
     }
 
-    private void AddScore(int increase)
+    public void AddScore(int increase)
     {
         ScoreGained?.Invoke(increase);
     }

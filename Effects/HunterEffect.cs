@@ -28,7 +28,7 @@ public class HunterEffect : Effect
         var corpse = new CardData()
         {
             Suit = card.Data.Suit,
-            Rank = 1,
+            Rank = 2,
             CardBack = card.Data.CardBack,
             Stickers = new List<ICardSticker>() {
                 new CorpseSticker()

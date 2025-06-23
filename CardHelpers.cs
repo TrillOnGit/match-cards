@@ -17,7 +17,7 @@ public static class CardHelpers
     {
         {(Suit.Spades, 2), new BombSticker()},
         {(Suit.Hearts, 10), new LighterSticker()},
-        {(Suit.Diamonds, 2), new StarSticker()},
+        {(Suit.Diamonds, 2), new RitualSticker()},
         {(Suit.Hearts, 8), new CreatureSticker()},
         {(Suit.Clubs, 8), new HunterSticker()},
         {(Suit.Spades, 1), new KnowledgeSticker()},
