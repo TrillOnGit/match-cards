@@ -95,7 +95,7 @@ public class CardShop
 
     private static int GenerateInitialPrice(Suit suit, int rank, CardBack cardBack, List<ICardSticker> stickers)
     {
-        int initPrice = 15;
+        int initPrice = 25;
 
         initPrice += rank / 2;
 

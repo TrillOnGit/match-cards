@@ -162,7 +162,7 @@ public class Run
                         Rank = rank,
                         Suit = s,
                         // TODO: move method to this class
-                        CardBack = CardManager.GetCardColor(s, i),
+                        CardBack = CardManager.GetCardColor(s),
                         Stickers = stickers
                     };
                 }

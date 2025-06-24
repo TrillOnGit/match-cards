@@ -7,7 +7,7 @@ public static class CardHelpers
     {
         Suit = suit,
         Rank = rank,
-        CardBack = CardManager.GetCardColor(suit, rank),
+        CardBack = CardManager.GetCardColor(suit),
         Stickers = stickerMap.ContainsKey((suit, rank))
                 ? new List<ICardSticker> { stickerMap[(suit, rank)] }
                 : new List<ICardSticker>()

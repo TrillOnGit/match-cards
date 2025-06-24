@@ -119,12 +119,8 @@ public partial class CardManager : Node
         Concentration.EndGame();
     }
 
-    public static CardBack GetCardColor(Suit suit, int rank)
+    public static CardBack GetCardColor(Suit suit)
     {
-        if (rank == 2 && suit == Suit.Hearts)
-        {
-            return CardBack.Pink;
-        }
         if (suit == Suit.Clubs || suit == Suit.Spades)
         {
             return CardBack.Blue;
