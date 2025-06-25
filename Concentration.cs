@@ -194,8 +194,6 @@ public class Concentration : IConcentration
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
-            //var scoreMult = 1;
-            //var scoreAdd = comboCounter;
             var scoreVal = GetCardMatchValue(cardOne, cardTwo);
 
             OnMatch(cardOne);
@@ -223,12 +221,15 @@ public class Concentration : IConcentration
 
     private int GetCardMatchValue(Card cardOne, Card cardTwo)
     {
+        var initialScore = (cardOne.Data.Rank > 10 || cardTwo.Data.Rank > 10) ? 0
+        : Math.Max(cardOne.Data.Rank, cardTwo.Data.Rank);
         var scoreMult = 1;
         var scoreAdd = comboCounter;
 
         scoreMult = ModifyScore(cardOne, cardTwo, scoreMult);
 
-        return (cardOne.Data.Rank + scoreAdd) * scoreMult;
+
+        return (initialScore + scoreAdd) * scoreMult;
 
     }
 
