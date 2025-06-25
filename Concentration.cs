@@ -194,18 +194,19 @@ public class Concentration : IConcentration
     {
         if (cardOne.Data.Rank == cardTwo.Data.Rank)
         {
-            var scoreMult = 1;
-            var scoreAdd = comboCounter;
+            //var scoreMult = 1;
+            //var scoreAdd = comboCounter;
+            var scoreVal = GetCardMatchValue(cardOne, cardTwo);
 
             OnMatch(cardOne);
             OnMatch(cardTwo);
 
             comboCounter++;
-            scoreMult = ModifyScore(cardOne, cardTwo, scoreMult);
             ScoreEventManager.ComboChange(comboCounter);
             energy -= 1;
             ScoreEventManager.SendEnergy(energy);
-            AddScore((cardOne.Data.Rank + scoreAdd) * scoreMult);
+
+            AddScore(scoreVal);
             CardsMatched?.Invoke(cardOne, cardTwo);
         }
         else
@@ -218,6 +219,17 @@ public class Concentration : IConcentration
             cardTwo.Flip(false);
         }
         _lastFlipped = null;
+    }
+
+    private int GetCardMatchValue(Card cardOne, Card cardTwo)
+    {
+        var scoreMult = 1;
+        var scoreAdd = comboCounter;
+
+        scoreMult = ModifyScore(cardOne, cardTwo, scoreMult);
+
+        return (cardOne.Data.Rank + scoreAdd) * scoreMult;
+
     }
 
     public void AddScore(int increase)
