@@ -11,6 +11,27 @@ public static class RandomExtensions
     {
         return rng.Next(1, 11);
     }
+    public static int NextRankWeighted(this Random rng)
+    {
+        // Weights for ranks 1 to 10
+        int[] weights = { 17, 15, 13, 11, 10, 10, 9, 7, 5, 3 };
+        int totalVal = 0;
+        foreach (var w in weights)
+        {
+            totalVal += w;
+        }
+
+        int val = rng.Next(1, totalVal + 1);
+        int currentTrueWeight = 0;
+        for (int i = 0; i < weights.Length; i++)
+        {
+            currentTrueWeight += weights[i];
+            if (val <= currentTrueWeight)
+                return i + 1;
+        }
+        return 11;
+    }
+
     public static CardBack NextCardBack(this Random rng)
     {
         var cardBacks = Enum.GetValues<CardBack>();

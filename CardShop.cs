@@ -84,7 +84,7 @@ public class CardShop
     {
         Random rnd = new();
         Suit s = suit ?? rnd.NextSuit();
-        int r = rank ?? rnd.NextRank();
+        int r = rank ?? rnd.NextRankWeighted();
         CardBack b = cardBack ?? ((s == Suit.Hearts || s == Suit.Diamonds) ? CardBack.Red : CardBack.Blue);
         List<ICardSticker> st = stickers ?? new List<ICardSticker> { };
 
