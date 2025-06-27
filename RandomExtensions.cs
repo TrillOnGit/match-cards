@@ -13,8 +13,8 @@ public static class RandomExtensions
     }
     public static int NextRankWeighted(this Random rng)
     {
-        // Weights for ranks 1 to 10
-        int[] weights = { 17, 15, 13, 11, 10, 10, 9, 7, 5, 3 };
+        // Weights for ranks 1 to 13
+        int[] weights = { 29, 26, 24, 22, 20, 19, 17, 15, 13, 10, 2, 2, 1 };
         int totalVal = 0;
         foreach (var w in weights)
         {
@@ -29,7 +29,7 @@ public static class RandomExtensions
             if (val <= currentTrueWeight)
                 return i + 1;
         }
-        return 11;
+        return 13;
     }
 
     public static CardBack NextCardBack(this Random rng)
