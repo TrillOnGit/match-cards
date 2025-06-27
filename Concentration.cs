@@ -21,6 +21,7 @@ public class Concentration : IConcentration
     private Card? _lastFlipped;
     private int comboCounter = 0;
     private int energy = 12;
+    private int progress = 0;
     private readonly int maxEnergy = 12;
     public int revealedCards = 3;
     public int scoreOnGeneration = 0;
@@ -44,7 +45,7 @@ public class Concentration : IConcentration
     // This event is fired when the number of revealed cards at roundstart changes
     public event Action<int>? RevealedCardsChanged;
 
-    // This event is fired when the score changes. The int parameter is the amount the score changed.
+    // This event is fired when the score changes.
     public event Action<int>? ScoreGained;
 
     private List<IScoreModifier> _scoreModifiers = new();
@@ -206,6 +207,7 @@ public class Concentration : IConcentration
 
             AddScore(scoreVal);
             CardsMatched?.Invoke(cardOne, cardTwo);
+            GetProgressState();
         }
         else
         {
@@ -236,6 +238,45 @@ public class Concentration : IConcentration
     public void AddScore(int increase)
     {
         ScoreGained?.Invoke(increase);
+    }
+
+    public void GetProgressState()
+    {
+        var jackMatched = false;
+        var queenMatched = false;
+        var kingMatched = false;
+        foreach (var card in _cards)
+        {
+            if (card.Data.Rank == 11 && card.IsFaceUp)
+            {
+                jackMatched = true;
+            }
+            else if (card.Data.Rank == 12 && card.IsFaceUp)
+            {
+                queenMatched = true;
+            }
+            else if (card.Data.Rank == 13 && card.IsFaceUp)
+            {
+                kingMatched = true;
+            }
+        }
+        SetProgress(
+            (jackMatched ? 33 : 0) +
+            (queenMatched ? 33 : 0) +
+            (kingMatched ? 34 : 0)
+        );
+    }
+
+    public void SetProgress(int value)
+    {
+        progress = value;
+        ScoreEventManager.SendProgressChanged(progress);
+
+        if (progress >= 100)
+        {
+            //Win Game
+            GD.Print("You win");
+        }
     }
 
     public void BurnCard(Card card)
@@ -276,6 +317,17 @@ public class Concentration : IConcentration
         _cards.Remove(card);
         CardPermanentlyRemoved?.Invoke(card);
         card.Remove();
+    }
+
+    public IEnumerable<Card> GetSameRankCards(Card card) => _cards.Where(c => CardIsSameRank(c, card));
+
+    public static bool CardIsSameRank(Card checkCard, Card triggerCard)
+    {
+        if (checkCard != triggerCard && checkCard.Data.Rank == triggerCard.Data.Rank)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void AddScoreModifier(IScoreModifier scoreModifier)

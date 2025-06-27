@@ -7,10 +7,10 @@ public static class ScoreEventManager
     public static event Action<int>? ScoreUpdated;
     public static event Action<int>? EnergyUpdated;
     public static event Action<int>? ComboUpdated;
-    public static event Action<int>? PairCountUpdated;
     public static event Action<int>? EnergySet;
     public static event Action<int>? RoundUpdated;
     public static event Action<int>? RunEnded;
+    public static event Action<int>? ProgressChanged;
 
     public static void SendScoreChange(int scoreChangedBy)
     {
@@ -44,5 +44,10 @@ public static class ScoreEventManager
     public static void SendRunOver(int Score)
     {
         RunEnded?.Invoke(Score);
+    }
+
+    public static void SendProgressChanged(int progress)
+    {
+        ProgressChanged?.Invoke(progress);
     }
 }
