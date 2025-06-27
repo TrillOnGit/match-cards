@@ -48,3 +48,8 @@ public class RitualSticker : ICardSticker, IEffectData
 {
     public Effect Construct(Concentration concentration, Card card) => new RitualEffect { Concentration = concentration, Card = card };
 }
+
+public class EyeSticker : ICardSticker, IEffectData
+{
+    public Effect Construct(Concentration concentration, Card card) => new EyeEffect { Concentration = concentration, Card = card };
+}
