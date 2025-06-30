@@ -98,6 +98,35 @@ public class Concentration : IConcentration
         }
     }
 
+    public void LayoutWithoutResets()
+    {
+        ClearCards();
+
+        var width = GetLayoutWidth(_faces.Count);
+
+        var rng = new Random();
+        var shuffledFaces = _faces.ToArray();
+        rng.Shuffle(shuffledFaces);
+        int curX = 0;
+        int curY = 0;
+        foreach (var data in shuffledFaces)
+        {
+            var card = new Card()
+            {
+                X = curX,
+                Y = curY,
+                Data = data
+            };
+            AddCard(card);
+            curX++;
+            if (curX >= width)
+            {
+                curY++;
+                curX = 0;
+            }
+        }
+    }
+
     private static int GetLayoutWidth(int cardCount) => cardCount switch
     {
         <= 9 => 3,
@@ -207,7 +236,7 @@ public class Concentration : IConcentration
 
             AddScore(scoreVal);
             CardsMatched?.Invoke(cardOne, cardTwo);
-            GetProgressState();
+            GetAndSetProgressState();
         }
         else
         {
@@ -240,7 +269,7 @@ public class Concentration : IConcentration
         ScoreGained?.Invoke(increase);
     }
 
-    public void GetProgressState()
+    public void GetAndSetProgressState()
     {
         var jackMatched = false;
         var queenMatched = false;

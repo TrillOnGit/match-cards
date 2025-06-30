@@ -65,7 +65,7 @@ public class CardShop
         var items = new List<CardShopItem>()
         {
             GenerateCardShopItem(null, rnd.Next(1, 7), null, null),
-            GenerateCardShopItem(Suit.Hearts, null, null, new List<ICardSticker> { new LighterSticker() }),
+            GenerateCardShopItem(Suit.Hearts, null, null, new List<ICardSticker> { new LighterSticker(), new EyeSticker() }),
             GenerateCardShopItem(Suit.Spades, rnd.Next(2, 11), null, new List<ICardSticker> { new BombSticker() }),
             GenerateCardShopItem(Suit.Diamonds, rnd.Next(2, 9), null, new List<ICardSticker> { new StarSticker() }),
             GenerateCardShopItem(Suit.Spades, null, null, new List<ICardSticker>

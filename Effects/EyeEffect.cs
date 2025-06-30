@@ -14,5 +14,6 @@ public class EyeEffect : Effect
 
     private void OnCardMatched()
     {
+        Concentration.LayoutWithoutResets();
     }
 }
