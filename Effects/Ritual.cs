@@ -14,7 +14,7 @@ public class RitualEffect : Effect
 
     private void OnCardsMatched(Card cardOne, Card cardTwo)
     {
-        if (cardTwo.Data.HasSticker<CorpseSticker>())
+        if (cardTwo.Data.HasSticker<CorpseSticker>() && cardOne == Card)
         {
             Concentration.RemoveCardPermanent(cardTwo);
             Concentration.AddScore(20);
