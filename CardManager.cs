@@ -25,7 +25,7 @@ public partial class CardManager : Node
 
     public override void _Ready()
     {
-        Concentration.CardAdded += OnCardAdded;
+        Concentration.CardAddedToBoard += OnCardAdded;
         Concentration.CardRemoved += OnCardRemoved;
         Concentration.CardPermanentlyRemoved += OnCardRemoved;
         Concentration.FirstCardFlipped += OnFirstCardFlipped;
@@ -38,7 +38,7 @@ public partial class CardManager : Node
 
     public override void _ExitTree()
     {
-        Concentration.CardAdded -= OnCardAdded;
+        Concentration.CardAddedToBoard -= OnCardAdded;
         Concentration.CardRemoved -= OnCardRemoved;
         Concentration.CardPermanentlyRemoved -= OnCardRemoved;
         Concentration.FirstCardFlipped -= OnFirstCardFlipped;

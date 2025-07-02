@@ -37,6 +37,7 @@ public class Run
         concentration.RevealedCardsChanged += OnRevealedCardsChanged;
         concentration.ScoreGained += ChangeScore;
         concentration.CardPermanentlyRemoved += RemoveDeckCard;
+        concentration.AddDeckCard += AddCard;
         DayStarted?.Invoke(concentration);
     }
 

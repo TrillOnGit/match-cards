@@ -26,7 +26,8 @@ public class Concentration : IConcentration
     public int revealedCards = 3;
     public int scoreOnGeneration = 0;
 
-    public event Action<Card>? CardAdded;
+    public event Action<Card>? CardAddedToBoard;
+    public event Action<CardData>? AddDeckCard;
     public event Action<Card>? CardRemoved;
     public event Action<Card>? CardPermanentlyRemoved;
 
@@ -158,8 +159,14 @@ public class Concentration : IConcentration
     public void AddCard(Card card)
     {
         _cards.Add(card);
+        //Send signal for adding a card to run
         card.InitializeEffects(this);
-        CardAdded?.Invoke(card);
+        CardAddedToBoard?.Invoke(card);
+    }
+
+    public void AddCardToDecklist(Card card)
+    {
+        AddDeckCard?.Invoke(card.Data);
     }
 
     private void ClearCards()
