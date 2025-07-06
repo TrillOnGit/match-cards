@@ -225,12 +225,16 @@ public class Concentration : IConcentration
         var burnList = _cards.Where(c => c.IsBurning).ToList();
         foreach (var c in burnList)
         {
-            foreach (var otherCard in _cards)
+            foreach (var boardCard in _cards)
             {
-                if (CardsAreAdjacent(c, otherCard) && otherCard.Data.Rank < c.Data.Rank)
+                if (boardCard.IsBurning)
                 {
-                    // If a burning card is adjacent to a lower rank card, burn the lower rank card
-                    BurnCard(otherCard);
+                    continue;
+                }
+                if (CardsAreAdjacent(c, boardCard) && boardCard.Data.Rank <= c.Data.Rank)
+                {
+                    // If a burning card is adjacent to a lower or equal rank card, burn the card
+                    BurnCard(boardCard);
                 }
             }
         }
