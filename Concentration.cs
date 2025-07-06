@@ -91,12 +91,34 @@ public class Concentration : IConcentration
         }
 
         // Reveal a number of cards at random
-        var randomPositions = Enumerable.Range(0, _faces.Count).ToArray();
+        var randomPositions = Enumerable.Range(0, _cards.Count).ToArray();
         rng.Shuffle(randomPositions);
         for (int i = 0; (i < revealedCards) && (i < _cards.Count); i++)
         {
             _cards[randomPositions[i]].Reveal();
         }
+    }
+
+    public static void ShuffleCardPositions(List<Card> cards)
+    {
+        var rng = new Random();
+        var positions = cards.Select(card => (card.X, card.Y)).ToArray();
+
+        rng.Shuffle(positions);
+
+        for (int i = 0; i < positions.Length; i++)
+        {
+            cards[i].Move(positions[i].X, positions[i].Y);
+        }
+    }
+
+    public void SwapCards(Card cardOne, Card cardTwo)
+    {
+        // (cardOne.X, cardTwo.X) = (cardTwo.X, cardOne.X);
+        // (cardOne.Y, cardTwo.Y) = (cardTwo.Y, cardOne.Y);
+        cardOne.Move(cardTwo.X, cardTwo.Y);
+        cardTwo.Move(cardOne.X, cardOne.Y);
+
     }
 
     public void LayoutWithoutResets()
@@ -437,6 +459,12 @@ public record Card
             Flipped?.Invoke(IsFaceUp);
         }
     }
+    public void Move(int x, int y)
+    {
+        X = x;
+        Y = y;
+        Moved?.Invoke(X, Y);
+    }
 
     public void Reveal()
     {
@@ -445,9 +473,17 @@ public record Card
         Revealed?.Invoke();
     }
 
+    public void Unreveal()
+    {
+        if (!IsRevealed) return;
+        IsRevealed = false;
+        Hidden?.Invoke();
+    }
+
     public void Burn()
     {
         IsBurning = true;
+        Flip(true);
         Burned?.Invoke();
     }
 
@@ -467,9 +503,11 @@ public record Card
 
     public event Action<bool>? Flipped;
     public event Action? Revealed;
+    public event Action? Hidden;
     public event Action? Removed;
     public event Action? Burned;
     public event Action? Matched;
+    public event Action<int, int>? Moved;
 }
 
 public enum Suit

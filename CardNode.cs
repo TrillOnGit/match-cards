@@ -40,12 +40,14 @@ public partial class CardNode : Area2D
         {
             card.Flipped += Flip;
             card.Revealed += Reveal;
+            card.Hidden += Unreveal;
             card.Burned += Burn;
+            card.Moved += Move;
             card.Removed += QueueFree;
             card.Matched += OnMatched;
 
             BurningSprite.Visible = card.IsBurning;
-            Position = new Vector2(card.X * 90f, card.Y * 128f);
+            UpdatePosition();
         }
         if (CardData is { } data)
         {
@@ -83,6 +85,13 @@ public partial class CardNode : Area2D
             Card.Removed -= QueueFree;
             Card.Matched -= OnMatched;
         }
+    }
+
+    private void UpdatePosition()
+    {
+        if (Card == null) return;
+
+        Position = new Vector2(Card.X * 90f, Card.Y * 128f);
     }
 
     private void OnInputEvent(Node viewport, InputEvent @event, long shapeIdx)
@@ -125,21 +134,32 @@ public partial class CardNode : Area2D
         };
     }
 
-    public void Flip(bool faceUp)
+    private void Flip(bool faceUp)
     {
         FaceUp = faceUp;
         UpdateSpriteVisibility();
     }
-    public void Reveal()
+    private void Reveal()
     {
         Revealed = true;
         UpdateSpriteVisibility();
     }
 
-    public void Burn()
+    private void Burn()
     {
         BurningSprite.Visible = true;
     }
+    private void Unreveal()
+    {
+        Revealed = false;
+        UpdateSpriteVisibility();
+    }
+
+    private void Move(int x, int y)
+    {
+        UpdatePosition();
+    }
+
 
     private void OnMatched()
     {
