@@ -81,6 +81,8 @@ public partial class CardNode : Area2D
         {
             Card.Flipped -= Flip;
             Card.Revealed -= Reveal;
+            Card.Hidden -= Unreveal;
+            Card.Moved -= Move;
             Card.Burned -= Burn;
             Card.Removed -= QueueFree;
             Card.Matched -= OnMatched;

@@ -487,6 +487,7 @@ public record Card
     public void Burn()
     {
         IsBurning = true;
+        Reveal();
         Flip(true);
         Burned?.Invoke();
     }
