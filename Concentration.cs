@@ -455,6 +455,13 @@ public record Card
             _effects.Add(effect);
         }
     }
+    public void Activate()
+    {
+        if (IsFaceUp && !IsFlippable)
+        {
+            Activated?.Invoke();
+        }
+    }
     public void Flip(bool faceUp)
     {
         if (faceUp != IsFaceUp)
@@ -513,6 +520,7 @@ public record Card
     public event Action? Burned;
     public event Action? Matched;
     public event Action<int, int>? Moved;
+    public event Action? Activated;
 }
 
 public enum Suit
@@ -546,4 +554,11 @@ public record CardData
 public interface IScoreModifier
 {
     public int ModifyScore(Card cardOne, Card cardTwo, int score);
+}
+
+public interface IActivatable
+{
+    //When future active numbers are added, uncomment this
+    //public int ActivationNumber { get; }
+    public void Activate();
 }

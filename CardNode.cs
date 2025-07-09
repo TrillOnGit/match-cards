@@ -102,6 +102,7 @@ public partial class CardNode : Area2D
         {
             if (ev.ButtonIndex == MouseButton.Left && ev.Pressed)
             {
+                Card?.Activate();
                 Clicked?.Invoke();
             }
         }

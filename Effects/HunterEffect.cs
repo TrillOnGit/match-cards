@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MatchCards.Effects;
 
-public class HunterEffect : Effect
+public class HunterEffect : Effect, IActivatable
 {
     public override void OnAdded()
     {
@@ -44,5 +44,9 @@ public class HunterEffect : Effect
         Concentration.AddCard(corpseCard);
         Concentration.AddCardToDecklist(corpseCard);
         corpseCard.Reveal();
+    }
+
+    public void Activate()
+    {
     }
 }

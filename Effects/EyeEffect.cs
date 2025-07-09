@@ -1,49 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace MatchCards.Effects;
 
-public class EyeEffect : Effect
+public class EyeEffect : Effect, IActivatable
 {
-    private bool AfterMatchDetected = false;
+    private bool activatable = true;
     public override void OnAdded()
     {
-        Concentration.CardsMatched += OnCardsMatched;
+        Card.Activated += Activate;
     }
 
     public override void OnRemoved()
     {
-        Concentration.CardsMatched -= OnCardsMatched;
+        Card.Activated -= Activate;
     }
 
-    private void OnCardsMatched(Card cardOne, Card cardTwo)
+    public void Activate()
     {
-
-        if (AfterMatchDetected)
+        if (activatable)
         {
-            List<Card> faceDownCards = new();
-            foreach (Card card in Concentration.GetCards())
-            {
-                if (!card.IsFaceUp)
-                {
-                    faceDownCards.Add(card);
-
-                    card.Unreveal();
-                }
-            }
-            Concentration.ShuffleCardPositions(faceDownCards);
-            GD.Print("EyeEffect: After match detected, hiding face down cards and shuffling positions.");
-            AfterMatchDetected = false;
-        }
-
-        if (Card == cardOne || Card == cardTwo)
-        {
-            foreach (Card card in Concentration.GetCards())
-            {
-                card.Reveal();
-            }
-
-            AfterMatchDetected = true;
+            Concentration.ShuffleCardPositions(Concentration.GetCards().ToList());
+            activatable = false;
         }
     }
 }
