@@ -24,6 +24,7 @@ public partial class CardNode : Area2D
     public Suit CardSuit { get; set; } = Suit.Clubs;
     public bool FaceUp { get; set; } = false;
     public bool Revealed { get; set; } = false;
+    public CardState State { get; set; } = CardState.Default;
 
 
     private CardData? _cardData = null;
@@ -32,6 +33,7 @@ public partial class CardNode : Area2D
 
 
     public event Action? Clicked = null;
+    public event Action<CardNode>? Targeted = null;
 
     public override void _Ready()
     {
@@ -100,11 +102,26 @@ public partial class CardNode : Area2D
     {
         if (@event is InputEventMouseButton { } ev)
         {
-            if (ev.ButtonIndex == MouseButton.Left && ev.Pressed)
+            if (ev.ButtonIndex == MouseButton.Left && ev.Pressed && State == CardState.Default)
             {
+                OnClick();
+            }
+        }
+    }
+
+    private void OnClick()
+    {
+        switch (State)
+        {
+            case CardState.Default:
                 Card?.Activate();
                 Clicked?.Invoke();
-            }
+                break;
+            case CardState.ActivationTarget:
+                Card?.SendTargeted();
+                break;
+            default:
+                break;
         }
     }
 
@@ -218,4 +235,11 @@ public enum CardGlowColor
     None,
     Primary,
     Secondary
+}
+
+public enum CardState
+{
+    Default,
+    ActivationTarget,
+    ActivationNonTarget,
 }

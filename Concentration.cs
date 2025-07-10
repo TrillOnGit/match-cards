@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Godot;
 using MatchCards.Effects;
 
@@ -513,6 +514,11 @@ public record Card
         Removed?.Invoke();
     }
 
+    public void SendTargeted()
+    {
+        Targeted?.Invoke(this);
+    }
+
     public event Action<bool>? Flipped;
     public event Action? Revealed;
     public event Action? Hidden;
@@ -521,6 +527,7 @@ public record Card
     public event Action? Matched;
     public event Action<int, int>? Moved;
     public event Action? Activated;
+    public event Action<Card>? Targeted;
 }
 
 public enum Suit
