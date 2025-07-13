@@ -113,18 +113,7 @@ public partial class CardNode : Area2D
 
     private void OnClick()
     {
-        // switch (State)
-        // {
-        //     case CardState.Default:
         Clicked?.Invoke();
-        //break;
-        //     //Remove these cases and this function when concentration handles game states
-        //     case CardState.ActivationTarget:
-        //         Card?.SendTargeted();
-        //         break;
-        //     default:
-        //         break;
-        // }
     }
 
     public int GetBackFrame()
@@ -181,7 +170,6 @@ public partial class CardNode : Area2D
     {
         UpdatePosition();
     }
-
 
     private void OnMatched()
     {
