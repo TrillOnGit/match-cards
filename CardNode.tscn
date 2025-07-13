@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c542u4x4lmrc1"]
+[gd_scene load_steps=19 format=3 uid="uid://c542u4x4lmrc1"]
 
 [ext_resource type="Script" uid="uid://cwrsqvg3om2cm" path="res://CardNode.cs" id="1_68501"]
 [ext_resource type="Texture2D" uid="uid://dleag8rm8jix2" path="res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Card_Back-88x124.png" id="1_gclfg"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://ct7dbh33pp358" path="res://assets/book.png" id="10_slq20"]
 [ext_resource type="Texture2D" uid="uid://docmtt67hqq2i" path="res://assets/corpse.png" id="11_3gcch"]
 [ext_resource type="Texture2D" uid="uid://b8jvlbeu1ufif" path="res://assets/LeftHandMark.png" id="11_206uw"]
+[ext_resource type="Texture2D" uid="uid://cko4jwxuo7fhj" path="res://assets/creature.png" id="14_plpxw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgq2h"]
 size = Vector2(20, 28)
@@ -23,7 +24,7 @@ size = Vector2(20, 28)
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite", "HunterSprite", "KnowledgeSprite", "LeftRevealSprite", "RightRevealSprite", "CorpseSprite", "RitualSprite", "EyeSprite", "Sparkle")]
+[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite", "HunterSprite", "KnowledgeSprite", "LeftRevealSprite", "RightRevealSprite", "CorpseSprite", "RitualSprite", "EyeSprite", "CreatureSprite", "Sparkle")]
 script = ExtResource("1_68501")
 CardGlow = NodePath("Glow")
 CardFaceSprite = NodePath("CardFaceSprite")
@@ -39,6 +40,7 @@ RightRevealSprite = NodePath("CardFaceSprite/RightHandMarkSprite")
 CorpseSprite = NodePath("CardFaceSprite/CorpseSprite")
 RitualSprite = NodePath("CardFaceSprite/RitualSprite")
 EyeSprite = NodePath("CardFaceSprite/EyeSprite")
+CreatureSprite = NodePath("CardFaceSprite/CreatureSprite")
 Sparkle = NodePath("CPUParticles2D")
 
 [node name="Glow" type="Sprite2D" parent="."]
@@ -92,6 +94,9 @@ texture = ExtResource("10_slq20")
 
 [node name="CorpseSprite" type="Sprite2D" parent="CardFaceSprite"]
 texture = ExtResource("11_3gcch")
+
+[node name="CreatureSprite" type="Sprite2D" parent="CardFaceSprite"]
+texture = ExtResource("14_plpxw")
 
 [node name="BurningSprite" type="Sprite2D" parent="."]
 visible = false
