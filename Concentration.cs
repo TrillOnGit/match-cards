@@ -48,8 +48,8 @@ public class Concentration : IConcentration
     // This event is fired when the number of revealed cards at roundstart changes
     public event Action<int>? RevealedCardsChanged;
 
-    // This event is fired when the score changes.
     public event Action<int>? ScoreGained;
+    public event Action<Card>? CardTargeted;
 
     private List<IScoreModifier> _scoreModifiers = new();
 
@@ -159,8 +159,6 @@ public class Concentration : IConcentration
         <= 32 => 8,
         _ => 9
     };
-
-
 
     private bool IsGameOver() => energy <= 0 || !_cards.Any(c => c.IsFlippable);
 
@@ -427,6 +425,12 @@ public class Concentration : IConcentration
         RevealedCardsChanged?.Invoke(change);
     }
 
+    public void SendCardTargeted(Card target)
+    {
+        CardTargeted?.Invoke(target);
+        GD.Print("Card Target Sent: " + target.Data.Rank + " of " + target.Data.Suit);
+    }
+
     public void SelectCard(Card card)
     {
         switch (state)
@@ -449,16 +453,6 @@ public class Concentration : IConcentration
         state = newState;
         GD.Print("Concentration state set to: " + state);
     }
-
-    public void SendCardTargeted(Card target)
-    {
-        CardTargeted?.Invoke(target);
-        GD.Print("Card Target Sent: " + target.Data.Rank + " of " + target.Data.Suit);
-    }
-
-    public event Action<Card>? CardTargeted;
-
-
 
     public enum GameState
     {
