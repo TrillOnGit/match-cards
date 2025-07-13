@@ -111,18 +111,18 @@ public partial class CardNode : Area2D
 
     private void OnClick()
     {
-        switch (State)
-        {
-            case CardState.Default:
-                Card?.Activate();
-                Clicked?.Invoke();
-                break;
-            case CardState.ActivationTarget:
-                Card?.SendTargeted();
-                break;
-            default:
-                break;
-        }
+        // switch (State)
+        // {
+        //     case CardState.Default:
+        Clicked?.Invoke();
+        //break;
+        //     //Remove these cases and this function when concentration handles game states
+        //     case CardState.ActivationTarget:
+        //         Card?.SendTargeted();
+        //         break;
+        //     default:
+        //         break;
+        // }
     }
 
     public int GetBackFrame()

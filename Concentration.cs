@@ -26,6 +26,7 @@ public class Concentration : IConcentration
     private readonly int maxEnergy = 12;
     public int revealedCards = 3;
     public int scoreOnGeneration = 0;
+    public GameState state = GameState.Flipping;
 
     public event Action<Card>? CardAddedToBoard;
     public event Action<CardData>? AddDeckCard;
@@ -423,6 +424,46 @@ public class Concentration : IConcentration
         }
         RevealedCardsChanged?.Invoke(change);
     }
+
+    public void SelectCard(Card card)
+    {
+        if (state == GameState.Flipping)
+        {
+            card.Activate();
+            Flip(card);
+        }
+        else if (state == GameState.Targeting)
+        {
+            SendCardTargeted(card);
+            GD.Print("Card Targeted: " + card.Data.Rank + " of " + card.Data.Suit);
+        }
+    }
+
+    public void SetStateFlipping()
+    {
+        state = GameState.Flipping;
+    }
+
+    public void SetStateTargeting()
+    {
+        state = GameState.Targeting;
+    }
+
+    public void SendCardTargeted(Card target)
+    {
+        CardTargeted?.Invoke(target);
+        GD.Print("Card Target Sent: " + target.Data.Rank + " of " + target.Data.Suit);
+    }
+
+    public event Action<Card>? CardTargeted;
+
+
+
+    public enum GameState
+    {
+        Flipping,
+        Targeting
+    }
 }
 
 
@@ -514,11 +555,6 @@ public record Card
         Removed?.Invoke();
     }
 
-    public void SendTargeted()
-    {
-        Targeted?.Invoke(this);
-    }
-
     public event Action<bool>? Flipped;
     public event Action? Revealed;
     public event Action? Hidden;
@@ -527,7 +563,6 @@ public record Card
     public event Action? Matched;
     public event Action<int, int>? Moved;
     public event Action? Activated;
-    public event Action<Card>? Targeted;
 }
 
 public enum Suit
@@ -565,7 +600,5 @@ public interface IScoreModifier
 
 public interface IActivatable
 {
-    //When future active numbers are added, uncomment this
-    //public int ActivationNumber { get; }
     public void Activate();
 }

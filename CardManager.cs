@@ -111,7 +111,7 @@ public partial class CardManager : Node
 
     public void OnCardClicked(Card card)
     {
-        Concentration.Flip(card);
+        Concentration.SelectCard(card);
     }
 
     public void ShuffleDeck()
