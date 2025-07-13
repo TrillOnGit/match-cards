@@ -8,26 +8,15 @@ public class HunterEffect : Effect, IActivatable
     private bool activated = false;
     public override void OnAdded()
     {
-        //Concentration.CardsMatched += OnCardsMatched;
         Card.Activated += Activate;
         Concentration.CardTargeted += OnCardTargeted;
     }
 
     public override void OnRemoved()
     {
-        //Concentration.CardsMatched -= OnCardsMatched;
         Card.Activated -= Activate;
         Concentration.CardTargeted -= OnCardTargeted;
     }
-
-    // private void OnCardsMatched(Card cardOne, Card cardTwo)
-    // {
-    //     if (cardOne == Card && cardTwo.Data.HasSticker<CreatureSticker>())
-    //     {
-    //         CreateCorpse(cardTwo);
-    //         Concentration.RemoveCardPermanent(cardTwo);
-    //     }
-    // }
 
     private void CreateCorpse(Card card)
     {
@@ -50,14 +39,12 @@ public class HunterEffect : Effect, IActivatable
         Concentration.AddCard(corpseCard);
         Concentration.AddCardToDecklist(corpseCard);
         corpseCard.Reveal();
-        GD.Print("Corpse created for targeted creature.");
     }
 
     public void Activate()
     {
         activated = true;
-        Concentration.SetStateTargeting();
-        GD.Print("Hunter activated, waiting for target.");
+        Concentration.SetState(Concentration.GameState.Targeting);
     }
 
     public void OnCardTargeted(Card targetCard)
@@ -71,7 +58,6 @@ public class HunterEffect : Effect, IActivatable
             CreateCorpse(targetCard);
             Concentration.RemoveCardPermanent(targetCard);
         }
-        Concentration.SetStateFlipping();
-        GD.Print("Card Targeted.");
+        Concentration.SetState(Concentration.GameState.Flipping);
     }
 }

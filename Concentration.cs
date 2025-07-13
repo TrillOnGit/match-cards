@@ -116,11 +116,8 @@ public class Concentration : IConcentration
 
     public void SwapCards(Card cardOne, Card cardTwo)
     {
-        // (cardOne.X, cardTwo.X) = (cardTwo.X, cardOne.X);
-        // (cardOne.Y, cardTwo.Y) = (cardTwo.Y, cardOne.Y);
         cardOne.Move(cardTwo.X, cardTwo.Y);
         cardTwo.Move(cardOne.X, cardOne.Y);
-
     }
 
     public void LayoutWithoutResets()
@@ -171,12 +168,17 @@ public class Concentration : IConcentration
     {
         if (IsGameOver())
         {
-            GameEnded?.Invoke();
+            EndGame();
         }
     }
 
     public void EndGame()
     {
+        foreach (var card in _cards)
+        {
+            card.Reveal();
+        }
+        SetState(GameState.Night);
         GameEnded?.Invoke();
     }
 
@@ -427,26 +429,25 @@ public class Concentration : IConcentration
 
     public void SelectCard(Card card)
     {
-        if (state == GameState.Flipping)
+        switch (state)
         {
-            card.Activate();
-            Flip(card);
-        }
-        else if (state == GameState.Targeting)
-        {
-            SendCardTargeted(card);
-            GD.Print("Card Targeted: " + card.Data.Rank + " of " + card.Data.Suit);
+            case GameState.Flipping:
+                card.Activate();
+                Flip(card);
+                break;
+            case GameState.Targeting:
+                SendCardTargeted(card);
+                break;
+            case GameState.Night:
+                GD.Print("Cannot select cards at night.");
+                break;
         }
     }
 
-    public void SetStateFlipping()
+    public void SetState(GameState newState)
     {
-        state = GameState.Flipping;
-    }
-
-    public void SetStateTargeting()
-    {
-        state = GameState.Targeting;
+        state = newState;
+        GD.Print("Concentration state set to: " + state);
     }
 
     public void SendCardTargeted(Card target)
@@ -462,7 +463,8 @@ public class Concentration : IConcentration
     public enum GameState
     {
         Flipping,
-        Targeting
+        Targeting,
+        Night,
     }
 }
 
