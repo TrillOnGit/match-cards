@@ -470,6 +470,7 @@ public record Card
     public bool IsFaceUp { get; private set; } = false;
     public bool IsRevealed { get; private set; } = false;
     public bool IsBurning { get; private set; } = false;
+    public bool IsActivatable { get; private set; } = false;
 
     public bool IsFlippable => !IsFaceUp && !IsBurning;
 
@@ -495,7 +496,7 @@ public record Card
     }
     public void Activate()
     {
-        if (IsFaceUp && !IsFlippable)
+        if (IsActivatable && !IsFlippable)
         {
             Activated?.Invoke();
         }
@@ -531,6 +532,7 @@ public record Card
 
     public void Burn()
     {
+        IsActivatable = false;
         IsBurning = true;
         Reveal();
         Flip(true);
@@ -539,6 +541,7 @@ public record Card
 
     public void Match()
     {
+        IsActivatable = true;
         Matched?.Invoke();
     }
 
