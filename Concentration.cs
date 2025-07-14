@@ -436,7 +436,7 @@ public class Concentration : IConcentration
         switch (state)
         {
             case GameState.Flipping:
-                card.Activate();
+                if (card.IsActivatable) card.Activate();
                 Flip(card);
                 break;
             case GameState.Targeting:
@@ -496,7 +496,7 @@ public record Card
     }
     public void Activate()
     {
-        if (IsActivatable && !IsFlippable)
+        if (!IsFlippable)
         {
             Activated?.Invoke();
         }
