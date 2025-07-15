@@ -1,23 +1,34 @@
 namespace MatchCards.Effects;
 
-public class RitualEffect : Effect
+public class RitualEffect : Effect, IActivatable
 {
+    private bool isActive = false;
     public override void OnAdded()
     {
-        Concentration.CardsMatched += OnCardsMatched;
+        Concentration.CardTargeted += OnCardTargeted;
+        Card.Activated += Activate;
     }
 
     public override void OnRemoved()
     {
-        Concentration.CardsMatched -= OnCardsMatched;
+        Concentration.CardTargeted -= OnCardTargeted;
+        Card.Activated -= Activate;
     }
 
-    private void OnCardsMatched(Card cardOne, Card cardTwo)
+    private void OnCardTargeted(Card targetCard)
     {
-        if (cardTwo.Data.HasSticker<CorpseSticker>() && cardOne == Card)
+        if (targetCard.Data.HasSticker<CorpseSticker>())
         {
-            Concentration.RemoveCardPermanent(cardTwo);
+            Concentration.RemoveCardPermanent(targetCard);
             Concentration.AddScore(20);
+            Concentration.SetState(Concentration.GameState.Flipping);
+            isActive = false;
         }
+    }
+    public void Activate()
+    {
+        isActive = true;
+        Concentration.SetState(Concentration.GameState.Targeting);
+        Card.DeActivate();
     }
 }
