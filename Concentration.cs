@@ -501,6 +501,10 @@ public record Card
             Activated?.Invoke();
         }
     }
+    public void DeActivate()
+    {
+        IsActivatable = false;
+    }
     public void Flip(bool faceUp)
     {
         if (faceUp != IsFaceUp)

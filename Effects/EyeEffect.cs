@@ -6,7 +6,6 @@ namespace MatchCards.Effects;
 
 public class EyeEffect : Effect, IActivatable
 {
-    private bool activated = true;
     public override void OnAdded()
     {
         Card.Activated += Activate;
@@ -19,10 +18,7 @@ public class EyeEffect : Effect, IActivatable
 
     public void Activate()
     {
-        if (activated)
-        {
-            Concentration.ShuffleCardPositions(Concentration.GetCards().ToList());
-            activated = false;
-        }
+        Concentration.ShuffleCardPositions(Concentration.GetCards().ToList());
+        Card.DeActivate();
     }
 }

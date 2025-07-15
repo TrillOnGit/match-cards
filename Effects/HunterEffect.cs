@@ -5,7 +5,7 @@ namespace MatchCards.Effects;
 
 public class HunterEffect : Effect, IActivatable
 {
-    private bool activated = false;
+    private bool isActive = false;
     public override void OnAdded()
     {
         Card.Activated += Activate;
@@ -43,21 +43,23 @@ public class HunterEffect : Effect, IActivatable
 
     public void Activate()
     {
-        activated = true;
+        isActive = true;
         Concentration.SetState(Concentration.GameState.Targeting);
+        Card.DeActivate();
     }
 
     public void OnCardTargeted(Card targetCard)
     {
-        if (!activated)
+        if (isActive)
         {
-            return;
+            if (targetCard.Data.HasSticker<CreatureSticker>())
+            {
+                CreateCorpse(targetCard);
+                Concentration.RemoveCardPermanent(targetCard);
+                Card.DeActivate();
+            }
+            Concentration.SetState(Concentration.GameState.Flipping);
+            isActive = false;
         }
-        if (targetCard.Data.HasSticker<CreatureSticker>() && activated)
-        {
-            CreateCorpse(targetCard);
-            Concentration.RemoveCardPermanent(targetCard);
-        }
-        Concentration.SetState(Concentration.GameState.Flipping);
     }
 }
