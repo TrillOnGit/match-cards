@@ -1,6 +1,7 @@
 using Godot;
 using MatchCards.Effects;
 using System;
+using System.Linq;
 
 public partial class CardNode : Area2D
 {
@@ -19,6 +20,7 @@ public partial class CardNode : Area2D
     [Export] public Sprite2D RitualSprite { get; set; } = null!;
     [Export] public Sprite2D EyeSprite { get; set; } = null!;
     [Export] public Sprite2D CreatureSprite { get; set; } = null!;
+    [Export] public Sprite2D ActivatableIconSprite { get; set; } = null!;
     [Export] public CpuParticles2D Sparkle { get; set; } = null!;
     [Export] public CardBack CardBack { get; set; } = CardBack.Red;
     [Export] public int CardRank { get; set; } = 1;
@@ -51,6 +53,7 @@ public partial class CardNode : Area2D
 
             BurningSprite.Visible = card.IsBurning;
             UpdatePosition();
+            ActivatableIconSprite.Visible = card.HasActivatableEffect();
         }
         if (CardData is { } data)
         {

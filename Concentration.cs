@@ -470,6 +470,7 @@ public record Card
     public bool IsFaceUp { get; private set; } = false;
     public bool IsRevealed { get; private set; } = false;
     public bool IsBurning { get; private set; } = false;
+    // Truth for whether you can or cannot activate a card (set/unset by activatable cards)
     public bool IsActivatable { get; private set; } = false;
 
     public bool IsFlippable => !IsFaceUp && !IsBurning;
@@ -477,6 +478,7 @@ public record Card
     public required CardData Data { get; init; }
 
     private List<Effect> _effects = new();
+    public bool HasActivatableEffect() => _effects.Any(s => s is IActivatable);
 
     /// <summary>
     /// Initializes game-logic effects of this Card to operate within an
