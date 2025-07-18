@@ -28,6 +28,8 @@ public class CreatureSticker : ICardSticker
 public class CorpseSticker : ICardSticker
 { }
 
+public class SuspicionSticker : ICardSticker
+{ }
 
 public class KnowledgeSticker : ICardSticker, IEffectData
 {

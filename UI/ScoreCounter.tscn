@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ballspm2wr0r7"]
+[gd_scene load_steps=8 format=3 uid="uid://ballspm2wr0r7"]
 
 [ext_resource type="Script" uid="uid://dpp0lmnehp1g0" path="res://UI/Score.cs" id="1_ovps7"]
 [ext_resource type="Script" uid="uid://di2wbp88wjuhq" path="res://UI/EnergyLabel.cs" id="2_rqnv2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://chupbux1voat1" path="res://UI/Round.cs" id="4_rqnv2"]
 [ext_resource type="Script" uid="uid://jukyttpkelnb" path="res://UI/ShuffleButton.cs" id="5_rqnv2"]
 [ext_resource type="Script" uid="uid://dgyagpj70d11u" path="res://UI/Progress.cs" id="6_4lk7u"]
+[ext_resource type="Script" uid="uid://bi27ohsj41b4h" path="res://UI/SuspicionBar.cs" id="7_55grq"]
 
 [node name="ScoreCounterControl" type="Control"]
 top_level = true
@@ -70,3 +71,13 @@ offset_right = 1151.0
 offset_bottom = 4.0
 show_percentage = false
 script = ExtResource("6_4lk7u")
+
+[node name="Suspicion" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 29.0
+offset_right = 7.0
+offset_bottom = 614.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("7_55grq")

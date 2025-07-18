@@ -21,5 +21,12 @@ public static class CardHelpers
         {(Suit.Hearts, 8), new CreatureSticker()},
         {(Suit.Clubs, 8), new HunterSticker()},
         {(Suit.Spades, 1), new KnowledgeSticker()},
+        {(Suit.Spades, 8), new SuspicionSticker()},
+        {(Suit.Spades, 9), new SuspicionSticker()},
+        {(Suit.Spades, 3), new SuspicionSticker()},
+        {(Suit.Spades, 4), new SuspicionSticker()},
+        {(Suit.Spades, 5), new SuspicionSticker()},
+        {(Suit.Spades, 6), new SuspicionSticker()},
+        {(Suit.Spades, 7), new SuspicionSticker()},
     };
 }

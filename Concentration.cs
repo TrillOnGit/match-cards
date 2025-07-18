@@ -23,6 +23,8 @@ public class Concentration : IConcentration
     private int comboCounter = 0;
     private int energy = 12;
     private int progress = 0;
+    // Suspicion across every faceup card.
+    private int totalSuspicion = 0;
     private readonly int maxEnergy = 12;
     public int revealedCards = 3;
     public int scoreOnGeneration = 0;
@@ -271,7 +273,7 @@ public class Concentration : IConcentration
 
             AddScore(scoreVal);
             CardsMatched?.Invoke(cardOne, cardTwo);
-            GetAndSetProgressState();
+            UpdateStats();
         }
         else
         {
@@ -343,6 +345,35 @@ public class Concentration : IConcentration
         }
     }
 
+    public void GetAndSetSuspicion()
+    {
+        var suspicionCount = 0;
+        foreach (var card in _cards)
+        {
+            if (card.IsFaceUp && card.Data.HasSticker<SuspicionSticker>())
+            {
+                suspicionCount += card.Data.HasSticker<SuspicionSticker>() ? 1 : 0;
+                GD.Print($"Card {card.Data.Rank} of {card.Data.Suit} has suspicion {card.Data.Suspicion}");
+            }
+        }
+        SetSuspicion(suspicionCount);
+    }
+
+    public void SetSuspicion(int value)
+    {
+        totalSuspicion = value;
+        var sendSuspicion = value == 0 ? 0 : (value % 3 != 0 ? (value % 3) * 33 : 100);
+        ScoreEventManager.SendSuspicionChanged(sendSuspicion);
+        GD.Print("Suspicion set to: " + sendSuspicion);
+    }
+
+    // method for Updating Progress and Suspicion when cards are removed/matched
+    public void UpdateStats()
+    {
+        GetAndSetProgressState();
+        GetAndSetSuspicion();
+    }
+
     public void BurnCard(Card card)
     {
         card.Burn();
@@ -381,6 +412,7 @@ public class Concentration : IConcentration
         _cards.Remove(card);
         CardPermanentlyRemoved?.Invoke(card);
         card.Remove();
+        UpdateStats();
     }
 
     public IEnumerable<Card> GetSameRankCards(Card card) => _cards.Where(c => CardIsSameRank(c, card));
@@ -589,6 +621,7 @@ public record CardData
 {
     public required Suit Suit { get; set; }
     public required int Rank { get; set; }
+    public int Suspicion { get; set; } = 1;
     public required CardBack CardBack { get; set; }
 
     public IReadOnlyCollection<ICardSticker> Stickers { get; init; } = Array.Empty<ICardSticker>();

@@ -11,6 +11,7 @@ public static class ScoreEventManager
     public static event Action<int>? RoundUpdated;
     public static event Action<int>? RunEnded;
     public static event Action<int>? ProgressChanged;
+    public static event Action<int>? SuspicionChanged;
 
     public static void SendScoreChange(int scoreChangedBy)
     {
@@ -49,5 +50,10 @@ public static class ScoreEventManager
     public static void SendProgressChanged(int progress)
     {
         ProgressChanged?.Invoke(progress);
+    }
+
+    public static void SendSuspicionChanged(int suspicion)
+    {
+        SuspicionChanged?.Invoke(suspicion);
     }
 }
