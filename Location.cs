@@ -11,25 +11,16 @@ public class BeastGapLocation : ILocation
     {
         //People
         CardHelpers.MakeCardData(Suit.Clubs, 1),
-        CardHelpers.MakeCardData(Suit.Clubs, 3),
-        CardHelpers.MakeCardData(Suit.Clubs, 3),
-        CardHelpers.MakeCardData(Suit.Clubs, 5),
-        CardHelpers.MakeCardData(Suit.Clubs, 7),
         CardHelpers.MakeCardData(Suit.Clubs, 8),
         CardHelpers.MakeCardData(Suit.Clubs, 8),
-        CardHelpers.MakeCardData(Suit.Clubs, 9),
-        CardHelpers.MakeCardData(Suit.Clubs, 9),
-        CardHelpers.MakeCardData(Suit.Clubs, 11),
-        CardHelpers.MakeCardData(Suit.Clubs, 13),
-        CardHelpers.MakeCardData(Suit.Clubs, 13),
+        CardHelpers.MakeCardData(Suit.Clubs, 10),
 
         //Authority
         CardHelpers.MakeCardData(Suit.Spades, 1),
-        CardHelpers.MakeCardData(Suit.Spades, 7),
-        CardHelpers.MakeCardData(Suit.Spades, 11),
+        CardHelpers.MakeCardData(Suit.Spades, 10),
 
         //Emotions
-        CardHelpers.MakeCardData(Suit.Hearts, 9),
+        //CardHelpers.MakeCardData(Suit.Hearts, 8),
     };
 }
 

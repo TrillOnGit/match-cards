@@ -100,6 +100,7 @@ public class Concentration : IConcentration
         for (int i = 0; (i < revealedCards) && (i < _cards.Count); i++)
         {
             _cards[randomPositions[i]].Reveal();
+            GD.Print("Revealed card at position: " + randomPositions[i]);
         }
     }
 

@@ -33,7 +33,7 @@ public partial class CardManager : Node
         MenuEventManager.ShuffleButtonPressed += ShuffleDeck;
         GD.Print($"_cardNodes count: {_cardNodes.Count}");
 
-        Concentration.Layout();
+        //Concentration.Layout();
     }
 
     public override void _ExitTree()

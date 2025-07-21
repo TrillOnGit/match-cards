@@ -70,7 +70,7 @@ public class CardShop
             GenerateCardShopItem(Suit.Diamonds, rnd.Next(2, 9), null, new List<ICardSticker> { new StarSticker() }),
             GenerateCardShopItem(Suit.Spades, null, null, new List<ICardSticker>
             { new KnowledgeSticker(), new RightRevealSticker() }),
-            GenerateCardShopItem(null, null, CardBack.Pink, null),
+            GenerateCardShopItem(null, null, CardBack.Pink, new List<ICardSticker> { new CreatureSticker() }),
         };
         foreach (var item in items)
         {

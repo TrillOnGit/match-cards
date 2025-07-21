@@ -1,3 +1,5 @@
+using System;
+
 namespace MatchCards.Effects;
 
 public class RitualEffect : Effect, IActivatable
@@ -17,13 +19,37 @@ public class RitualEffect : Effect, IActivatable
 
     private void OnCardTargeted(Card targetCard)
     {
-        if (targetCard.Data.HasSticker<CorpseSticker>())
+        if (isActive)
         {
-            Concentration.RemoveCardPermanent(targetCard);
-            Concentration.AddScore(20);
+            if (targetCard.Data.HasSticker<CorpseSticker>())
+            {
+                Concentration.RemoveCardPermanent(targetCard);
+                AddScoringCard(targetCard);
+            }
             Concentration.SetState(Concentration.GameState.Flipping);
             isActive = false;
         }
+    }
+
+    private void AddScoringCard(Card targetCard)
+    {
+        Random rng = new();
+        var queen = new CardData()
+        {
+            Suit = targetCard.Data.Suit,
+            Rank = rng.Next(11, 14), // Queen rank
+            CardBack = targetCard.Data.CardBack
+        };
+        Card newCard = new()
+        {
+            X = targetCard.X,
+            Y = targetCard.Y,
+            Data = queen,
+        };
+
+        Concentration.AddCard(newCard);
+        Concentration.AddCardToDecklist(newCard);
+        newCard.Reveal();
     }
     public void Activate()
     {

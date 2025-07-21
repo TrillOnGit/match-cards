@@ -11,7 +11,8 @@ public class IllCharacter : IPlayerCharacter
     {
         CardHelpers.MakeCardData(Suit.Hearts, 8),
         CardHelpers.MakeCardData(Suit.Diamonds, 2),
-        CardHelpers.MakeCardData(Suit.Diamonds, 3)
+        CardHelpers.MakeCardData(Suit.Diamonds, 2),
+        CardHelpers.MakeCardData(Suit.Spades, 7),
     };
 }
 

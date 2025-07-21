@@ -40,6 +40,7 @@ public partial class RunManager : Node
         _cardManager = LevelScene.Instantiate<CardManager>();
         _cardManager.Concentration = concentration;
         AddChild(_cardManager);
+        _cardManager.Concentration.Layout();
     }
 
     private void OnDayFinished()
