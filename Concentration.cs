@@ -35,14 +35,11 @@ public class Concentration : IConcentration
     public event Action<Card>? CardRemoved;
     public event Action<Card>? CardPermanentlyRemoved;
 
-    // This event is fired when the first card of a potential pair is flipped up
-    public event Action<Card>? FirstCardFlipped;
-
-    // This event is fired when the second card of a potential pair is flipped up
+    // This event is fired when a card is flipped and scored
     public event Action<Card>? MatchAttempted;
 
     // This event is fired when a pair of cards is matched
-    public event Action<Card, Card>? CardsMatched;
+    public event Action<Card>? CardFlipped;
 
     // This event is fired when you run out of guesses or flip every flippable card
     public event Action? GameEnded;
@@ -220,12 +217,12 @@ public class Concentration : IConcentration
         }
         card.Flip(true);
         card.Reveal();
-        if (_lastFlipped == null)
-        {
-            _lastFlipped = card;
-            FirstCardFlipped?.Invoke(card);
-            return;
-        }
+        // if (_lastFlipped == null)
+        // {
+        //     _lastFlipped = card;
+        //     FirstCardFlipped?.Invoke(card);
+        //     return;
+        // }
 
         var burnList = _cards.Where(c => c.IsBurning).ToList();
         foreach (var c in burnList)
@@ -244,7 +241,7 @@ public class Concentration : IConcentration
             }
         }
         MatchAttempted?.Invoke(card);
-        MatchPair(_lastFlipped, card);
+        FlipCard(card);
         CheckGameOver();
     }
 
@@ -253,38 +250,27 @@ public class Concentration : IConcentration
 
     public IEnumerable<Card> GetCards() => _cards;
 
-    private void OnMatch(Card card)
+    private void OnFlip(Card card)
     {
         card.Match();
     }
 
-    private void MatchPair(Card cardOne, Card cardTwo)
+    private void FlipCard(Card card)
     {
-        if (cardOne.Data.Rank == cardTwo.Data.Rank)
-        {
-            var scoreVal = GetCardMatchValue(cardOne, cardTwo);
+        var scoreVal = card.Data.Rank;
 
-            OnMatch(cardOne);
-            OnMatch(cardTwo);
+        OnFlip(card);
 
-            comboCounter++;
-            ScoreEventManager.ComboChange(comboCounter);
-            energy -= 1;
-            ScoreEventManager.SendEnergy(energy);
+        comboCounter++;
+        ScoreEventManager.ComboChange(comboCounter);
 
-            AddScore(scoreVal);
-            CardsMatched?.Invoke(cardOne, cardTwo);
-            UpdateStats();
-        }
-        else
-        {
-            comboCounter = 0;
-            ScoreEventManager.ComboChange(comboCounter);
-            energy = Math.Max(energy - 2, 0);
-            ScoreEventManager.SendEnergy(energy);
-            cardOne.Flip(false);
-            cardTwo.Flip(false);
-        }
+        energy -= 1;
+        ScoreEventManager.SendEnergy(energy);
+
+        AddScore(scoreVal);
+        CardFlipped?.Invoke(card);
+        UpdateStats();
+
         _lastFlipped = null;
     }
 
@@ -297,9 +283,7 @@ public class Concentration : IConcentration
 
         scoreMult = ModifyScore(cardOne, cardTwo, scoreMult);
 
-
         return (initialScore + scoreAdd) * scoreMult;
-
     }
 
     public void AddScore(int increase)

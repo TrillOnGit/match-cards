@@ -28,7 +28,6 @@ public partial class CardManager : Node
         Concentration.CardAddedToBoard += OnCardAdded;
         Concentration.CardRemoved += OnCardRemoved;
         Concentration.CardPermanentlyRemoved += OnCardRemoved;
-        Concentration.FirstCardFlipped += OnFirstCardFlipped;
         Concentration.MatchAttempted += OnMatchAttempted;
         MenuEventManager.ShuffleButtonPressed += ShuffleDeck;
         GD.Print($"_cardNodes count: {_cardNodes.Count}");
@@ -41,7 +40,6 @@ public partial class CardManager : Node
         Concentration.CardAddedToBoard -= OnCardAdded;
         Concentration.CardRemoved -= OnCardRemoved;
         Concentration.CardPermanentlyRemoved -= OnCardRemoved;
-        Concentration.FirstCardFlipped -= OnFirstCardFlipped;
         Concentration.MatchAttempted -= OnMatchAttempted;
         MenuEventManager.ShuffleButtonPressed -= ShuffleDeck;
     }
@@ -61,12 +59,6 @@ public partial class CardManager : Node
     public void OnCardRemoved(Card card)
     {
         _cardNodes.RemoveAll(c => c.Card == card);
-    }
-
-    public void OnFirstCardFlipped(Card card)
-    {
-        _lastFlipped = card;
-        UpdateGlow();
     }
 
     public void OnMatchAttempted(Card card)
