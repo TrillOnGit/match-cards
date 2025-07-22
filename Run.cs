@@ -39,6 +39,7 @@ public class Run
         concentration.CardPermanentlyRemoved += RemoveDeckCard;
         concentration.AddDeckCard += AddCard;
         DayStarted?.Invoke(concentration);
+        concentration.Layout();
     }
 
     private void OnConcentrationEnded()
