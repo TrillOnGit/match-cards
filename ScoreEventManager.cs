@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public static class ScoreEventManager
 {
@@ -12,6 +13,7 @@ public static class ScoreEventManager
     public static event Action<int>? RunEnded;
     public static event Action<int>? ProgressChanged;
     public static event Action<int>? SuspicionChanged;
+    public static event Action<List<Card>>? CardsLaidOut;
 
     public static void SendScoreChange(int scoreChangedBy)
     {
@@ -55,5 +57,10 @@ public static class ScoreEventManager
     public static void SendSuspicionChanged(int suspicion)
     {
         SuspicionChanged?.Invoke(suspicion);
+    }
+
+    public static void SendCardsLaidOut(List<Card> cards)
+    {
+        CardsLaidOut?.Invoke(cards);
     }
 }

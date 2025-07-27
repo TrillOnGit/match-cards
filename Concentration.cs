@@ -102,6 +102,7 @@ public class Concentration : IConcentration
             _cards[randomPositions[i]].Reveal();
             GD.Print("Revealed card at position: " + randomPositions[i]);
         }
+        ScoreEventManager.SendCardsLaidOut(_cards.ToList());
     }
 
     public static void ShuffleCardPositions(List<Card> cards)
@@ -616,6 +617,7 @@ public enum CardBack
     Red,
     Blue,
     Pink,
+    Green,
 }
 
 public record CardData
