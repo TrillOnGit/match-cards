@@ -59,11 +59,11 @@ public partial class CardTracker : Control
         return suit switch
         {
             //Placeholder
-            Suit.Hearts => new Color(1, 0, 0), // Red
-            Suit.Diamonds => new Color(0, 1, 0), // Green
-            Suit.Clubs => new Color(0, 0, 1), // Blue
-            Suit.Spades => new Color(0, 0, 0), // Black
-            _ => new Color(1, 1, 1) // White
+            Suit.Hearts => new Color(1.0f, 0.0f, 0.0f, 1.0f), // Red
+            Suit.Diamonds => new Color(1.0f, 0.6f, 0.0f), // Orange
+            Suit.Clubs => new Color(0.0f, 0.0f, 0.0f), // Black
+            Suit.Spades => new Color(0.0f, 0.65f, 0.0f), // Dark Green
+            _ => new Color(1.0f, 1.0f, 1.0f) // White
         };
     }
 
@@ -82,7 +82,7 @@ public partial class CardTracker : Control
 
 public partial class CardTrackerRow : HBoxContainer
 {
-    public required CardBack CardBack; //Used for row icon
+    public required CardBack CardBack; //Used for row position + icon
     private List<Card>? cards;
 
     public override void _Ready()
