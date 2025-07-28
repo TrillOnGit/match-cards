@@ -21,10 +21,17 @@ public partial class CardTrackerBox : Container
 
     public void CreateDeckUI(IEnumerable<Card> deck)
     {
+        foreach (Node child in GetChildren())
+        {
+            child.QueueFree();
+        }
+
         CardTrackerStack stack = new()
         {
             deck = deck.ToList()
         };
+
+        stack.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         AddChild(stack);
     }
 }
@@ -125,29 +132,12 @@ public partial class CardTrackerStack : VBoxContainer
     {
         foreach (CardBack back in Enum.GetValues(typeof(CardBack)))
         {
-            var rowCards = deck.Where(card => card.Data.CardBack == back).ToList();
+            var rowCards = deck.Where(card => card.Data.CardBack == back)
+            .OrderBy(Card => (Card.Data.Rank, Card.Data.Suit))
+            .ToList();
             var row = new CardTrackerRow { CardBack = back };
             row.Initialize(rowCards);
             AddChild(row);
         }
-        // var redCards = deck.Where(card => card.Data.CardBack == CardBack.Red).ToList();
-        // CardTrackerRow rRow = new() { CardBack = CardBack.Red };
-        // rRow.Initialize(redCards);
-        // AddChild(rRow);
-
-        // var blueCards = deck.Where(card => card.Data.CardBack == CardBack.Blue).ToList();
-        // CardTrackerRow bRow = new() { CardBack = CardBack.Blue };
-        // bRow.Initialize(blueCards);
-        // AddChild(bRow);
-
-        // var pinkCards = deck.Where(card => card.Data.CardBack == CardBack.Pink).ToList();
-        // CardTrackerRow pRow = new() { CardBack = CardBack.Pink };
-        // pRow.Initialize(pinkCards);
-        // AddChild(pRow);
-
-        // var greenCards = deck.Where(card => card.Data.CardBack == CardBack.Green).ToList();
-        // CardTrackerRow gRow = new() { CardBack = CardBack.Green };
-        // gRow.Initialize(greenCards);
-        // AddChild(gRow);
     }
 }
