@@ -153,7 +153,30 @@ public partial class CardTrackerStack : VBoxContainer
             .OrderBy(Card => (Card.Data.Rank, Card.Data.Suit))
             .ToList();
             var row = new CardTrackerRow { CardBack = back };
-            row.Initialize(rowCards);
+
+            if (rowCards.Count > 9)
+            {
+                CreateOverflowRow(back, rowCards);
+            }
+            else
+            {
+                row.Initialize(rowCards);
+                AddChild(row);
+            }
+            var spacer = new Control();
+            AddChild(spacer);
+        }
+    }
+
+    private void CreateOverflowRow(CardBack cardBack, List<Card> cards)
+    {
+        int cardsPerLevel = 9;
+
+        for (int i = 0; i < cards.Count; i += cardsPerLevel)
+        {
+            var levelCards = cards.Skip(i).Take(cardsPerLevel).ToList();
+            var row = new CardTrackerRow { CardBack = cardBack };
+            row.Initialize(levelCards);
             AddChild(row);
         }
     }
