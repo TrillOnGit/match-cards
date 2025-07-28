@@ -9,6 +9,8 @@ public partial class CardTrackerBox : Container
     // Those elements need to display text (A, 2) color coded. 
     // Those elements also need to detect mouse hovers. 
     // When the corresponding card is matched, we want to increase translucency
+    private CardTrackerStack? cardTrackerStack;
+
     public override void _Ready()
     {
         ScoreEventManager.CardsLaidOut += CreateDeckUI;
@@ -26,23 +28,25 @@ public partial class CardTrackerBox : Container
             child.QueueFree();
         }
 
-        CardTrackerStack stack = new()
+        CardTrackerStack cardTrackerStack = new()
         {
             deck = deck.ToList()
         };
 
-        stack.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
-        AddChild(stack);
+        cardTrackerStack.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
+        AddChild(cardTrackerStack);
     }
 }
 
 public partial class CardTracker : Control
 {
     public required Card Card { get; set; }
+    private Label? label;
 
     public override void _Ready()
     {
-        Label label = new()
+        Card.Matched += SetMatched;
+        label = new()
         {
             Text = GetText(),
             HorizontalAlignment = HorizontalAlignment.Center,
@@ -52,6 +56,11 @@ public partial class CardTracker : Control
         label.AddThemeColorOverride("font_color", GetColor(Card.Data.Suit));
         label.SetAnchorsAndOffsetsPreset(LayoutPreset.FullRect);
         AddChild(label);
+    }
+
+    public override void _ExitTree()
+    {
+        Card.Matched -= SetMatched;
     }
 
     public static Color GetColor(Suit suit)
@@ -65,6 +74,14 @@ public partial class CardTracker : Control
             Suit.Spades => new Color(0.0f, 0.65f, 0.0f), // Dark Green
             _ => new Color(1.0f, 1.0f, 1.0f) // White
         };
+    }
+
+    public void SetMatched()
+    {
+        if (label == null) return;
+
+        var tween = CreateTween();
+        tween.TweenProperty(label, "modulate:a", 0.2f, 0.8f);
     }
 
     public string GetText()
