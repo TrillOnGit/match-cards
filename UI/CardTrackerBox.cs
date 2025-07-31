@@ -5,10 +5,6 @@ using System.Linq;
 
 public partial class CardTrackerBox : Container
 {
-    // Whenever a card is added, this needs to add another element (read events). 
-    // Those elements need to display text (A, 2) color coded. 
-    // Those elements also need to detect mouse hovers. 
-    // When the corresponding card is matched, we want to increase translucency
     private CardTrackerStack? cardTrackerStack;
 
     public override void _Ready()
@@ -38,6 +34,7 @@ public partial class CardTrackerBox : Container
     }
 }
 
+//Add Card Hover detection
 public partial class CardTracker : Control
 {
     public required Card Card { get; set; }
