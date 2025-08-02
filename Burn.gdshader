@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform float noise_offset = 0.0;
+instance uniform float noise_offset = -0.1;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
@@ -38,7 +38,7 @@ vec4 gradient_map(vec4 input_color, float x) {
 
 void fragment() {
 	float noise_value = noise(UV / TEXTURE_PIXEL_SIZE / 16.0);
-	
+
 	COLOR = gradient_map(COLOR, noise_value + noise_offset);
 }
 

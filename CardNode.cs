@@ -8,6 +8,7 @@ public partial class CardNode : Area2D
     [Export] public Sprite2D CardGlow { get; set; } = null!;
     [Export] public Sprite2D CardFaceSprite { get; set; } = null!;
     [Export] public Sprite2D CardBackSprite { get; set; } = null!;
+    [Export] public BrandSpriteManager? BrandManager;
     [Export] public Sprite2D BombSprite { get; set; } = null!;
     [Export] public Sprite2D BurningSprite { get; set; } = null!;
     [Export] public Sprite2D LighterSprite { get; set; } = null!;
@@ -76,6 +77,8 @@ public partial class CardNode : Area2D
         CardBackSprite.Frame = GetBackFrame();
         CardFaceSprite.Texture = GetSuitSprite();
         CardFaceSprite.Frame = GetFaceFrame();
+        BrandManager?.SetBrandFrames(CardSuit, CardRank);
+
         UpdateSpriteVisibility();
 
         CardGlow.Visible = false;
@@ -179,6 +182,11 @@ public partial class CardNode : Area2D
         Sparkle.Emitting = true;
     }
 
+    public void ActivateBranding(bool faceUp)
+    {
+        BrandManager?.RevealBrand(!faceUp);
+    }
+
     public void SetGlow(CardGlowColor glow)
     {
         switch (glow)
@@ -214,6 +222,10 @@ public partial class CardNode : Area2D
             {
                 CardFaceSprite.Visible = true;
                 CardFaceSprite.Modulate = Color.FromHsv(0f, 0f, 1f, 0.8f);
+                if (BrandManager != null)
+                {
+                    ActivateBranding(!FaceUp);
+                }
             }
             else
             {
@@ -236,3 +248,11 @@ public enum CardState
     ActivationTarget,
     ActivationNonTarget,
 }
+
+
+
+// public override void _Ready()
+// {
+
+// }
+

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c542u4x4lmrc1"]
+[gd_scene load_steps=24 format=3 uid="uid://c542u4x4lmrc1"]
 
 [ext_resource type="Script" uid="uid://cwrsqvg3om2cm" path="res://CardNode.cs" id="1_68501"]
 [ext_resource type="Texture2D" uid="uid://dleag8rm8jix2" path="res://assets/SBS - 2D Poker Pack/Top-Down/Cards/Card_Back-88x124.png" id="1_gclfg"]
@@ -17,19 +17,27 @@
 [ext_resource type="Texture2D" uid="uid://b8jvlbeu1ufif" path="res://assets/LeftHandMark.png" id="11_206uw"]
 [ext_resource type="Texture2D" uid="uid://cko4jwxuo7fhj" path="res://assets/creature.png" id="14_plpxw"]
 [ext_resource type="Texture2D" uid="uid://dhyef2wwhiupt" path="res://assets/activationIcon.png" id="15_8ya01"]
+[ext_resource type="Shader" uid="uid://d3aa3vx56mx8v" path="res://Burn.gdshader" id="18_d6frb"]
+[ext_resource type="Texture2D" uid="uid://c3sr8qx1bnk6b" path="res://assets/CardAssets/BrandingValues.png" id="18_leeu6"]
+[ext_resource type="Script" uid="uid://clnkdy0i0q11t" path="res://BrandSpriteManager.cs" id="19_pm06x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vgq2h"]
 size = Vector2(20, 28)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pm06x"]
+resource_local_to_scene = true
+shader = ExtResource("18_d6frb")
 
 [sub_resource type="Curve" id="Curve_sj0tx"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite", "HunterSprite", "KnowledgeSprite", "LeftRevealSprite", "RightRevealSprite", "CorpseSprite", "RitualSprite", "EyeSprite", "CreatureSprite", "ActivatableIconSprite", "Sparkle")]
+[node name="CardNode" type="Area2D" node_paths=PackedStringArray("CardGlow", "CardFaceSprite", "CardBackSprite", "BrandManager", "BombSprite", "BurningSprite", "LighterSprite", "StarSprite", "HunterSprite", "KnowledgeSprite", "LeftRevealSprite", "RightRevealSprite", "CorpseSprite", "RitualSprite", "EyeSprite", "CreatureSprite", "ActivatableIconSprite", "Sparkle")]
 script = ExtResource("1_68501")
 CardGlow = NodePath("Glow")
 CardFaceSprite = NodePath("CardFaceSprite")
 CardBackSprite = NodePath("CardBackSprite")
+BrandManager = NodePath("CardBackSprite/BrandSpriteManager")
 BombSprite = NodePath("CardFaceSprite/BombSprite")
 BurningSprite = NodePath("BurningSprite")
 LighterSprite = NodePath("CardFaceSprite/LighterSprite")
@@ -60,6 +68,26 @@ shape = SubResource("RectangleShape2D_vgq2h")
 texture = ExtResource("1_gclfg")
 hframes = 3
 frame = 1
+
+[node name="BrandSpriteManager" type="Node2D" parent="CardBackSprite"]
+material = SubResource("ShaderMaterial_pm06x")
+script = ExtResource("19_pm06x")
+
+[node name="BrandRankSprite" type="Sprite2D" parent="CardBackSprite/BrandSpriteManager"]
+use_parent_material = true
+position = Vector2(-16, 0)
+texture = ExtResource("18_leeu6")
+hframes = 4
+vframes = 5
+frame = 7
+
+[node name="BrandSuitSprite" type="Sprite2D" parent="CardBackSprite/BrandSpriteManager"]
+use_parent_material = true
+position = Vector2(16, 0)
+texture = ExtResource("18_leeu6")
+hframes = 4
+vframes = 5
+frame = 3
 
 [node name="CardFaceSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.52549)
