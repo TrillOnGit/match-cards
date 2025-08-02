@@ -220,8 +220,8 @@ public partial class CardNode : Area2D
             CardBackSprite.Visible = true;
             if (Revealed)
             {
-                CardFaceSprite.Visible = true;
-                CardFaceSprite.Modulate = Color.FromHsv(0f, 0f, 1f, 0.8f);
+                //CardFaceSprite.Visible = true;
+                CardFaceSprite.Modulate = Color.FromHsv(0f, 0f, 1f, 0.0f);
                 if (BrandManager != null)
                 {
                     ActivateBranding(!FaceUp);
